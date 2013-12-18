@@ -1,7 +1,7 @@
 ###############################################################################
 # CMakeLists.txt
 #
-# Build script for sqlplots utility set.
+# Build script for sqlplottools utility set.
 #
 ###############################################################################
 # Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
@@ -22,7 +22,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project(sqlplots)
+project(sqlplottools)
 
 # prohibit in-source builds
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -40,6 +40,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
 
 # Use PostgreSQL
 find_package(PostgreSQL REQUIRED)
+
+# Use Boost.Regex
+find_package(Boost 1.47.0 REQUIRED COMPONENTS regex)
+include_directories(${Boost_INCLUDE_DIRS})
 
 # descend into source
 add_subdirectory(src)

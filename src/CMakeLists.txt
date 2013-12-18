@@ -1,7 +1,7 @@
 ###############################################################################
 # src/CMakeLists.txt
 #
-# CMake file for sqlplot utility set.
+# CMake file for sqlplottools utility set.
 #
 ###############################################################################
 # Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
@@ -22,5 +22,16 @@
 
 include_directories(${PostgreSQL_INCLUDE_DIRS})
 
-add_executable(sp-importdata sp-importdata.cpp)
-target_link_libraries(sp-importdata ${PostgreSQL_LIBRARIES})
+add_executable(sp-importdata
+  sp-importdata.cpp
+  common.cpp
+  importdata.cpp
+  fieldset.cpp
+  )
+target_link_libraries(sp-importdata ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(sp-latex
+  sp-latex.cpp
+  common.cpp
+  )
+target_link_libraries(sp-latex ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})

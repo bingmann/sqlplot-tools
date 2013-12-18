@@ -1,8 +1,7 @@
 /******************************************************************************
- * src/sp-importdata.cc
+ * src/common.cpp
  *
- * Import RESULT files into the local PostgreSQL database for further
- * processing. Automatically detects the SQL column types.
+ * Common global variables across all programs.
  *
  ******************************************************************************
  * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
@@ -21,23 +20,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "importdata.h"
 #include "common.h"
 
-int main(int argc, char* argv[])
-{
-    // make connection to the database
-    g_pg = PQconnectdb("");
+//! verbosity, common global option.
+int gopt_verbose = 0;
 
-    // check to see that the backend connection was successfully made
-    if (PQstatus(g_pg) != CONNECTION_OK)
-    {
-        OUT("Connection to database failed: " << PQerrorMessage(g_pg));
-        return -1;
-    }
-
-    ImportData().main(argc, argv);
-
-    PQfinish(g_pg);
-    return 0;
-}
+//! global PostgreSQL connection handle
+PGconn* g_pg = NULL;

@@ -1,8 +1,7 @@
 /******************************************************************************
- * src/sp-importdata.cc
+ * src/common.h
  *
- * Import RESULT files into the local PostgreSQL database for further
- * processing. Automatically detects the SQL column types.
+ * Common global variables across all programs.
  *
  ******************************************************************************
  * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
@@ -21,23 +20,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "importdata.h"
-#include "common.h"
+#ifndef COMMON_HEADER
+#define COMMON_HEADER
 
-int main(int argc, char* argv[])
-{
-    // make connection to the database
-    g_pg = PQconnectdb("");
+#include <iostream>
+#include <libpq-fe.h>
 
-    // check to see that the backend connection was successfully made
-    if (PQstatus(g_pg) != CONNECTION_OK)
-    {
-        OUT("Connection to database failed: " << PQerrorMessage(g_pg));
-        return -1;
-    }
+//! verbosity, common global option.
+extern int gopt_verbose;
 
-    ImportData().main(argc, argv);
+//! global PostgreSQL connection handle
+extern PGconn* g_pg;
 
-    PQfinish(g_pg);
-    return 0;
-}
+//! conditional debug output
+#define OUTC(dbg,X)   do { if (dbg) { std::cerr << X; } } while(0)
+
+//! debug output to std::cerr without newline
+#define OUTX(X)       OUTC(true, X)
+
+//! debug output to std::cerr
+#define OUT(X)        OUTX(X << std::endl)
+
+#endif // COMMON_HEADER
