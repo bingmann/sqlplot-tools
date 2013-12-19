@@ -156,8 +156,8 @@ void process_sql(size_t /* ln */, const std::string& cmdline)
     }
     else
     {
-        OUT("SQL failed: " << PQerrorMessage(g_pg));
-        exit(1);
+        PQclear(r);
+        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
     }
 
     PQclear(r);
@@ -177,8 +177,7 @@ void process_importdata(size_t /* ln */, const std::string& cmdline)
 
     argv[args.size()] = NULL;
 
-    if (ImportData().main(args.size(), argv) != EXIT_SUCCESS)
-        exit(1);
+    ImportData().main(args.size(), argv);
 }
 
 //! Process % TEXTTABLE commands
@@ -187,9 +186,8 @@ void process_texttable(size_t ln, const std::string& cmdline)
     PGresult* r = PQexec(g_pg, cmdline.c_str());
     if (PQresultStatus(r) != PGRES_TUPLES_OK)
     {
-        OUT("SQL failed: " << PQerrorMessage(g_pg));
-        exit(1);
-        return;
+        PQclear(r);
+        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
     }
 
     // format result as a text table
@@ -215,9 +213,8 @@ void process_plot(size_t ln, const std::string& cmdline)
     PGresult* r = PQexec(g_pg, cmdline.c_str());
     if (PQresultStatus(r) != PGRES_TUPLES_OK)
     {
-        OUT("SQL failed: " << PQerrorMessage(g_pg));
-        exit(1);
-        return;
+        PQclear(r);
+        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
     }
 
     int colnum = PQnfields(r);
@@ -232,15 +229,13 @@ void process_plot(size_t ln, const std::string& cmdline)
 
     // check for existing x and y columns.
     if (colmap.find("x") == colmap.end()) {
-        OUT("PLOT failed: result contains no 'x' column.");
-        exit(1);
-        return;
+        PQclear(r);
+        OUT_THROW("PLOT failed: result contains no 'x' column.");
     }
 
     if (colmap.find("y") == colmap.end()) {
-        OUT("PLOT failed: result contains no 'y' column.");
-        exit(1);
-        return;
+        PQclear(r);
+        OUT_THROW("PLOT failed: result contains no 'y' column.");
     }
 
     // construct coordinates {...} clause
@@ -344,7 +339,7 @@ void process_stream(const std::string& filename, std::istream& is)
 }
 
 //! print command line usage
-void print_usage(const std::string& progname)
+int print_usage(const std::string& progname)
 {
     OUT("Usage: " << progname << " [options] [files...]" << std::endl <<
         std::endl <<
@@ -354,11 +349,11 @@ void print_usage(const std::string& progname)
         "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
         std::endl);
 
-    exit(EXIT_FAILURE);
+    return EXIT_FAILURE;
 }
 
-//! main(), yay.
-int main(int argc, char* argv[])
+//! process latex, main function
+int sp_latex(int argc, char* argv[])
 {
     // parse command line parameters
     int opt;
@@ -381,7 +376,7 @@ int main(int argc, char* argv[])
             opt_check_outputfile = true;
             break;
         case 'h': default:
-            print_usage(argv[0]);
+            return print_usage(argv[0]);
         }
     }
 
@@ -390,19 +385,14 @@ int main(int argc, char* argv[])
 
     // check to see that the backend connection was successfully made
     if (PQstatus(g_pg) != CONNECTION_OK)
-    {
-        OUT("Connection to database failed: " << PQerrorMessage(g_pg));
-        return EXIT_FAILURE;
-    }
+        OUT_THROW("Connection to database failed: " << PQerrorMessage(g_pg));
 
     // open output file or string stream
     std::ostream* output = NULL;
     if (opt_check_outputfile)
     {
-        if (!opt_outputfile.size()) {
-            OUT("Error: checking output requires and output filename.");
-            return EXIT_FAILURE;
-        }
+        if (!opt_outputfile.size())
+            OUT_THROW("Error: checking output requires and output filename.");
 
         output = new std::ostringstream;
     }
@@ -410,10 +400,8 @@ int main(int argc, char* argv[])
     {
         output = new std::ofstream(opt_outputfile.c_str());
 
-        if (!output->good()) {
-            OUT("Error opening output stream: " << strerror(errno));
-            return EXIT_FAILURE;
-        }
+        if (!output->good())
+            OUT_THROW("Error opening output stream: " << strerror(errno));
     }
 
     // process file commandline arguments
@@ -425,8 +413,7 @@ int main(int argc, char* argv[])
 
             std::ifstream in(filename);
             if (!in.good()) {
-                OUT("Error reading " << filename << ": " << strerror(errno));
-                return EXIT_FAILURE;
+                OUT_THROW("Error reading " << filename << ": " << strerror(errno));
             }
             else {
                 process_stream(filename, in);
@@ -439,16 +426,12 @@ int main(int argc, char* argv[])
                     // overwrite input file
                     in.close();
                     std::ofstream out(filename);
-                    if (!out.good()) {
-                        OUT("Error writing " << filename << ": " << strerror(errno));
-                        return EXIT_FAILURE;
-                    }
+                    if (!out.good())
+                        OUT_THROW("Error writing " << filename << ": " << strerror(errno));
 
                     g_lines.write_stream(out);
-                    if (!out.good()) {
-                        OUT("Error writing " << filename << ": " << strerror(errno));
-                        return EXIT_FAILURE;
-                    }
+                    if (!out.good())
+                        OUT_THROW("Error writing " << filename << ": " << strerror(errno));
                 }
             }
             ++optind;
@@ -483,14 +466,24 @@ int main(int argc, char* argv[])
         std::ostringstream* oss = (std::ostringstream*)output;
 
         if (checkdata != oss->str())
-        {
-            OUT("Mismatch to expected output file " << opt_outputfile);
-            return EXIT_FAILURE;
-        }
+            OUT_THROW("Mismatch to expected output file " << opt_outputfile);
     }
 
     if (output) delete output;
 
     PQfinish(g_pg);
     return EXIT_SUCCESS;
+}
+
+//! main(), yay.
+int main(int argc, char* argv[])
+{
+    try {
+        return sp_latex(argc, argv);
+    }
+    catch (std::runtime_error& e)
+    {
+        OUT(e.what());
+        return EXIT_FAILURE;
+    }
 }

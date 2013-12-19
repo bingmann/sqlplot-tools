@@ -23,6 +23,7 @@
 
 #include "importdata.h"
 #include "common.h"
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
@@ -36,8 +37,16 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    ImportData().main(argc, argv);
+    try {
+        ImportData().main(argc, argv);
+    }
+    catch (std::runtime_error& e)
+    {
+        OUT(e.what());
+        return EXIT_FAILURE;
+    }
+
 
     PQfinish(g_pg);
-    return 0;
+    return EXIT_SUCCESS;
 }

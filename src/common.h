@@ -24,6 +24,9 @@
 #define COMMON_HEADER
 
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
+
 #include <libpq-fe.h>
 
 //! verbosity, common global option.
@@ -40,5 +43,8 @@ extern PGconn* g_pg;
 
 //! debug output to std::cerr
 #define OUT(X)        OUTX(X << std::endl)
+
+//! format output and throw std::runtime_error
+#define OUT_THROW(X)  do { std::ostringstream os; os << X; throw(std::runtime_error(os.str())); } while (0)
 
 #endif // COMMON_HEADER

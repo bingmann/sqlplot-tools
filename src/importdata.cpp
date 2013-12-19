@@ -123,9 +123,8 @@ bool ImportData::exist_table(const std::string& table)
 
     if (PQresultStatus(r) != PGRES_TUPLES_OK)
     {
-        OUT("SELECT failed: " << PQerrorMessage(g_pg));
         PQclear(r);
-        return false;
+        OUT_THROW("SELECT failed: " << PQerrorMessage(g_pg));
     }
 
     assert(PQntuples(r) == 1 && PQnfields(r) == 1);
@@ -149,9 +148,8 @@ bool ImportData::create_table() const
         PGresult* r = PQexec(g_pg, cmd.str().c_str());
         if (PQresultStatus(r) != PGRES_COMMAND_OK)
         {
-            OUT("DROP TABLE failed: " << PQerrorMessage(g_pg));
             PQclear(r);
-            return false;
+            OUT_THROW("DROP TABLE failed: " << PQerrorMessage(g_pg));
         }
     }
 
@@ -163,9 +161,8 @@ bool ImportData::create_table() const
     PGresult* r = PQexec(g_pg, createtable.c_str());
     if (PQresultStatus(r) != PGRES_COMMAND_OK)
     {
-        OUT("CREATE TABLE failed: " << PQerrorMessage(g_pg));
         PQclear(r);
-        return false;
+        OUT_THROW("CREATE TABLE failed: " << PQerrorMessage(g_pg));
     }
 
     return true;
@@ -222,9 +219,8 @@ bool ImportData::insert_line(const std::string& line)
 
     if (PQresultStatus(r) != PGRES_COMMAND_OK)
     {
-        OUT("INSERT failed: " << PQerrorMessage(g_pg));
         PQclear(r);
-        return false;
+        OUT_THROW("INSERT failed: " << PQerrorMessage(g_pg));
     }
     else
     {
@@ -382,9 +378,8 @@ int ImportData::main(int argc, char* const argv[])
         PGresult* r = PQexec(g_pg, "BEGIN TRANSACTION");
         if (PQresultStatus(r) != PGRES_COMMAND_OK)
         {
-            OUT("BEGIN TRANSACTION failed: " << PQerrorMessage(g_pg));
             PQclear(r);
-            return EXIT_FAILURE;
+            OUT_THROW("BEGIN TRANSACTION failed: " << PQerrorMessage(g_pg));
         }
         PQclear(r);
     }
@@ -397,8 +392,7 @@ int ImportData::main(int argc, char* const argv[])
             m_count = 0;
             std::ifstream in(argv[optind]);
             if (!in.good()) {
-                OUT("Error reading " << argv[optind] << ": " << strerror(errno));
-                return EXIT_FAILURE;
+                OUT_THROW("Error reading " << argv[optind] << ": " << strerror(errno));
             }
             else {
                 process_stream(in);
@@ -432,9 +426,8 @@ int ImportData::main(int argc, char* const argv[])
         PGresult* r = PQexec(g_pg, "COMMIT TRANSACTION");
         if (PQresultStatus(r) != PGRES_COMMAND_OK)
         {
-            OUT("COMMIT TRANSACTION failed: " << PQerrorMessage(g_pg));
             PQclear(r);
-            return EXIT_FAILURE;
+            OUT_THROW("COMMIT TRANSACTION failed: " << PQerrorMessage(g_pg));
         }
         PQclear(r);
     }
