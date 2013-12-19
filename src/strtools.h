@@ -23,6 +23,9 @@
 #ifndef STRTOOLS_HEADER
 #define STRTOOLS_HEADER
 
+#include <string>
+#include <ostream>
+
 /**
  * Trims the given string on the left and right. Removes all characters in the
  * given drop array, which defaults to " ". Returns a copy of the string.
@@ -101,6 +104,24 @@ static inline std::vector<std::string> split_ws(const std::string& str, std::str
 
     if (last != it)
 	out.push_back(std::string(last, it));
+
+    return out;
+}
+
+/**
+ * Read a complete stream into a std::string
+ */
+static inline std::string read_stream(std::istream& is)
+{
+    std::string out;
+
+    char buffer[8192];
+    while ( is.read(buffer, sizeof(buffer)) )
+    {
+        out.append(buffer, is.gcount());
+    }
+
+    out.append(buffer, is.gcount());
 
     return out;
 }

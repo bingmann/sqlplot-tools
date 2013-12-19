@@ -340,6 +340,9 @@ int ImportData::main(int argc, char* const argv[])
 {
     FieldSet::check_detect();
 
+    int save_optind = 1;
+    std::swap(optind, save_optind);
+
     /* parse command line parameters */
     int opt;
 
@@ -415,6 +418,8 @@ int ImportData::main(int argc, char* const argv[])
         process_stream(std::cin);
     }
 
+    std::swap(optind, save_optind);
+
     // process cached data lines
     if (!mopt_firstline)
     {
@@ -422,7 +427,7 @@ int ImportData::main(int argc, char* const argv[])
         process_linedata();
     }
 
-    // begin transaction
+    // finish transaction
     {
         PGresult* r = PQexec(g_pg, "COMMIT TRANSACTION");
         if (PQresultStatus(r) != PGRES_COMMAND_OK)

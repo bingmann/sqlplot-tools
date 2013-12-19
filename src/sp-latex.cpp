@@ -72,9 +72,9 @@ std::string format_sqloutput(PGresult* r)
         for (int col = 0; col < colnum; ++col)
         {
             width[col] = std::max(width[col], strlen( PQgetvalue(r,row,col) ));
-        }        
+        }
     }
-    
+
     // construct header/middle/footer breaks
     std::ostringstream obreak;
     obreak << "+-";
@@ -225,7 +225,7 @@ void process_plot(size_t ln, const std::string& cmdline)
 #if 0
     // read column names
     std::map<std::string, unsigned int> colmap;
-    
+
     for (size_t i = 0; i < colnum; ++i)
         colmap[ PQfname(r,i) ] = i;
 
@@ -264,7 +264,7 @@ void process_plot(size_t ln, const std::string& cmdline)
     static const boost::regex
         re_addplot("([:blank:]*\\\\addplot.* )coordinates \\{[0-9.,() +-e]+\\};(.*)");
     boost::smatch rm_addplot;
- 
+
     if (ln < g_lines.size() &&
         boost::regex_match(g_lines[ln], rm_addplot, re_addplot))
     {
@@ -331,7 +331,7 @@ void process()
 }
 
 //! process a stream
-void process_stream(std::istream& is)
+void process_stream(const std::string& filename, std::istream& is)
 {
     // read complete LaTeX file line-wise
     g_lines.read_stream(is);
@@ -339,20 +339,20 @@ void process_stream(std::istream& is)
     // process lines in place
     process();
 
-    // output modified lines to stdout
-    g_lines.write_stream(std::cout);
+    OUT("--- Finished processing " << filename << " successfully.");
 }
 
 //! print command line usage
-void print_usage(char* argv[])
+void print_usage(const std::string& progname)
 {
-    fprintf(stderr,
-            "Usage: %s [-v] [files...]\n"
-            "\n"
-            "Options: \n"
-            "  -v       Increase verbosity.\n"
-            "\n",
-            argv[0]);
+    OUT("Usage: " << progname << " [options] [files...]" << std::endl <<
+        std::endl <<
+        "Options: " << std::endl <<
+        "  -v         Increase verbosity." << std::endl <<
+        "  -o <file>  Output all processed files to this stream." << std::endl <<
+        "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
+        std::endl);
+
     exit(EXIT_FAILURE);
 }
 
@@ -362,13 +362,25 @@ int main(int argc, char* argv[])
     // parse command line parameters
     int opt;
 
-    while ((opt = getopt(argc, argv, "v")) != -1) {
+    //! output file name
+    std::string opt_outputfile;
+
+    //! check processed output matches the output file
+    bool opt_check_outputfile = false;
+
+    while ((opt = getopt(argc, argv, "vo:C")) != -1) {
         switch (opt) {
         case 'v':
             gopt_verbose++;
             break;
+        case 'o':
+            opt_outputfile = optarg;
+            break;
+        case 'C':
+            opt_check_outputfile = true;
+            break;
         case 'h': default:
-            print_usage(argv);
+            print_usage(argv[0]);
         }
     }
 
@@ -382,18 +394,61 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    // open output file or string stream
+    std::ostream* output = NULL;
+    if (opt_check_outputfile)
+    {
+        if (!opt_outputfile.size()) {
+            OUT("Error: checking output requires and output filename.");
+            return -1;
+        }
+
+        output = new std::ostringstream;
+    }
+    else if (opt_outputfile.size())
+    {
+        output = new std::ofstream(opt_outputfile.c_str());
+
+        if (!output->good()) {
+            OUT("Error opening output stream: " << strerror(errno));
+            return -1;
+        }
+    }
+
     // process file commandline arguments
     if (optind < argc)
     {
         while (optind < argc)
         {
-            std::ifstream in(argv[optind]);
+            const char* filename = argv[optind];
+
+            std::ifstream in(filename);
             if (!in.good()) {
-                OUT("Error reading " << argv[optind] << ": " << strerror(errno));
+                OUT("Error reading " << filename << ": " << strerror(errno));
                 return -1;
             }
             else {
-                process_stream(in);
+                process_stream(filename, in);
+
+                if (output)  {
+                    // write to common output
+                    g_lines.write_stream(*output);
+                }
+                else {
+                    // overwrite input file
+                    in.close();
+                    std::ofstream out(filename);
+                    if (!out.good()) {
+                        OUT("Error writing " << filename << ": " << strerror(errno));
+                        return -1;
+                    }
+
+                    g_lines.write_stream(out);
+                    if (!out.good()) {
+                        OUT("Error writing " << filename << ": " << strerror(errno));
+                        return -1;
+                    }
+                }
             }
             ++optind;
         }
@@ -401,8 +456,39 @@ int main(int argc, char* argv[])
     else // no file arguments -> process stdin
     {
         OUT("Reading stdin ...");
-        process_stream(std::cin);
+        process_stream("stdin", std::cin);
+
+        if (output)  {
+            // write to common output
+            g_lines.write_stream(*output);
+        }
+        else {
+            // write to stdout
+            g_lines.write_stream(std::cout);
+        }
     }
+
+    // verify processed output against file
+    if (opt_check_outputfile)
+    {
+        std::ifstream in(opt_outputfile.c_str());
+        if (!in.good()) {
+            OUT("Error reading " << opt_outputfile << ": " << strerror(errno));
+            return -1;
+        }
+        std::string checkdata = read_stream(in);
+
+        assert(output);
+        std::ostringstream* oss = (std::ostringstream*)output;
+
+        if (checkdata != oss->str())
+        {
+            OUT("Mismatch to expected output file " << opt_outputfile);
+            return -1;
+        }
+    }
+
+    if (output) delete output;
 
     PQfinish(g_pg);
     return 0;
