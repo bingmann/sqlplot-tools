@@ -319,7 +319,7 @@ ImportData::ImportData()
 }
 
 //! print command line usage
-void ImportData::print_usage(const std::string& progname)
+int ImportData::print_usage(const std::string& progname)
 {
     OUT("Usage: " << progname << " [-1] [-a] [-D] <table-name> [files...]" << std::endl <<
         std::endl <<
@@ -332,7 +332,7 @@ void ImportData::print_usage(const std::string& progname)
         "  -v       Increase verbosity." << std::endl <<
         std::endl);
 
-    exit(EXIT_FAILURE);
+    return EXIT_FAILURE;
 }
 
 //! process command line arguments and data
@@ -367,7 +367,7 @@ int ImportData::main(int argc, char* const argv[])
             mopt_temporary_table = true;
             break;
         case 'h': default:
-            print_usage(argv[0]);
+            return print_usage(argv[0]);
         }
     }
 
@@ -384,7 +384,7 @@ int ImportData::main(int argc, char* const argv[])
         {
             OUT("BEGIN TRANSACTION failed: " << PQerrorMessage(g_pg));
             PQclear(r);
-            return -1;
+            return EXIT_FAILURE;
         }
         PQclear(r);
     }
@@ -398,7 +398,7 @@ int ImportData::main(int argc, char* const argv[])
             std::ifstream in(argv[optind]);
             if (!in.good()) {
                 OUT("Error reading " << argv[optind] << ": " << strerror(errno));
-                return -1;
+                return EXIT_FAILURE;
             }
             else {
                 process_stream(in);
@@ -434,12 +434,12 @@ int ImportData::main(int argc, char* const argv[])
         {
             OUT("COMMIT TRANSACTION failed: " << PQerrorMessage(g_pg));
             PQclear(r);
-            return -1;
+            return EXIT_FAILURE;
         }
         PQclear(r);
     }
 
     OUT("Imported in total " << m_total_count << " rows of data containing " << m_fieldset.count() << " fields each.");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

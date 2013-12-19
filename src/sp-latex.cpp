@@ -177,7 +177,8 @@ void process_importdata(size_t /* ln */, const std::string& cmdline)
 
     argv[args.size()] = NULL;
 
-    ImportData().main(args.size(), argv);
+    if (ImportData().main(args.size(), argv) != EXIT_SUCCESS)
+        exit(1);
 }
 
 //! Process % TEXTTABLE commands
@@ -391,7 +392,7 @@ int main(int argc, char* argv[])
     if (PQstatus(g_pg) != CONNECTION_OK)
     {
         OUT("Connection to database failed: " << PQerrorMessage(g_pg));
-        return -1;
+        return EXIT_FAILURE;
     }
 
     // open output file or string stream
@@ -400,7 +401,7 @@ int main(int argc, char* argv[])
     {
         if (!opt_outputfile.size()) {
             OUT("Error: checking output requires and output filename.");
-            return -1;
+            return EXIT_FAILURE;
         }
 
         output = new std::ostringstream;
@@ -411,7 +412,7 @@ int main(int argc, char* argv[])
 
         if (!output->good()) {
             OUT("Error opening output stream: " << strerror(errno));
-            return -1;
+            return EXIT_FAILURE;
         }
     }
 
@@ -425,7 +426,7 @@ int main(int argc, char* argv[])
             std::ifstream in(filename);
             if (!in.good()) {
                 OUT("Error reading " << filename << ": " << strerror(errno));
-                return -1;
+                return EXIT_FAILURE;
             }
             else {
                 process_stream(filename, in);
@@ -440,13 +441,13 @@ int main(int argc, char* argv[])
                     std::ofstream out(filename);
                     if (!out.good()) {
                         OUT("Error writing " << filename << ": " << strerror(errno));
-                        return -1;
+                        return EXIT_FAILURE;
                     }
 
                     g_lines.write_stream(out);
                     if (!out.good()) {
                         OUT("Error writing " << filename << ": " << strerror(errno));
-                        return -1;
+                        return EXIT_FAILURE;
                     }
                 }
             }
@@ -474,7 +475,7 @@ int main(int argc, char* argv[])
         std::ifstream in(opt_outputfile.c_str());
         if (!in.good()) {
             OUT("Error reading " << opt_outputfile << ": " << strerror(errno));
-            return -1;
+            return EXIT_FAILURE;
         }
         std::string checkdata = read_stream(in);
 
@@ -484,12 +485,12 @@ int main(int argc, char* argv[])
         if (checkdata != oss->str())
         {
             OUT("Mismatch to expected output file " << opt_outputfile);
-            return -1;
+            return EXIT_FAILURE;
         }
     }
 
     if (output) delete output;
 
     PQfinish(g_pg);
-    return 0;
+    return EXIT_SUCCESS;
 }

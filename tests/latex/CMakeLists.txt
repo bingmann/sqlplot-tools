@@ -1,7 +1,7 @@
 ###############################################################################
-# CMakeLists.txt
+# tests/latex/CMakeLists.txt
 #
-# Build script for sqlplottools utility set.
+# Runs SqlPlotTools against some test files and verify the output
 #
 ###############################################################################
 # Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
@@ -20,36 +20,19 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-cmake_minimum_required(VERSION 2.8)
+# find all .tex files in current directory
+file(GLOB tex_files "${CMAKE_CURRENT_SOURCE_DIR}/" "*.tex")
 
-project(sqlplottools)
-
-# prohibit in-source builds
-if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-  message(SEND_ERROR "In-source builds are not allowed.")
-endif()
-
-# default to Debug building for single-config generators
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message("Defaulting CMAKE_BUILD_TYPE to Debug")
-  set(CMAKE_BUILD_TYPE "Debug")
-endif()
-
-# enable warnings
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
-
-# enable use of "make test"
-enable_testing()
-
-# Use PostgreSQL
-find_package(PostgreSQL REQUIRED)
-
-# Use Boost.Regex
-find_package(Boost 1.47.0 REQUIRED COMPONENTS regex)
-include_directories(${Boost_INCLUDE_DIRS})
-
-# descend into source
-add_subdirectory(src)
-
-# descend into testsuite
-add_subdirectory(tests)
+# test processed output against saved output
+foreach(infile ${tex_files})
+  message("${infile} blah")
+  # replace .tex -> .out
+  string(REGEX REPLACE "\\.tex$" ".out" outfile ${infile})
+  # basename for test target name
+  get_filename_component(basename ${infile} NAME)
+  # write test case
+  add_test(NAME latex_${basename}
+    COMMAND ${CMAKE_BINARY_DIR}/src/sp-latex -C ${infile} -o ${outfile}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/latex
+    )
+endforeach()

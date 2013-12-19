@@ -1,0 +1,9 @@
+line1
+% IMPORTDATA -T test2 test2.data
+line2
+% PLOT SELECT LOG(2,testsize) AS x, bandwidth AS y FROM test2 WHERE funcname='ScanWrite64PtrUnrollLoop' ORDER BY x
+line3
+% PLOT SELECT LOG(2,testsize) AS x, bandwidth AS y FROM test2
+% WHERE funcname='ScanRead64PtrUnrollLoop' ORDER BY x
+\addplot[red] coordinates { (24,0.144) };
+line4

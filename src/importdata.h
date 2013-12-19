@@ -93,7 +93,7 @@ public:
     void process_linedata();
 
     //! print command line usage
-    void print_usage(const std::string& progname);
+    int print_usage(const std::string& progname);
 
     //! process command line arguments and data
     int main(int argc, char* const argv[]);
