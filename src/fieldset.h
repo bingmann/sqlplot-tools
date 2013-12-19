@@ -65,7 +65,7 @@ public:
     void add_field(const std::string& key, const std::string& value);
 
     //! return CREATE TABLE for the given fieldset
-    std::string make_create_table(const std::string& tablename) const;
+    std::string make_create_table(const std::string& tablename, bool temporary) const;
 };
 
 #endif // FIELDSET_HEADER

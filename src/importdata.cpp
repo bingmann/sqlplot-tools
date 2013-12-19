@@ -155,10 +155,12 @@ bool ImportData::create_table() const
         }
     }
 
-    if (mopt_verbose >= 1)
-        OUT(m_fieldset.make_create_table(m_tablename));
+    std::string createtable = m_fieldset.make_create_table(m_tablename, mopt_temporary_table);
 
-    PGresult* r = PQexec(g_pg, m_fieldset.make_create_table(m_tablename).c_str());
+    if (mopt_verbose >= 1)
+        OUT(createtable);
+
+    PGresult* r = PQexec(g_pg, createtable.c_str());
     if (PQresultStatus(r) != PGRES_COMMAND_OK)
     {
         OUT("CREATE TABLE failed: " << PQerrorMessage(g_pg));
@@ -326,6 +328,7 @@ void ImportData::print_usage(const std::string& progname)
         "  -a       Process all line, regardless of RESULT marker." << std::endl <<
         "  -C       Enumerate unnamed fields with col# instead of using key names." << std::endl <<
         "  -D       Eliminate duplicate RESULT lines." << std::endl <<
+        "  -T       Import into TEMPORARY table (for in-file processing)." << std::endl <<
         "  -v       Increase verbosity." << std::endl <<
         std::endl);
 
@@ -333,14 +336,14 @@ void ImportData::print_usage(const std::string& progname)
 }
 
 //! process command line arguments and data
-int ImportData::main(int argc, char* argv[])
+int ImportData::main(int argc, char* const argv[])
 {
     FieldSet::check_detect();
 
     /* parse command line parameters */
     int opt;
 
-    while ((opt = getopt(argc, argv, "h1avDC")) != -1) {
+    while ((opt = getopt(argc, argv, "h1avDCT")) != -1) {
         switch (opt) {
         case '1':
             mopt_firstline = true;
@@ -356,6 +359,9 @@ int ImportData::main(int argc, char* argv[])
             break;
         case 'C':
             mopt_colnums = true;
+            break;
+        case 'T':
+            mopt_temporary_table = true;
             break;
         case 'h': default:
             print_usage(argv[0]);

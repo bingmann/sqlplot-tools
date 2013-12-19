@@ -114,10 +114,12 @@ void FieldSet::add_field(const std::string& key, const std::string& value)
 }
 
 //! return CREATE TABLE for the given fieldset
-std::string FieldSet::make_create_table(const std::string& tablename) const
+std::string FieldSet::make_create_table(const std::string& tablename, bool temporary) const
 {
     std::ostringstream os;
-    os << "CREATE TABLE \"" << tablename << "\" (";
+    os << "CREATE "
+       << (temporary ? "TEMPORARY " : "")
+       << "TABLE \"" << tablename << "\" (";
 
     for (fieldset_type::const_iterator fi = m_fieldset.begin();
          fi != m_fieldset.end(); ++fi)

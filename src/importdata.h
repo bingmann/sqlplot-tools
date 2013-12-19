@@ -49,6 +49,9 @@ protected:
     //! add numeric column numbers for key-less values (without equal sign)
     bool mopt_colnums;
 
+    //! use TEMPORARY in CREATE TABLE for transient data
+    bool mopt_temporary_table;
+
     //! table imported
     std::string m_tablename;
 
@@ -93,7 +96,7 @@ public:
     void print_usage(const std::string& progname);
 
     //! process command line arguments and data
-    int main(int argc, char* argv[]);
+    int main(int argc, char* const argv[]);
 };
 
 #endif // IMPORTDATA_HEADER
