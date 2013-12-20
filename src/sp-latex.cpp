@@ -194,7 +194,7 @@ void process_texttable(size_t ln, size_t indent, const std::string& cmdline)
     std::string output = format_sqloutput(r);
     PQclear(r);
 
-    output += "% END TEXTTABLE " + shorten(cmdline) + "\n";
+    output += shorten("% END TEXTTABLE " + cmdline) + "\n";
 
     // find following "% END TEXTTABLE" and replace enclosing lines
     ssize_t eln = scan_lines_for_comment(ln, "END TEXTTABLE");
@@ -432,6 +432,85 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     g_lines.replace(ln, eln, indent, out.str(), "MULTIPLOT");
 }
 
+//! Process % TABULAR commands
+void process_tabular(size_t ln, size_t indent, const std::string& cmdline)
+{
+    std::string query = cmdline;
+
+    // execute query
+    PGresult* r = PQexec(g_pg, query.c_str());
+    if (PQresultStatus(r) != PGRES_TUPLES_OK)
+    {
+        PQclear(r);
+        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
+    }
+
+    int colnum = PQnfields(r);
+    int rownum = PQntuples(r);
+    OUT("--> " << rownum << " rows");
+
+    // calculate width of columns data
+    std::vector<size_t> cwidth(colnum, 0);
+
+    for (int i = 0; i < rownum; ++i)
+    {
+        for (int j = 0; j < colnum; ++j)
+        {
+            cwidth[j] = std::max(cwidth[j], strlen( PQgetvalue(r,i,j) ));
+        }
+    }
+
+    // generate output
+    std::vector<std::string> tlines;
+    for (int i = 0; i < rownum; ++i)
+    {
+        std::ostringstream out;
+        for (int j = 0; j < colnum; ++j)
+        {
+            if (j != 0) out << " & ";
+            out << std::setw(cwidth[j]) << PQgetvalue(r,i,j);
+        }
+        out << " \\\\";
+        tlines.push_back(out.str());
+    }
+
+    // scan lines forward till next comment directive
+    size_t eln = ln;
+    while (eln < g_lines.size() && is_comment_line(g_lines[eln]) < 0)
+        ++eln;
+
+    static const boost::regex
+        re_endtabular("[[:blank:]]*% END TABULAR .*");
+
+    if (eln < g_lines.size() &&
+        boost::regex_match(g_lines[eln], re_endtabular))
+    {
+        // found END TABULAR
+        size_t rln = ln;
+        size_t entry = 0;
+
+        static const boost::regex re_tabular(".*\\\\(.*)");
+        boost::smatch rm;
+
+        // iterate over tabular lines, copy styles to replacement
+        while (entry < tlines.size() && rln < eln &&
+               boost::regex_match(g_lines[rln], rm, re_tabular))
+        {
+            tlines[entry++] += rm[1];
+            ++rln;
+        }
+
+        tlines.push_back(shorten("% END TABULAR " + query));
+        g_lines.replace(ln, eln+1, indent, tlines, "TABULAR");
+    }
+    else
+    {
+        // could not find END TABULAR: insert whole table.
+        tlines.push_back(shorten("% END TABULAR " + query));
+        g_lines.replace(ln, ln, indent, tlines, "TABULAR");
+    }
+}
+
 //! process line-based file in place
 void process()
 {
@@ -485,6 +564,11 @@ void process()
         {
             OUT("% " << cmdline);
             process_multiplot(ln, indent, cmdline);
+        }
+        else if (first_word == "TABULAR")
+        {
+            OUT("% " << cmdline);
+            process_tabular(ln, indent, cmdline.substr(space_pos+1));
         }
     }
 }
