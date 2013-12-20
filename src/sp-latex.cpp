@@ -163,7 +163,7 @@ void process_sql(size_t /* ln */, size_t /* indent */, const std::string& cmdlin
     PQclear(r);
 }
 
-//! Process % IMPORTDATA commands
+//! Process % IMPORT-DATA commands
 void process_importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     // split argument at whitespaces
@@ -458,7 +458,7 @@ void process()
 
         // extract first word
         std::string::size_type space_pos =
-            cmdline.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            cmdline.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ-_");
         std::string first_word = cmdline.substr(0, space_pos);
 
         if (first_word == "SQL")
@@ -466,7 +466,7 @@ void process()
             OUT("% " << cmdline);
             process_sql(ln, indent, cmdline.substr(space_pos+1));
         }
-        else if (first_word == "IMPORTDATA")
+        else if (first_word == "IMPORT-DATA")
         {
             OUT("% " << cmdline);
             process_importdata(ln, indent, cmdline);
