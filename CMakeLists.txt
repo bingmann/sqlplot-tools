@@ -1,7 +1,7 @@
 ###############################################################################
 # CMakeLists.txt
 #
-# Build script for sqlplottools utility set.
+# Build script for sqlplot-tools utility set.
 #
 ###############################################################################
 # Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
@@ -22,7 +22,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project(sqlplottools)
+project(sqlplot-tools)
 
 # prohibit in-source builds
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")

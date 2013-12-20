@@ -1,7 +1,7 @@
 ###############################################################################
 # tests/CMakeLists.txt
 #
-# Runs SqlPlotTools against some test files and verify the output
+# Runs sqlplot-tools against some test files and verify the output.
 #
 ###############################################################################
 # Copyright (C) 2013 Timo Bingmann <tb@panthema.net>

@@ -1,7 +1,7 @@
 ###############################################################################
 # src/CMakeLists.txt
 #
-# CMake file for sqlplottools utility set.
+# CMake file for sqlplot-tools utility set.
 #
 ###############################################################################
 # Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
