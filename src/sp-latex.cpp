@@ -219,28 +219,7 @@ void process_plot(size_t ln, const std::string& cmdline)
 
     int colnum = PQnfields(r);
     int rownum = PQntuples(r);
-
-#if 0
-    // read column names
-    std::map<std::string, unsigned int> colmap;
-
-    for (size_t i = 0; i < colnum; ++i)
-        colmap[ PQfname(r,i) ] = i;
-
-    // check for existing x and y columns.
-    if (colmap.find("x") == colmap.end()) {
-        PQclear(r);
-        OUT_THROW("PLOT failed: result contains no 'x' column.");
-    }
-
-    if (colmap.find("y") == colmap.end()) {
-        PQclear(r);
-        OUT_THROW("PLOT failed: result contains no 'y' column.");
-    }
-
-    // construct coordinates {...} clause
-    int colx = colmap["x"], coly = colmap["y"];
-#endif
+    OUT("--> " << rownum << " rows");
 
     std::ostringstream oss;
     oss << "coordinates {";
@@ -256,16 +235,17 @@ void process_plot(size_t ln, const std::string& cmdline)
     }
     oss << " };";
 
+    PQclear(r);
+
     // check whether line contains an \addplot command
     static const boost::regex
         re_addplot("([:blank:]*\\\\addplot.* )coordinates \\{[0-9.,() +-e]+\\};(.*)");
-    boost::smatch rm_addplot;
+    boost::smatch rm;
 
     if (ln < g_lines.size() &&
-        boost::regex_match(g_lines[ln], rm_addplot, re_addplot))
+        boost::regex_match(g_lines[ln], rm, re_addplot))
     {
-        assert(rm_addplot.size() == 3);
-        std::string output = rm_addplot[1].str() + oss.str() + rm_addplot[2].str();
+        std::string output = rm[1].str() + oss.str() + rm[2].str();
         g_lines.replace(ln, ln+1, output, "PLOT");
     }
     else
@@ -273,6 +253,185 @@ void process_plot(size_t ln, const std::string& cmdline)
         std::string output = "\\addplot " + oss.str();
         g_lines.replace(ln, ln, output, "PLOT");
     }
+}
+
+//! Process % MULTIPLOT commands
+void process_multiplot(size_t ln, const std::string& cmdline)
+{
+    // extract MULTIPLOT columns
+    static const boost::regex
+        re_multiplot("MULTIPLOT\\(([^)]+)\\) (SELECT .+)");
+    boost::smatch rm_multiplot;
+
+    if (!boost::regex_match(cmdline, rm_multiplot, re_multiplot))
+        OUT_THROW("MULTIPLOT() requires group column list.");
+
+    std::string multiplot = rm_multiplot[1].str();
+    std::string query = rm_multiplot[2].str();
+
+    query = replace_all(query, "MULTIPLOT", multiplot);
+
+    std::vector<std::string> groupfields = split(multiplot, ',');
+    std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
+
+    // execute query
+    PGresult* r = PQexec(g_pg, query.c_str());
+    if (PQresultStatus(r) != PGRES_TUPLES_OK)
+    {
+        PQclear(r);
+        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
+    }
+
+    int colnum = PQnfields(r);
+    int rownum = PQntuples(r);
+    OUT("--> " << rownum << " rows");
+
+    // read column names
+    std::map<std::string, unsigned int> colmap;
+
+    for (int i = 0; i < colnum; ++i)
+        colmap[ PQfname(r,i) ] = i;
+
+    // check for existing x and y columns.
+    if (colmap.find("x") == colmap.end())
+        OUT_THROW("MULTIPLOT failed: result contains no 'x' column.");
+
+    if (colmap.find("y") == colmap.end())
+        OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
+
+    int colx = colmap["x"], coly = colmap["y"];
+
+    // check existance of group fields and save ids
+    std::vector<int> groupcols;
+    for (std::vector<std::string>::const_iterator gi = groupfields.begin();
+         gi != groupfields.end(); ++gi)
+    {
+        if (colmap.find(*gi) == colmap.end())
+        {
+            OUT_THROW("MULTIPLOT failed: result contains no '" << *gi <<
+                      "' column, which is a MULTIPLOT group field.");
+        }
+        groupcols.push_back(colmap[*gi]);
+    }
+
+    // collect coordinates {...} clause groups
+    std::vector<std::string> coordlist;
+    std::vector<std::string> legendlist;
+
+    {
+        std::vector<std::string> lastgroup;
+        std::ostringstream coord;
+
+        for (int row = 0; row < rownum; ++row)
+        {
+            // collect groupfields for this row
+            std::vector<std::string> rowgroup (groupcols.size());
+
+            for (size_t i = 0; i < groupcols.size(); ++i)
+                rowgroup[i] = PQgetvalue(r, row, groupcols[i]);
+
+            if (row == 0 || lastgroup != rowgroup)
+            {
+                // group fields mismatch (or first row) -> start new group
+                if (row != 0) {
+                    coordlist.push_back(coord.str());
+                    coord.str("");
+                }
+
+                lastgroup  = rowgroup;
+
+                // store group's legend string
+                std::ostringstream os;
+                for (size_t i = 0; i < groupcols.size(); ++i) {
+                    if (i != 0) os << ',';
+                    os << groupfields[i] << '=' << rowgroup[i];
+                }
+                legendlist.push_back(os.str());
+            }
+
+            // group fields match with last row -> append coordinates.
+            coord << " (" << PQgetvalue(r, row, colx)
+                  <<  ',' << PQgetvalue(r, row, coly)
+                  <<  ')';
+        }
+
+        // store last coordates group
+        coordlist.push_back(coord.str());
+    }
+
+    assert(coordlist.size() == legendlist.size());
+
+    for (size_t i = 0; i < coordlist.size(); ++i)
+    {
+        std::cout << coordlist[i] << std::endl;
+        std::cout << legendlist[i] << std::endl;
+    }
+
+    // create output text, merging in existing styles and suffixes
+    std::ostringstream out;
+    size_t eln = ln;
+    size_t entry = 0; // coordinates/legend entry
+
+    static const boost::regex
+        re_addplot("([:blank:]*\\\\addplot.* coordinates \\{)[0-9.,() +-e]+(\\};.*)");
+    static const boost::regex
+        re_legend("([:blank:]*\\\\addlegendentry\\{).*(\\};.*)");
+
+    boost::smatch rm;
+
+    // check whether line contains an \addplot command
+    while (eln < g_lines.size() &&
+           boost::regex_match(g_lines[eln], rm, re_addplot))
+    {
+        // copy styles from \addplot line
+        if (entry < coordlist.size())
+        {
+            out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
+
+            // check following \addlegendentry
+            if (eln+1 < g_lines.size() &&
+                boost::regex_match(g_lines[eln+1], rm, re_legend))
+            {
+                // copy styles
+                out << rm[1] << legendlist[entry] << rm[2] << std::endl;
+                ++eln;
+            }
+            else
+            {
+                // add missing \addlegendentry
+                out << "\\addlegendentry{" << legendlist[entry]
+                    << "};" << std::endl;
+            }
+
+            ++entry;
+        }
+        else
+        {
+            // remove \addplot and following \addlegendentry as well.
+            if (eln+1 < g_lines.size() &&
+                boost::regex_match(g_lines[eln+1], re_legend))
+            {
+                // skip thus remove \addlegendentry
+                ++eln;
+            }
+        }
+
+        ++eln;
+    }
+
+    // append missing \addplot / \addlegendentry pairs
+    while (entry < coordlist.size())
+    {
+        out << "\\addplot coordinates {" << coordlist[entry]
+            << " };" << std::endl;
+
+        out << "\\addlegendentry{" << legendlist[entry]
+            << "};" << std::endl;
+
+        ++entry;
+    }
+
+    g_lines.replace(ln, eln, out.str(), "MULTIPLOT");
 }
 
 //! process line-based file in place
@@ -300,28 +459,34 @@ void process()
         cmdline = trim(cmdline);
 
         // extract first word
-        std::string::size_type space_pos = cmdline.find(' ');
+        std::string::size_type space_pos =
+            cmdline.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         std::string first_word = cmdline.substr(0, space_pos);
 
         if (first_word == "SQL")
         {
-            OUT("==> " << cmdline);
+            OUT("% " << cmdline);
             process_sql(ln, cmdline.substr(space_pos+1));
         }
         else if (first_word == "IMPORTDATA")
         {
-            OUT("==> " << cmdline);
+            OUT("% " << cmdline);
             process_importdata(ln, cmdline);
         }
         else if (first_word == "TEXTTABLE")
         {
-            OUT("--> " << cmdline);
+            OUT("% " << cmdline);
             process_texttable(ln, cmdline.substr(space_pos+1));
         }
         else if (first_word == "PLOT")
         {
-            OUT("--> " << cmdline);
+            OUT("% " << cmdline);
             process_plot(ln, cmdline.substr(space_pos+1));
+        }
+        else if (first_word == "MULTIPLOT")
+        {
+            OUT("% " << cmdline);
+            process_multiplot(ln, cmdline);
         }
     }
 }

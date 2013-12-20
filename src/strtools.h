@@ -47,6 +47,84 @@ static inline std::string trim(const std::string& str, const std::string& drop =
 }
 
 /**
+ * Trims the given string in-place on the left and right. Removes all characters
+ * in the given drop array, which defaults to " ".
+ *
+ * @param str	string to process
+ * @param drop	remove these characters
+ * @return	reference to the modified string
+ */
+static inline std::string& trim_inplace(std::string& str, const std::string& drop = " ")
+{
+    std::string::size_type pos = str.find_last_not_of(drop);
+    if (pos != std::string::npos) {
+	str.erase(pos + 1);
+	pos = str.find_first_not_of(drop);
+	if (pos != std::string::npos) str.erase(0, pos);
+    }
+    else
+	str.erase(str.begin(), str.end());
+
+    return str;
+}
+
+/**
+ * Trims the given string in-place on the left and right. Removes character
+ * drop, which defaults to ' '.
+ *
+ * @param str	string to process
+ * @param drop	remove this character
+ * @return	reference to the modified string
+ */
+static inline std::string& trim_inplace(std::string& str, char drop = ' ')
+{
+    std::string::size_type pos = str.find_last_not_of(drop);
+    if (pos != std::string::npos) {
+	str.erase(pos + 1);
+	pos = str.find_first_not_of(drop);
+	if (pos != std::string::npos) str.erase(0, pos);
+    }
+    else
+	str.erase(str.begin(), str.end());
+
+    return str;
+}
+
+/**
+ * Trims the given string in-place on the left and right. Removes all ' '
+ * characters.
+ *
+ * @param str	string to process
+ * @return	reference to the modified string
+ */
+static inline std::string& trim_inplace_ws(std::string& str)
+{
+    return trim_inplace(str, ' ');
+}
+
+/**
+ * Replace all occurrences of needle in str. Each needle will be replaced with
+ * instead, if found. Returns a copy of the string with possible replacements.
+ *
+ * @param str		the string to process
+ * @param needle	string to search for in str
+ * @param instead	replace needle with instead
+ * @return		copy of string possibly with replacements
+ */
+static inline std::string replace_all(const std::string& str, const std::string& needle, const std::string& instead)
+{
+    std::string newstr = str;
+    std::string::size_type lastpos = 0, thispos;
+
+    while ( (thispos = newstr.find(needle, lastpos)) != std::string::npos)
+    {
+	newstr.replace(thispos, needle.size(), instead);
+	lastpos = thispos + instead.size();
+    }
+    return newstr;
+}
+
+/**
  * Checks if the given match string is located at the start of this string.
  */
 static inline bool is_prefix(const std::string& str, const std::string& match)
@@ -91,6 +169,45 @@ static inline std::vector<std::string> split_ws(const std::string& str, std::str
 		continue;
 	    }
 
+	    if (out.size() + 1 >= limit)
+	    {
+		out.push_back(std::string(last, str.end()));
+		return out;
+	    }
+
+	    out.push_back(std::string(last, it));
+	    last = it + 1;
+	}
+    }
+
+    if (last != it)
+	out.push_back(std::string(last, it));
+
+    return out;
+}
+
+/**
+ * Split the given string at each separator character into distinct
+ * substrings. Multiple consecutive separators are considered individually and
+ * will result in empty split substrings.
+ *
+ * @param str	string to split
+ * @param sep	separator character
+ * @param limit	maximum number of parts returned
+ * @return	vector containing each split substring
+ */
+static inline std::vector<std::string>
+split(const std::string& str, char sep, std::string::size_type limit = std::string::npos)
+{
+    std::vector<std::string> out;
+    if (limit == 0) return out;
+
+    std::string::const_iterator it = str.begin(), last = it;
+
+    for (; it != str.end(); ++it)
+    {
+	if (*it == sep)
+	{
 	    if (out.size() + 1 >= limit)
 	    {
 		out.push_back(std::string(last, str.end()));
