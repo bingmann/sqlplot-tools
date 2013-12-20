@@ -27,6 +27,7 @@
 #include <errno.h>
 #include <string.h>
 #include <assert.h>
+#include <glob.h>
 
 #include <iostream>
 #include <fstream>
@@ -389,19 +390,31 @@ int ImportData::main(int argc, char* const argv[])
     {
         while (optind < argc)
         {
-            m_count = 0;
-            std::ifstream in(argv[optind]);
-            if (!in.good()) {
-                OUT_THROW("Error reading " << argv[optind] << ": " << strerror(errno));
+            // glob() for matching file names
+            glob_t globbuf;
+            int gr = glob(argv[optind], GLOB_NOCHECK | GLOB_TILDE | GLOB_TILDE, NULL, &globbuf);
+            if (gr != 0) {
+                OUT_THROW("Error globing " << argv[optind] << ": " << strerror(errno));
             }
-            else {
-                process_stream(in);
 
-                if (mopt_firstline) {
-                    OUT("Imported " << m_count << " rows of data from " << argv[optind]);
+            for (size_t gi = 0; gi < globbuf.gl_pathc; ++gi)
+            {
+                const char* fname = globbuf.gl_pathv[gi];
+
+                m_count = 0;
+                std::ifstream in(fname);
+                if (!in.good()) {
+                    OUT_THROW("Error reading " << fname << ": " << strerror(errno));
                 }
                 else {
-                    OUT("Cached " << m_count << " rows of data from " << argv[optind]);
+                    process_stream(in);
+
+                    if (mopt_firstline) {
+                        OUT("Imported " << m_count << " rows of data from " << fname);
+                    }
+                    else {
+                        OUT("Cached " << m_count << " rows of data from " << fname);
+                    }
                 }
             }
             ++optind;
