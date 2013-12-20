@@ -143,7 +143,7 @@ ssize_t scan_lines_for_comment(size_t ln, const std::string& cprefix)
 }
 
 //! Process % SQL commands
-void process_sql(size_t /* ln */, const std::string& cmdline)
+void process_sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     PGresult* r = PQexec(g_pg, cmdline.c_str());
     if (PQresultStatus(r) == PGRES_COMMAND_OK)
@@ -164,7 +164,7 @@ void process_sql(size_t /* ln */, const std::string& cmdline)
 }
 
 //! Process % IMPORTDATA commands
-void process_importdata(size_t /* ln */, const std::string& cmdline)
+void process_importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     // split argument at whitespaces
     std::vector<std::string> args = split_ws(cmdline);
@@ -181,7 +181,7 @@ void process_importdata(size_t /* ln */, const std::string& cmdline)
 }
 
 //! Process % TEXTTABLE commands
-void process_texttable(size_t ln, const std::string& cmdline)
+void process_texttable(size_t ln, size_t indent, const std::string& cmdline)
 {
     PGresult* r = PQexec(g_pg, cmdline.c_str());
     if (PQresultStatus(r) != PGRES_TUPLES_OK)
@@ -200,15 +200,15 @@ void process_texttable(size_t ln, const std::string& cmdline)
     ssize_t eln = scan_lines_for_comment(ln, "END TEXTTABLE");
 
     if (eln < 0) {
-        g_lines.replace(ln, ln, output, "TEXTTABLE");
+        g_lines.replace(ln, ln, indent, output, "TEXTTABLE");
     }
     else {
-        g_lines.replace(ln, eln+1, output, "TEXTTABLE");
+        g_lines.replace(ln, eln+1, indent, output, "TEXTTABLE");
     }
 }
 
 //! Process % PLOT commands
-void process_plot(size_t ln, const std::string& cmdline)
+void process_plot(size_t ln, size_t indent, const std::string& cmdline)
 {
     PGresult* r = PQexec(g_pg, cmdline.c_str());
     if (PQresultStatus(r) != PGRES_TUPLES_OK)
@@ -222,7 +222,6 @@ void process_plot(size_t ln, const std::string& cmdline)
     OUT("--> " << rownum << " rows");
 
     std::ostringstream oss;
-    oss << "coordinates {";
     for (int row = 0; row < rownum; ++row)
     {
         oss << " (";
@@ -233,30 +232,29 @@ void process_plot(size_t ln, const std::string& cmdline)
         }
         oss << ')';
     }
-    oss << " };";
 
     PQclear(r);
 
     // check whether line contains an \addplot command
     static const boost::regex
-        re_addplot("([:blank:]*\\\\addplot.* )coordinates \\{[0-9.,() +-e]+\\};(.*)");
+        re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
     boost::smatch rm;
 
     if (ln < g_lines.size() &&
         boost::regex_match(g_lines[ln], rm, re_addplot))
     {
-        std::string output = rm[1].str() + oss.str() + rm[2].str();
-        g_lines.replace(ln, ln+1, output, "PLOT");
+        std::string output = rm[1].str() + oss.str() + " " + rm[2].str();
+        g_lines.replace(ln, ln+1, indent, output, "PLOT");
     }
     else
     {
-        std::string output = "\\addplot " + oss.str();
-        g_lines.replace(ln, ln, output, "PLOT");
+        std::string output = "\\addplot coordinates {" + oss.str() + " };";
+        g_lines.replace(ln, ln, indent, output, "PLOT");
     }
 }
 
 //! Process % MULTIPLOT commands
-void process_multiplot(size_t ln, const std::string& cmdline)
+void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
 {
     // extract MULTIPLOT columns
     static const boost::regex
@@ -363,8 +361,8 @@ void process_multiplot(size_t ln, const std::string& cmdline)
 
     for (size_t i = 0; i < coordlist.size(); ++i)
     {
-        std::cout << coordlist[i] << std::endl;
-        std::cout << legendlist[i] << std::endl;
+        OUTC(gopt_verbose >= 1, "coordinates {" << coordlist[i] << " }");
+        OUTC(gopt_verbose >= 1, "legend {" << legendlist[i] << " }");
     }
 
     // create output text, merging in existing styles and suffixes
@@ -373,9 +371,9 @@ void process_multiplot(size_t ln, const std::string& cmdline)
     size_t entry = 0; // coordinates/legend entry
 
     static const boost::regex
-        re_addplot("([:blank:]*\\\\addplot.* coordinates \\{)[0-9.,() +-e]+(\\};.*)");
+        re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
     static const boost::regex
-        re_legend("([:blank:]*\\\\addlegendentry\\{).*(\\};.*)");
+        re_legend("[[:blank:]]*(\\\\addlegendentry\\{).*(\\};.*)");
 
     boost::smatch rm;
 
@@ -431,7 +429,7 @@ void process_multiplot(size_t ln, const std::string& cmdline)
         ++entry;
     }
 
-    g_lines.replace(ln, eln, out.str(), "MULTIPLOT");
+    g_lines.replace(ln, eln, indent, out.str(), "MULTIPLOT");
 }
 
 //! process line-based file in place
@@ -441,19 +439,19 @@ void process()
     for (size_t ln = 0; ln < g_lines.size();)
     {
         // try to collect an aligned comment block
-        int cin_first = is_comment_line(g_lines[ln]);
-        if (cin_first < 0) {
+        int indent = is_comment_line(g_lines[ln]);
+        if (indent < 0) {
             ++ln;
             continue;
         }
 
-        std::string cmdline = g_lines[ln++].substr(cin_first+1);
+        std::string cmdline = g_lines[ln++].substr(indent+1);
 
         // collect lines while they are at the same indentation level
         while ( ln < g_lines.size() &&
-                is_comment_line(g_lines[ln]) == cin_first )
+                is_comment_line(g_lines[ln]) == indent )
         {
-            cmdline += g_lines[ln++].substr(cin_first+1);
+            cmdline += g_lines[ln++].substr(indent+1);
         }
 
         cmdline = trim(cmdline);
@@ -466,27 +464,27 @@ void process()
         if (first_word == "SQL")
         {
             OUT("% " << cmdline);
-            process_sql(ln, cmdline.substr(space_pos+1));
+            process_sql(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "IMPORTDATA")
         {
             OUT("% " << cmdline);
-            process_importdata(ln, cmdline);
+            process_importdata(ln, indent, cmdline);
         }
         else if (first_word == "TEXTTABLE")
         {
             OUT("% " << cmdline);
-            process_texttable(ln, cmdline.substr(space_pos+1));
+            process_texttable(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "PLOT")
         {
             OUT("% " << cmdline);
-            process_plot(ln, cmdline.substr(space_pos+1));
+            process_plot(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "MULTIPLOT")
         {
             OUT("% " << cmdline);
-            process_multiplot(ln, cmdline);
+            process_multiplot(ln, indent, cmdline);
         }
     }
 }

@@ -7,3 +7,14 @@ line3
 % WHERE funcname='ScanRead64PtrUnrollLoop' ORDER BY x
 \addplot[red] coordinates { (24,0.144) };
 line4
+{
+indentation start
+    % PLOT SELECT LOG(2,testsize) AS x, rate AS y FROM test2
+    % WHERE funcname='ScanWrite64PtrUnrollLoop' ORDER BY x
+    text
+    % PLOT SELECT LOG(2,testsize) AS x, rate AS y FROM test2
+    % WHERE funcname='ScanRead64PtrUnrollLoop' ORDER BY x
+    \addplot[red] coordinates { (24,0.144) };
+indentation end
+}
+line5

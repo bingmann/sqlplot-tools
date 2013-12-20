@@ -65,9 +65,9 @@ public:
                        content.begin(), content.end());
     }
 
-    //! replace lines [begin,end) with content (or type desc)
-    void replace(size_t begin, size_t end, const std::string& content,
-                 const std::string& desc)
+    //! replace lines [begin,end) with indented content (or type desc)
+    void replace(size_t begin, size_t end, size_t indent,
+                 const std::string& content, const std::string& desc)
     {
         slist_type clist;
 
@@ -75,7 +75,7 @@ public:
         std::istringstream is(content);
         while ( std::getline(is,line) )
         {
-            clist.push_back(line);
+            clist.push_back(std::string(indent,' ') + line);
         }
 
         return replace(begin, end, clist, desc);
