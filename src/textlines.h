@@ -23,6 +23,8 @@
 #ifndef TEXTLINES_HEADER
 #define TEXTLINES_HEADER
 
+#include "strtools.h"
+
 //! Class to work with text files line by line.
 class TextLines
 {
@@ -40,6 +42,13 @@ public:
     size_t size() const
     {
         return m_lines.size();
+    }
+
+    //! return const reference to a line
+    const std::string& line(size_t i) const
+    {
+        assert(i < m_lines.size());
+        return m_lines[i];
     }
 
     //! return const reference to a line
@@ -118,6 +127,27 @@ public:
         {
             os << *i << std::endl;
         }
+    }
+
+    //! scan for next comment line with given prefix
+    template <int (*is_comment_line)(const std::string&)>
+    ssize_t scan_for_comment(size_t ln, const std::string& cprefix) const
+    {
+        // scan lines forward till next comment line
+        size_t cln = ln;
+        while ( cln < size() && is_comment_line(line(cln)) < 0 )
+        {
+            ++cln;
+        }
+
+        // EOF reached -> no matching comment lien
+        if ( cln >= size() )
+            return -1;
+
+        std::string comment = line(cln).substr( is_comment_line(line(cln))+1 );
+        comment = trim(comment);
+
+        return is_prefix(comment, cprefix) ? cln : -1;
     }
 };
 

@@ -25,5 +25,8 @@
 //! verbosity, common global option.
 int gopt_verbose = 0;
 
+//! check processed output matches the output file
+bool gopt_check_output = false;
+
 //! global PostgreSQL connection handle
 PGconn* g_pg = NULL;

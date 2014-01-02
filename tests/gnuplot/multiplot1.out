@@ -1,0 +1,70 @@
+set terminal pdf size 28cm,18cm linewidth 2.0
+set output "test.pdf"
+# IMPORT-DATA test test.data
+set key top right
+
+# MULTIPLOT(funcname) SELECT LOG(2,testsize) AS x, bandwidth AS y, MULTIPLOT
+# FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+plot \
+    'multiplot1-data.txt' index 0 with linespoints, \
+    'multiplot1-data.txt' index 1 with linespoints
+
+# MULTIPLOT(testsize) SELECT LOG(2,testsize) AS x, bandwidth AS y, MULTIPLOT
+# FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+plot \
+    'multiplot1-data.txt' index 2 title "testsize=1152" with lines linetype 4, \
+    'multiplot1-data.txt' index 3 title "testsize=2176" linecolor 2 with lines, \
+    'multiplot1-data.txt' index 4 title "testsize=3200" with lines, \
+    'multiplot1-data.txt' index 5 title "testsize=4224" with points, \
+    'multiplot1-data.txt' index 6 title "testsize=6272" with lines, \
+    'multiplot1-data.txt' index 7 title "testsize=8320" with lines, \
+    'multiplot1-data.txt' index 7 title "testsize=8320" with linespoints, \
+    'multiplot1-data.txt' index 8 title "testsize=12416" with linespoints, \
+    'multiplot1-data.txt' index 9 title "testsize=16512" with linespoints, \
+    'multiplot1-data.txt' index 10 title "testsize=20608" with linespoints, \
+    'multiplot1-data.txt' index 11 title "testsize=24704" with linespoints, \
+    'multiplot1-data.txt' index 12 title "testsize=28800" with linespoints, \
+    'multiplot1-data.txt' index 13 title "testsize=32896" with linespoints, \
+    'multiplot1-data.txt' index 14 title "testsize=41088" with linespoints, \
+    'multiplot1-data.txt' index 15 title "testsize=49280" with linespoints, \
+    'multiplot1-data.txt' index 16 title "testsize=65664" with linespoints, \
+    'multiplot1-data.txt' index 17 title "testsize=98432" with linespoints, \
+    'multiplot1-data.txt' index 18 title "testsize=131200" with linespoints, \
+    'multiplot1-data.txt' index 19 title "testsize=196736" with linespoints, \
+    'multiplot1-data.txt' index 20 title "testsize=262272" with linespoints, \
+    'multiplot1-data.txt' index 21 title "testsize=393344" with linespoints, \
+    'multiplot1-data.txt' index 22 title "testsize=524416" with linespoints, \
+    'multiplot1-data.txt' index 23 title "testsize=786560" with linespoints, \
+    'multiplot1-data.txt' index 24 title "testsize=1048704" with linespoints, \
+    'multiplot1-data.txt' index 25 title "testsize=1310848" with linespoints, \
+    'multiplot1-data.txt' index 26 title "testsize=1572992" with linespoints, \
+    'multiplot1-data.txt' index 27 title "testsize=1835136" with linespoints, \
+    'multiplot1-data.txt' index 28 title "testsize=2097280" with linespoints, \
+    'multiplot1-data.txt' index 29 title "testsize=2359424" with linespoints, \
+    'multiplot1-data.txt' index 30 title "testsize=2621568" with linespoints, \
+    'multiplot1-data.txt' index 31 title "testsize=2883712" with linespoints, \
+    'multiplot1-data.txt' index 32 title "testsize=3145856" with linespoints, \
+    'multiplot1-data.txt' index 33 title "testsize=4194432" with linespoints, \
+    'multiplot1-data.txt' index 34 title "testsize=5243008" with linespoints, \
+    'multiplot1-data.txt' index 35 title "testsize=6291584" with linespoints, \
+    'multiplot1-data.txt' index 36 title "testsize=7340160" with linespoints, \
+    'multiplot1-data.txt' index 37 title "testsize=8388736" with linespoints, \
+    'multiplot1-data.txt' index 38 title "testsize=9437312" with linespoints, \
+    'multiplot1-data.txt' index 39 title "testsize=10485888" with linespoints, \
+    'multiplot1-data.txt' index 40 title "testsize=12583040" with linespoints, \
+    'multiplot1-data.txt' index 41 title "testsize=14680192" with linespoints, \
+    'multiplot1-data.txt' index 42 title "testsize=16777344" with linespoints, \
+    'multiplot1-data.txt' index 43 title "testsize=20971648" with linespoints, \
+    'multiplot1-data.txt' index 44 title "testsize=25165952" with linespoints, \
+    'multiplot1-data.txt' index 45 title "testsize=29360256" with linespoints, \
+    'multiplot1-data.txt' index 46 title "testsize=33554560" with linespoints, \
+    'multiplot1-data.txt' index 47 title "testsize=67108992" with linespoints, \
+    'multiplot1-data.txt' index 48 title "testsize=134217856" with linespoints, \
+    'multiplot1-data.txt' index 49 title "testsize=268435584" with linespoints, \
+    'multiplot1-data.txt' index 50 title "testsize=536871040" with linespoints, \
+    'multiplot1-data.txt' index 51 title "testsize=1073741952" with linespoints, \
+    'multiplot1-data.txt' index 52 title "testsize=2147483776" with linespoints, \
+    'multiplot1-data.txt' index 53 title "testsize=4294967424" with linespoints, \
+    'multiplot1-data.txt' index 54 title "testsize=8589934720" with linespoints, \
+    'multiplot1-data.txt' index 55 title "testsize=17179869312" with linespoints
+quit

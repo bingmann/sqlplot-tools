@@ -37,3 +37,11 @@ add_executable(sp-latex
   fieldset.cpp
   )
 target_link_libraries(sp-latex ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(sp-gnuplot
+  sp-gnuplot.cpp
+  common.cpp
+  importdata.cpp
+  fieldset.cpp
+  )
+target_link_libraries(sp-gnuplot ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})

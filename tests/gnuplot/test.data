@@ -1,0 +1,358 @@
+$ pmbw -f ScanWrite64PtrUnrollLoop -f ScanRead64PtrUnrollLoop -p 1 -P 1 -S 0
+Running only functions containing 'ScanWrite64PtrUnrollLoop'
+Running only functions containing 'ScanRead64PtrUnrollLoop'
+Running benchmarks with no upper array size limit.
+Running benchmarks with at least 1 threads.
+Running benchmarks with up to 1 threads.
+CPUID: mmx sse
+Detected 24113 MiB physical RAM and 8 CPUs. 
+
+Allocating 16384 MiB for testing.
+Skipping ScanWrite64PtrSimpleLoop tests
+Running nthreads=1 factor=1073741824 areasize=1024 thrsize=1152 testsize=1152 repeats=932068 testvol=1073742336 testaccess=134217792
+run time = 0.0537351 -> rerunning test with repeat factor=29973189583
+Running nthreads=1 factor=29973189583 areasize=1024 thrsize=1152 testsize=1152 repeats=26018394 testvol=29973189888 testaccess=3746648736
+run time = 1.4983 -> next test with repeat factor=30007286137
+RESULT	datetime=2013-12-19 15:26:07	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=1024	threadsize=1152	testsize=1152	repeats=26018394	testvol=29973189888	testaccess=3746648736	time=1.4982956014573574066	bandwidth=20004857425.227554321	rate=3.9990287508429970377e-10
+Running nthreads=1 factor=30007286137 areasize=2048 thrsize=2176 testsize=2176 repeats=13790114 testvol=30007288064 testaccess=3750911008
+run time = 1.49594 -> next test with repeat factor=30088743810
+RESULT	datetime=2013-12-19 15:26:09	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=2048	threadsize=2176	testsize=2176	repeats=13790114	testvol=30007288064	testaccess=3750911008	time=1.4959392249584197998	bandwidth=20059162540.399368286	rate=3.9882023907468289467e-10
+Running nthreads=1 factor=30088743810 areasize=3072 thrsize=3200 testsize=3200 repeats=9402733 testvol=30088745600 testaccess=3761093200
+run time = 1.49683 -> next test with repeat factor=30152472231
+RESULT	datetime=2013-12-19 15:26:10	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=3072	threadsize=3200	testsize=3200	repeats=9402733	testvol=30088745600	testaccess=3761093200	time=1.496829780749976635	bandwidth=20101648154.624656677	rate=3.979773170071873472e-10
+Running nthreads=1 factor=30152472231 areasize=4096 thrsize=4224 testsize=4224 repeats=7138370 testvol=30152474880 testaccess=3769059360
+run time = 1.50171 -> next test with repeat factor=30118103637
+RESULT	datetime=2013-12-19 15:26:12	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=4096	threadsize=4224	testsize=4224	repeats=7138370	testvol=30152474880	testaccess=3769059360	time=1.501711823046207428	bandwidth=20078735758.2602005	rate=3.9843145984472034066e-10
+Running nthreads=1 factor=30118103637 areasize=6144 thrsize=6272 testsize=6272 repeats=4801994 testvol=30118106368 testaccess=3764763296
+run time = 1.49816 -> next test with repeat factor=30155002517
+RESULT	datetime=2013-12-19 15:26:13	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=6144	threadsize=6272	testsize=6272	repeats=4801994	testvol=30118106368	testaccess=3764763296	time=1.498164675198495388	bandwidth=20103335011.559780121	rate=3.9794392300580256283e-10
+Running nthreads=1 factor=30155002517 areasize=8192 thrsize=8320 testsize=8320 repeats=3624400 testvol=30155008000 testaccess=3769376000
+run time = 1.51958 -> next test with repeat factor=29766433915
+RESULT	datetime=2013-12-19 15:26:15	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=8192	threadsize=8320	testsize=8320	repeats=3624400	testvol=30155008000	testaccess=3769376000	time=1.5195811539888381958	bandwidth=19844289277.242179871	rate=4.0313865053229982255e-10
+Running nthreads=1 factor=29766433915 areasize=12288 thrsize=12416 testsize=12416 repeats=2397426 testvol=29766441216 testaccess=3720805152
+run time = 1.49324 -> next test with repeat factor=29901107883
+RESULT	datetime=2013-12-19 15:26:16	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=12288	threadsize=12416	testsize=12416	repeats=2397426	testvol=29766441216	testaccess=3720805152	time=1.4932443974539637566	bandwidth=19934071922.019508362	rate=4.0132292244631996596e-10
+Running nthreads=1 factor=29901107883 areasize=16384 thrsize=16512 testsize=16512 repeats=1810872 testvol=29901118464 testaccess=3737639808
+run time = 1.49728 -> next test with repeat factor=29955530322
+RESULT	datetime=2013-12-19 15:26:18	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=16384	threadsize=16512	testsize=16512	repeats=1810872	testvol=29901118464	testaccess=3737639808	time=1.4972753683105111122	bandwidth=19970353548.084938049	rate=4.0059380925517775307e-10
+Running nthreads=1 factor=29955530322 areasize=20480 thrsize=20608 testsize=20608 repeats=1453588 testvol=29955541504 testaccess=3744442688
+run time = 1.49795 -> next test with repeat factor=29996550054
+RESULT	datetime=2013-12-19 15:26:19	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=20480	threadsize=20608	testsize=20608	repeats=1453588	testvol=29955541504	testaccess=3744442688	time=1.4979493366554379463	bandwidth=19997700036.293315887	rate=4.0004600456457514195e-10
+Running nthreads=1 factor=29996550054 areasize=24576 thrsize=24704 testsize=24704 repeats=1214239 testvol=29996560256 testaccess=3749570032
+run time = 1.49855 -> next test with repeat factor=30025642188
+RESULT	datetime=2013-12-19 15:26:21	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=24576	threadsize=24704	testsize=24704	repeats=1214239	testvol=29996560256	testaccess=3749570032	time=1.4985471451655030251	bandwidth=20017094792.628036499	rate=3.9965839612980539282e-10
+Running nthreads=1 factor=30025642188 areasize=28672 thrsize=28800 testsize=28800 repeats=1042558 testvol=30025670400 testaccess=3753208800
+run time = 1.49946 -> next test with repeat factor=30036541524
+RESULT	datetime=2013-12-19 15:26:22	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=28672	threadsize=28800	testsize=28800	repeats=1042558	testvol=30025670400	testaccess=3753208800	time=1.4994571050629019737	bandwidth=20024361016.142856598	rate=3.9951337241426642955e-10
+Running nthreads=1 factor=30036541524 areasize=32768 thrsize=32896 testsize=32896 repeats=913076 testvol=30036548096 testaccess=3754568512
+run time = 1.53336 -> next test with repeat factor=29383083894
+RESULT	datetime=2013-12-19 15:26:24	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=32768	threadsize=32896	testsize=32896	repeats=913076	testvol=30036548096	testaccess=3754568512	time=1.5333592044189572334	bandwidth=19588722596.400291443	rate=4.0839824856522882653e-10
+Running nthreads=1 factor=29383083894 areasize=40960 thrsize=41088 testsize=41088 repeats=715126 testvol=29383097088 testaccess=3672887136
+run time = 2.20056 -> next test with repeat factor=20028813861
+RESULT	datetime=2013-12-19 15:26:26	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=40960	threadsize=41088	testsize=41088	repeats=715126	testvol=29383097088	testaccess=3672887136	time=2.20056194718927145	bandwidth=13352542574.650249481	rate=5.991368277071042529e-10
+Running nthreads=1 factor=20028813861 areasize=49152 thrsize=49280 testsize=49280 repeats=406429 testvol=20028821120 testaccess=2503602640
+run time = 1.49999 -> next test with repeat factor=20028984374
+RESULT	datetime=2013-12-19 15:26:28	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=49152	threadsize=49280	testsize=49280	repeats=406429	testvol=20028821120	testaccess=2503602640	time=1.499987773597240448	bandwidth=13352656249.96881485	rate=5.9913172706881325698e-10
+Running nthreads=1 factor=20028984374 areasize=65536 thrsize=65664 testsize=65664 repeats=305023 testvol=20029030272 testaccess=2503628784
+run time = 1.49994 -> next test with repeat factor=20029827392
+RESULT	datetime=2013-12-19 15:26:29	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=65536	threadsize=65664	testsize=65664	repeats=305023	testvol=20029030272	testaccess=2503628784	time=1.4999403050169348717	bandwidth=13353218261.425319672	rate=5.9910651075855933864e-10
+Running nthreads=1 factor=20029827392 areasize=98304 thrsize=98432 testsize=98432 repeats=203489 testvol=20029829248 testaccess=2503728656
+run time = 1.49996 -> next test with repeat factor=20030425355
+RESULT	datetime=2013-12-19 15:26:31	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=98304	threadsize=98432	testsize=98432	repeats=203489	testvol=20029829248	testaccess=2503728656	time=1.4999553598463535309	bandwidth=13353616903.67354393	rate=5.9908862577892446961e-10
+Running nthreads=1 factor=20030425355 areasize=131072 thrsize=131200 testsize=131200 repeats=152671 testvol=20030435200 testaccess=2503804400
+run time = 1.50002 -> next test with repeat factor=20030232200
+RESULT	datetime=2013-12-19 15:26:32	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=131072	threadsize=131200	testsize=131200	repeats=152671	testvol=20030435200	testaccess=2503804400	time=1.5000152019783854485	bandwidth=13353488133.708013535	rate=5.9909440289280797599e-10
+Running nthreads=1 factor=20030232200 areasize=196608 thrsize=196736 testsize=196736 repeats=101813 testvol=20030282368 testaccess=2503785296
+run time = 1.49998 -> next test with repeat factor=20030555873
+RESULT	datetime=2013-12-19 15:26:34	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=196608	threadsize=196736	testsize=196736	repeats=101813	testvol=20030282368	testaccess=2503785296	time=1.4999795183539390564	bandwidth=13353703915.891471863	rate=5.9908472214062358581e-10
+Running nthreads=1 factor=20030555873 areasize=262144 thrsize=262272 testsize=262272 repeats=76374 testvol=20030761728 testaccess=2503845216
+run time = 1.50001 -> next test with repeat factor=20030675417
+RESULT	datetime=2013-12-19 15:26:35	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=262144	threadsize=262272	testsize=262272	repeats=76374	testvol=20030761728	testaccess=2503845216	time=1.5000064633786678314	bandwidth=13353783611.626579285	rate=5.9908114678709744652e-10
+Running nthreads=1 factor=20030675417 areasize=393216 thrsize=393344 testsize=393344 repeats=50925 testvol=20031043200 testaccess=2503880400
+run time = 1.49996 -> next test with repeat factor=20031563996
+RESULT	datetime=2013-12-19 15:26:37	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=393216	threadsize=393344	testsize=393344	repeats=50925	testvol=20031043200	testaccess=2503880400	time=1.4999610017985105515	bandwidth=13354375997.763950348	rate=5.9905457217465762695e-10
+Running nthreads=1 factor=20031563996 areasize=524288 thrsize=524416 testsize=524416 repeats=38198 testvol=20031642368 testaccess=2503955296
+run time = 1.4999 -> next test with repeat factor=20033036335
+RESULT	datetime=2013-12-19 15:26:38	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=524288	threadsize=524416	testsize=524416	repeats=38198	testvol=20031642368	testaccess=2503955296	time=1.4998956248164176941	bandwidth=13355357557.264564514	rate=5.9901054432260032119e-10
+Running nthreads=1 factor=20033036335 areasize=786432 thrsize=786560 testsize=786560 repeats=25470 testvol=20033683200 testaccess=2504210400
+run time = 1.49985 -> next test with repeat factor=20035648434
+RESULT	datetime=2013-12-19 15:26:40	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=786432	threadsize=786560	testsize=786560	repeats=25470	testvol=20033683200	testaccess=2504210400	time=1.4998528696596622467	bandwidth=13357098956.343582153	rate=5.9893244978922783903e-10
+Running nthreads=1 factor=20035648434 areasize=1048576 thrsize=1048704 testsize=1048704 repeats=19106 testvol=20036538624 testaccess=2504567328
+run time = 1.50398 -> next test with repeat factor=19983451180
+RESULT	datetime=2013-12-19 15:26:41	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=1048576	threadsize=1048704	testsize=1048704	repeats=19106	testvol=20036538624	testaccess=2504567328	time=1.5039848554879426956	bandwidth=13322300787.064428329	rate=6.0049687571742634017e-10
+Running nthreads=1 factor=19983451180 areasize=1310720 thrsize=1310848 testsize=1310848 repeats=15245 testvol=19983877760 testaccess=2497984720
+run time = 1.58603 -> next test with repeat factor=18899866699
+RESULT	datetime=2013-12-19 15:26:43	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=1310720	threadsize=1310848	testsize=1310848	repeats=15245	testvol=19983877760	testaccess=2497984720	time=1.586033230647444725	bandwidth=12599911132.910030365	rate=6.349251130116779951e-10
+Running nthreads=1 factor=18899866699 areasize=1572864 thrsize=1572992 testsize=1572992 repeats=12016 testvol=18901071872 testaccess=2362633984
+run time = 1.5004 -> next test with repeat factor=18896077907
+RESULT	datetime=2013-12-19 15:26:44	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=1572864	threadsize=1572992	testsize=1572992	repeats=12016	testvol=18901071872	testaccess=2362633984	time=1.5003964286297559738	bandwidth=12597385271.878774643	rate=6.3505241979527705854e-10
+Running nthreads=1 factor=18896077907 areasize=1835008 thrsize=1835136 testsize=1835136 repeats=10297 testvol=18896395392 testaccess=2362049424
+run time = 1.50049 -> next test with repeat factor=18890245554
+RESULT	datetime=2013-12-19 15:26:46	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=1835008	threadsize=1835136	testsize=1835136	repeats=10297	testvol=18896395392	testaccess=2362049424	time=1.5004883343353867531	bandwidth=12593497036.662937164	rate=6.3524849187719060015e-10
+Running nthreads=1 factor=18890245554 areasize=2097152 thrsize=2097280 testsize=2097280 repeats=9008 testvol=18892298240 testaccess=2361537280
+run time = 1.59911 -> next test with repeat factor=17721423484
+RESULT	datetime=2013-12-19 15:26:47	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=2097152	threadsize=2097280	testsize=2097280	repeats=9008	testvol=18892298240	testaccess=2361537280	time=1.5991067187860608101	bandwidth=11814282322.784448624	rate=6.771465063579520396e-10
+Running nthreads=1 factor=17721423484 areasize=2359296 thrsize=2359424 testsize=2359424 repeats=7511 testvol=17721633664 testaccess=2215204208
+run time = 1.51052 -> next test with repeat factor=17598237830
+RESULT	datetime=2013-12-19 15:26:49	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=2359296	threadsize=2359424	testsize=2359424	repeats=7511	testvol=17721633664	testaccess=2215204208	time=1.5105177434161305428	bandwidth=11732158553.7429142	rate=6.8188645451333059934e-10
+Running nthreads=1 factor=17598237830 areasize=2621440 thrsize=2621568 testsize=2621568 repeats=6713 testvol=17598585984 testaccess=2199823248
+run time = 1.57815 -> next test with repeat factor=16727132593
+RESULT	datetime=2013-12-19 15:26:50	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=2621440	threadsize=2621568	testsize=2621568	repeats=6713	testvol=17598585984	testaccess=2199823248	time=1.5781472902745008469	bandwidth=11151421728.791185379	rate=7.17397314402098195e-10
+Running nthreads=1 factor=16727132593 areasize=2883584 thrsize=2883712 testsize=2883712 repeats=5801 testvol=16728413312 testaccess=2091051664
+run time = 1.73611 -> next test with repeat factor=14453333083
+RESULT	datetime=2013-12-19 15:26:52	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=2883584	threadsize=2883712	testsize=2883712	repeats=5801	testvol=16728413312	testaccess=2091051664	time=1.7361130351200699806	bandwidth=9635555389.3085422516	rate=8.3025831690788394096e-10
+Running nthreads=1 factor=14453333083 areasize=3145728 thrsize=3145856 testsize=3145856 repeats=4595 testvol=14455208320 testaccess=1806901040
+run time = 1.63697 -> next test with repeat factor=13245736598
+RESULT	datetime=2013-12-19 15:26:54	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=3145728	threadsize=3145856	testsize=3145856	repeats=4595	testvol=14455208320	testaccess=1806901040	time=1.6369653977453708649	bandwidth=8830491065.913476944	rate=9.0595188198318315712e-10
+Running nthreads=1 factor=13245736598 areasize=4194304 thrsize=4194432 testsize=4194432 repeats=3158 testvol=13246016256 testaccess=1655752032
+run time = 2.32263 -> next test with repeat factor=8554550640
+RESULT	datetime=2013-12-19 15:26:56	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=4194304	threadsize=4194432	testsize=4194432	repeats=3158	testvol=13246016256	testaccess=1655752032	time=2.3226263094693422318	bandwidth=5703033760.5304918289	rate=1.4027621676319599281e-09
+Running nthreads=1 factor=8554550640 areasize=5242880 thrsize=5243008 testsize=5243008 repeats=1632 testvol=8556589056 testaccess=1069573632
+run time = 2.27275 -> next test with repeat factor=5647291120
+RESULT	datetime=2013-12-19 15:26:58	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=5242880	threadsize=5243008	testsize=5243008	repeats=1632	testvol=8556589056	testaccess=1069573632	time=2.2727504763752222061	bandwidth=3764860746.8985261917	rate=2.124912589818988909e-09
+Running nthreads=1 factor=5647291120 areasize=6291456 thrsize=6291584 testsize=6291584 repeats=898 testvol=5649842432 testaccess=706230304
+run time = 1.90178 -> next test with repeat factor=4456231959
+RESULT	datetime=2013-12-19 15:27:00	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=6291456	threadsize=6291584	testsize=6291584	repeats=898	testvol=5649842432	testaccess=706230304	time=1.9017779426649212837	bandwidth=2970821306.3418936729	rate=2.6928580264730770826e-09
+Running nthreads=1 factor=4456231959 areasize=7340032 thrsize=7340160 testsize=7340160 repeats=608 testvol=4462817280 testaccess=557852160
+run time = 1.69982 -> next test with repeat factor=3938198919
+RESULT	datetime=2013-12-19 15:27:02	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=7340032	threadsize=7340160	testsize=7340160	repeats=608	testvol=4462817280	testaccess=557852160	time=1.6998191447928547859	bandwidth=2625465946.5809540749	rate=3.0470781807008775222e-09
+Running nthreads=1 factor=3938198919 areasize=8388608 thrsize=8388736 testsize=8388736 repeats=470 testvol=3942705920 testaccess=492838240
+run time = 1.6101 -> next test with repeat factor=3673097241
+RESULT	datetime=2013-12-19 15:27:04	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=8388608	threadsize=8388736	testsize=8388736	repeats=470	testvol=3942705920	testaccess=492838240	time=1.6101013645529747009	bandwidth=2448731494.053882122	rate=3.2669976350718537676e-09
+Running nthreads=1 factor=3673097241 areasize=9437184 thrsize=9437312 testsize=9437312 repeats=390 testvol=3680551680 testaccess=460068960
+run time = 1.56445 -> next test with repeat factor=3528926462
+RESULT	datetime=2013-12-19 15:27:05	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=9437184	threadsize=9437312	testsize=9437312	repeats=390	testvol=3680551680	testaccess=460068960	time=1.5644495794549584389	bandwidth=2352617641.5875763893	rate=3.4004675721982164255e-09
+Running nthreads=1 factor=3528926462 areasize=10485760 thrsize=10485888 testsize=10485888 repeats=337 testvol=3533744256 testaccess=441718032
+run time = 1.54403 -> next test with repeat factor=3432974569
+RESULT	datetime=2013-12-19 15:27:07	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=10485760	threadsize=10485888	testsize=10485888	repeats=337	testvol=3533744256	testaccess=441718032	time=1.5440301923081278801	bandwidth=2288649712.6830816269	rate=3.4955108925870790133e-09
+Running nthreads=1 factor=3432974569 areasize=12582912 thrsize=12583040 testsize=12583040 repeats=273 testvol=3435169920 testaccess=429396240
+run time = 1.54532 -> next test with repeat factor=3334430378
+RESULT	datetime=2013-12-19 15:27:08	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=12582912	threadsize=12583040	testsize=12583040	repeats=273	testvol=3435169920	testaccess=429396240	time=1.5453178789466619492	bandwidth=2222953585.6671261787	rate=3.5988155810275886328e-09
+Running nthreads=1 factor=3334430378 areasize=14680064 thrsize=14680192 testsize=14680192 repeats=228 testvol=3347083776 testaccess=418385472
+run time = 1.52458 -> next test with repeat factor=3293117568
+RESULT	datetime=2013-12-19 15:27:10	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=14680064	threadsize=14680192	testsize=14680192	repeats=228	testvol=3347083776	testaccess=418385472	time=1.5245813606306910515	bandwidth=2195411712.6391820908	rate=3.6439634324365139255e-09
+Running nthreads=1 factor=3293117568 areasize=16777216 thrsize=16777344 testsize=16777344 repeats=197 testvol=3305136768 testaccess=413142096
+run time = 1.5157 -> next test with repeat factor=3270901815
+RESULT	datetime=2013-12-19 15:27:11	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=16777216	threadsize=16777344	testsize=16777344	repeats=197	testvol=3305136768	testaccess=413142096	time=1.5156997768208384514	bandwidth=2180601210.4405555725	rate=3.6687129960749348997e-09
+Running nthreads=1 factor=3270901815 areasize=20971520 thrsize=20971648 testsize=20971648 repeats=156 testvol=3271577088 testaccess=408947136
+run time = 1.50736 -> next test with repeat factor=3255601692
+RESULT	datetime=2013-12-19 15:27:13	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=20971520	threadsize=20971648	testsize=20971648	repeats=156	testvol=3271577088	testaccess=408947136	time=1.5073605729267001152	bandwidth=2170401128.144068718	rate=3.6859545898047324874e-09
+Running nthreads=1 factor=3255601692 areasize=25165824 thrsize=25165952 testsize=25165952 repeats=130 testvol=3271573760 testaccess=408946720
+run time = 1.50878 -> next test with repeat factor=3252529749
+RESULT	datetime=2013-12-19 15:27:14	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=25165824	threadsize=25165952	testsize=25165952	repeats=130	testvol=3271573760	testaccess=408946720	time=1.508782707154750824	bandwidth=2168353166.0894398689	rate=3.6894358931519263564e-09
+Running nthreads=1 factor=3252529749 areasize=29360128 thrsize=29360256 testsize=29360256 repeats=111 testvol=3258988416 testaccess=407373552
+run time = 1.50364 -> next test with repeat factor=3251109712
+RESULT	datetime=2013-12-19 15:27:16	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=29360128	threadsize=29360256	testsize=29360256	repeats=111	testvol=3258988416	testaccess=407373552	time=1.5036350833252072334	bandwidth=2167406475.2419347763	rate=3.6910473837663550576e-09
+Running nthreads=1 factor=3251109712 areasize=33554432 thrsize=33554560 testsize=33554560 repeats=97 testvol=3254792320 testaccess=406849040
+run time = 1.50182 -> next test with repeat factor=3250855425
+RESULT	datetime=2013-12-19 15:27:17	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=33554432	threadsize=33554560	testsize=33554560	repeats=97	testvol=3254792320	testaccess=406849040	time=1.5018165502697229385	bandwidth=2167236950.0891747475	rate=3.691336104098274401e-09
+Running nthreads=1 factor=3250855425 areasize=67108864 thrsize=67108992 testsize=67108992 repeats=49 testvol=3288340608 testaccess=411042576
+run time = 1.51741 -> next test with repeat factor=3250603586
+RESULT	datetime=2013-12-19 15:27:19	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=67108864	threadsize=67108992	testsize=67108992	repeats=49	testvol=3288340608	testaccess=411042576	time=1.5174138527363538742	bandwidth=2167069057.7063946724	rate=3.6916220881613827644e-09
+Running nthreads=1 factor=3250603586 areasize=134217728 thrsize=134217856 testsize=134217856 repeats=25 testvol=3355446400 testaccess=419430800
+run time = 1.54815 -> next test with repeat factor=3251096643
+RESULT	datetime=2013-12-19 15:27:20	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=134217728	threadsize=134217856	testsize=134217856	repeats=25	testvol=3355446400	testaccess=419430800	time=1.5481451805680990219	bandwidth=2167397762.2490825653	rate=3.6910622218685396219e-09
+Running nthreads=1 factor=3251096643 areasize=268435456 thrsize=268435584 testsize=268435584 repeats=13 testvol=3489662592 testaccess=436207824
+run time = 1.61024 -> next test with repeat factor=3250756481
+RESULT	datetime=2013-12-19 15:27:22	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=268435456	threadsize=268435584	testsize=268435584	repeats=13	testvol=3489662592	testaccess=436207824	time=1.6102386992424726486	bandwidth=2167170987.5322780609	rate=3.6914484579315400334e-09
+Running nthreads=1 factor=3250756481 areasize=536870912 thrsize=536871040 testsize=536871040 repeats=7 testvol=3758097280 testaccess=469762160
+run time = 1.73407 -> next test with repeat factor=3250811434
+RESULT	datetime=2013-12-19 15:27:24	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=536870912	threadsize=536871040	testsize=536871040	repeats=7	testvol=3758097280	testaccess=469762160	time=1.7340734871104359627	bandwidth=2167207622.9377598763	rate=3.691386056106426357e-09
+Running nthreads=1 factor=3250811434 areasize=1073741824 thrsize=1073741952 testsize=1073741952 repeats=4 testvol=4294967808 testaccess=536870976
+run time = 1.98172 -> next test with repeat factor=3250932366
+RESULT	datetime=2013-12-19 15:27:26	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=1073741824	threadsize=1073741952	testsize=1073741952	repeats=4	testvol=4294967808	testaccess=536870976	time=1.981724313460290432	bandwidth=2167288244.2969846725	rate=3.691248739548718608e-09
+Running nthreads=1 factor=3250932366 areasize=2147483648 thrsize=2147483776 testsize=2147483776 repeats=2 testvol=4294967552 testaccess=536870944
+run time = 1.98183 -> next test with repeat factor=3250751644
+RESULT	datetime=2013-12-19 15:27:28	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=2147483648	threadsize=2147483776	testsize=2147483776	repeats=2	testvol=4294967552	testaccess=536870944	time=1.9818343669176101685	bandwidth=2167167763.2072029114	rate=3.6914539500904899651e-09
+Running nthreads=1 factor=3250751644 areasize=4294967296 thrsize=4294967424 testsize=4294967424 repeats=1 testvol=4294967424 testaccess=536870928
+run time = 1.98168 -> next test with repeat factor=3250998568
+RESULT	datetime=2013-12-19 15:27:30	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=4294967296	threadsize=4294967424	testsize=4294967424	repeats=1	testvol=4294967424	testaccess=536870928	time=1.9816837813705205917	bandwidth=2167332378.8468542099	rate=3.69117357267391568e-09
+Running nthreads=1 factor=3250998568 areasize=8589934592 thrsize=8589934720 testsize=8589934720 repeats=1 testvol=8589934720 testaccess=1073741840
+run time = 3.96355 -> next test with repeat factor=3250852149
+RESULT	datetime=2013-12-19 15:27:34	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=8589934592	threadsize=8589934720	testsize=8589934720	repeats=1	testvol=8589934720	testaccess=1073741840	time=3.9635460143908858299	bandwidth=2167234766.2450675964	rate=3.6913398237241886142e-09
+Running nthreads=1 factor=3250852149 areasize=17179869184 thrsize=17179869312 testsize=17179869312 repeats=1 testvol=17179869312 testaccess=2147483664
+run time = 7.92832 -> next test with repeat factor=3250349099
+RESULT	datetime=2013-12-19 15:27:42	host=earth	version=0.6.2	funcname=ScanWrite64PtrUnrollLoop	nthreads=1	areasize=17179869184	threadsize=17179869312	testsize=17179869312	repeats=1	testvol=17179869312	testaccess=2147483664	time=7.9283188292756676674	bandwidth=2166899399.7267837524	rate=3.6919111247198143531e-09
+Skipping ScanRead64PtrSimpleLoop tests
+Running nthreads=1 factor=1073741824 areasize=1024 thrsize=1152 testsize=1152 repeats=932068 testvol=1073742336 testaccess=134217792
+run time = 0.0522008 -> rerunning test with repeat factor=30854176666
+Running nthreads=1 factor=30854176666 areasize=1024 thrsize=1152 testsize=1152 repeats=26783140 testvol=30854177280 testaccess=3856772160
+run time = 1.45151 -> next test with repeat factor=31884951998
+RESULT	datetime=2013-12-19 15:27:43	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=1024	threadsize=1152	testsize=1152	repeats=26783140	testvol=30854177280	testaccess=3856772160	time=1.4515080945566296577	bandwidth=21256634665.49565506	rate=3.7635308344391014692e-10
+Running nthreads=1 factor=31884951998 areasize=2048 thrsize=2176 testsize=2176 repeats=14653012 testvol=31884954112 testaccess=3985619264
+run time = 1.50353 -> next test with repeat factor=31810196416
+RESULT	datetime=2013-12-19 15:27:45	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=2048	threadsize=2176	testsize=2176	repeats=14653012	testvol=31884954112	testaccess=3985619264	time=1.5035251760855317116	bandwidth=21206797610.807781219	rate=3.7723753236193001211e-10
+Running nthreads=1 factor=31810196416 areasize=3072 thrsize=3200 testsize=3200 repeats=9940687 testvol=31810198400 testaccess=3976274800
+run time = 1.49647 -> next test with repeat factor=31885139803
+RESULT	datetime=2013-12-19 15:27:46	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=3072	threadsize=3200	testsize=3200	repeats=9940687	testvol=31810198400	testaccess=3976274800	time=1.4964744672179222107	bandwidth=21256759869.173015594	rate=3.7635086670013908016e-10
+Running nthreads=1 factor=31885139803 areasize=4096 thrsize=4224 testsize=4224 repeats=7548566 testvol=31885142784 testaccess=3985642848
+run time = 1.50002 -> next test with repeat factor=31884703912
+RESULT	datetime=2013-12-19 15:27:48	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=4096	threadsize=4224	testsize=4224	repeats=7548566	testvol=31885142784	testaccess=3985642848	time=1.5000206464901566505	bandwidth=21256469275.01089859	rate=3.7635601173920254623e-10
+Running nthreads=1 factor=31884703912 areasize=6144 thrsize=6272 testsize=6272 repeats=5083659 testvol=31884709248 testaccess=3985588656
+run time = 1.50011 -> next test with repeat factor=31882410628
+RESULT	datetime=2013-12-19 15:27:49	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=6144	threadsize=6272	testsize=6272	repeats=5083659	testvol=31884709248	testaccess=3985588656	time=1.5001081451773643494	bandwidth=21254940419.132335663	rate=3.7638308281489760617e-10
+Running nthreads=1 factor=31882410628 areasize=8192 thrsize=8320 testsize=8320 repeats=3832021 testvol=31882414720 testaccess=3985301840
+run time = 1.51579 -> next test with repeat factor=31550324634
+RESULT	datetime=2013-12-19 15:27:51	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=8192	threadsize=8320	testsize=8320	repeats=3832021	testvol=31882414720	testaccess=3985301840	time=1.5157885896041989326	bandwidth=21033549756.648517609	rate=3.8034473935961623237e-10
+Running nthreads=1 factor=31550324634 areasize=12288 thrsize=12416 testsize=12416 repeats=2541103 testvol=31550334848 testaccess=3943791856
+run time = 1.49491 -> next test with repeat factor=31657824577
+RESULT	datetime=2013-12-19 15:27:52	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=12288	threadsize=12416	testsize=12416	repeats=2541103	testvol=31550334848	testaccess=3943791856	time=1.4949069591239094734	bandwidth=21105216385.165588379	rate=3.790532091214677862e-10
+Running nthreads=1 factor=31657824577 areasize=16384 thrsize=16512 testsize=16512 repeats=1917262 testvol=31657830144 testaccess=3957228768
+run time = 1.49737 -> next test with repeat factor=31713488155
+RESULT	datetime=2013-12-19 15:27:54	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=16384	threadsize=16512	testsize=16512	repeats=1917262	testvol=31657830144	testaccess=3957228768	time=1.4973674602806568146	bandwidth=21142325436.981422424	rate=3.7838789417207048325e-10
+Running nthreads=1 factor=31713488155 areasize=20480 thrsize=20608 testsize=20608 repeats=1538893 testvol=31713506944 testaccess=3964188368
+run time = 1.4984 -> next test with repeat factor=31747414554
+RESULT	datetime=2013-12-19 15:27:55	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=20480	threadsize=20608	testsize=20608	repeats=1538893	testvol=31713506944	testaccess=3964188368	time=1.4983979351818561554	bandwidth=21164943036.411102295	rate=3.7798353561534291622e-10
+Running nthreads=1 factor=31747414554 areasize=24576 thrsize=24704 testsize=24704 repeats=1285113 testvol=31747431552 testaccess=3968428944
+run time = 1.49908 -> next test with repeat factor=31766952097
+RESULT	datetime=2013-12-19 15:27:57	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=24576	threadsize=24704	testsize=24704	repeats=1285113	testvol=31747431552	testaccess=3968428944	time=1.4990782616659998894	bandwidth=21177968064.667621613	rate=3.7775106542666115762e-10
+Running nthreads=1 factor=31766952097 areasize=28672 thrsize=28800 testsize=28800 repeats=1103020 testvol=31766976000 testaccess=3970872000
+run time = 1.49928 -> next test with repeat factor=31782137968
+RESULT	datetime=2013-12-19 15:27:58	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=28672	threadsize=28800	testsize=28800	repeats=1103020	testvol=31766976000	testaccess=3970872000	time=1.4992844108492136002	bandwidth=21188091979.164104462	rate=3.7757057161480237289e-10
+Running nthreads=1 factor=31782137968 areasize=32768 thrsize=32896 testsize=32896 repeats=966140 testvol=31782141440 testaccess=3972767680
+run time = 1.57594 -> next test with repeat factor=30250635796
+RESULT	datetime=2013-12-19 15:28:00	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=32768	threadsize=32896	testsize=32896	repeats=966140	testvol=31782141440	testaccess=3972767680	time=1.5759408324956893921	bandwidth=20167090530.720752716	rate=3.9668587731152942157e-10
+Running nthreads=1 factor=30250635796 areasize=40960 thrsize=41088 testsize=41088 repeats=736241 testvol=30250670208 testaccess=3781333776
+run time = 1.95993 -> next test with repeat factor=23151893228
+RESULT	datetime=2013-12-19 15:28:02	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=40960	threadsize=41088	testsize=41088	repeats=736241	testvol=30250670208	testaccess=3781333776	time=1.9599263379350304604	bandwidth=15434595485.80380249	rate=5.1831614293734606046e-10
+Running nthreads=1 factor=23151893228 areasize=49152 thrsize=49280 testsize=49280 repeats=469804 testvol=23151941120 testaccess=2893992640
+run time = 1.49892 -> next test with repeat factor=23168616235
+RESULT	datetime=2013-12-19 15:28:03	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=49152	threadsize=49280	testsize=49280	repeats=469804	testvol=23151941120	testaccess=2893992640	time=1.4989204071462154388	bandwidth=15445744156.675287247	rate=5.1794202460245906194e-10
+Running nthreads=1 factor=23168616235 areasize=65536 thrsize=65664 testsize=65664 repeats=352836 testvol=23168623104 testaccess=2896077888
+run time = 1.49759 -> next test with repeat factor=23205879888
+RESULT	datetime=2013-12-19 15:28:05	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=65536	threadsize=65664	testsize=65664	repeats=352836	testvol=23168623104	testaccess=2896077888	time=1.4975917665287852287	bandwidth=15470586592.300603867	rate=5.1711032107738161817e-10
+Running nthreads=1 factor=23205879888 areasize=98304 thrsize=98432 testsize=98432 repeats=235756 testvol=23205934592 testaccess=2900741824
+run time = 1.49945 -> next test with repeat factor=23214435871
+RESULT	datetime=2013-12-19 15:28:06	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=98304	threadsize=98432	testsize=98432	repeats=235756	testvol=23205934592	testaccess=2900741824	time=1.4994506901130080223	bandwidth=15476290580.953386307	rate=5.1691973332715601131e-10
+Running nthreads=1 factor=23214435871 areasize=131072 thrsize=131200 testsize=131200 repeats=176940 testvol=23214528000 testaccess=2901816000
+run time = 1.49982 -> next test with repeat factor=23217301080
+RESULT	datetime=2013-12-19 15:28:08	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=131072	threadsize=131200	testsize=131200	repeats=176940	testvol=23214528000	testaccess=2901816000	time=1.4998208396136760712	bandwidth=15478200720.28042984	rate=5.1685594111193683545e-10
+Running nthreads=1 factor=23217301080 areasize=196608 thrsize=196736 testsize=196736 repeats=118013 testvol=23217405568 testaccess=2902175696
+run time = 1.50248 -> next test with repeat factor=23179089020
+RESULT	datetime=2013-12-19 15:28:09	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=196608	threadsize=196736	testsize=196736	repeats=118013	testvol=23217405568	testaccess=2902175696	time=1.5024795979261398315	bandwidth=15452726013.748733521	rate=5.17708007822190705e-10
+Running nthreads=1 factor=23179089020 areasize=262144 thrsize=262272 testsize=262272 repeats=88379 testvol=23179337088 testaccess=2897417136
+run time = 1.50477 -> next test with repeat factor=23105896024
+RESULT	datetime=2013-12-19 15:28:11	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=262144	threadsize=262272	testsize=262272	repeats=88379	testvol=23179337088	testaccess=2897417136	time=1.5047676833346486092	bandwidth=15403930682.929941177	rate=5.1934796154758728501e-10
+Running nthreads=1 factor=23105896024 areasize=393216 thrsize=393344 testsize=393344 repeats=58743 testvol=23106206592 testaccess=2888275824
+run time = 1.49805 -> next test with repeat factor=23136278272
+RESULT	datetime=2013-12-19 15:28:12	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=393216	threadsize=393344	testsize=393344	repeats=58743	testvol=23106206592	testaccess=2888275824	time=1.498050355352461338	bandwidth=15424185515.154844284	rate=5.186659608145725429e-10
+Running nthreads=1 factor=23136278272 areasize=524288 thrsize=524416 testsize=524416 repeats=44119 testvol=23136709504 testaccess=2892088688
+run time = 1.50005 -> next test with repeat factor=23135984919
+RESULT	datetime=2013-12-19 15:28:14	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=524288	threadsize=524416	testsize=524416	repeats=44119	testvol=23136709504	testaccess=2892088688	time=1.500046977773308754	bandwidth=15423989946.197860718	rate=5.1867253725564475804e-10
+Running nthreads=1 factor=23135984919 areasize=786432 thrsize=786560 testsize=786560 repeats=29415 testvol=23136662400 testaccess=2892082800
+run time = 1.4998 -> next test with repeat factor=23139803963
+RESULT	datetime=2013-12-19 15:28:15	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=786432	threadsize=786560	testsize=786560	repeats=29415	testvol=23136662400	testaccess=2892082800	time=1.499796353280544281	bandwidth=15426535975.629335403	rate=5.1858693439916181118e-10
+Running nthreads=1 factor=23139803963 areasize=1048576 thrsize=1048704 testsize=1048704 repeats=22066 testvol=23140702464 testaccess=2892587808
+run time = 1.50102 -> next test with repeat factor=23124915505
+RESULT	datetime=2013-12-19 15:28:17	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=1048576	threadsize=1048704	testsize=1048704	repeats=22066	testvol=23140702464	testaccess=2892587808	time=1.5010240226984024048	bandwidth=15416610336.721847534	rate=5.1892081496957010789e-10
+Running nthreads=1 factor=23124915505 areasize=1310720 thrsize=1310848 testsize=1310848 repeats=17642 testvol=23125980416 testaccess=2890747552
+run time = 1.51445 -> next test with repeat factor=22905325444
+RESULT	datetime=2013-12-19 15:28:18	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=1310720	threadsize=1310848	testsize=1310848	repeats=17642	testvol=23125980416	testaccess=2890747552	time=1.5144500220194458961	bandwidth=15270216963.094379425	rate=5.2389563418350202655e-10
+Running nthreads=1 factor=22905325444 areasize=1572864 thrsize=1572992 testsize=1572992 repeats=14562 testvol=22905909504 testaccess=2863238688
+run time = 1.5001 -> next test with repeat factor=22904419932
+RESULT	datetime=2013-12-19 15:28:20	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=1572864	threadsize=1572992	testsize=1572992	repeats=14562	testvol=22905909504	testaccess=2863238688	time=1.5000975513830780983	bandwidth=15269613288.069787979	rate=5.2391634608392035144e-10
+Running nthreads=1 factor=22904419932 areasize=1835008 thrsize=1835136 testsize=1835136 repeats=12482 testvol=22906167552 testaccess=2863270944
+run time = 1.50017 -> next test with repeat factor=22903637222
+RESULT	datetime=2013-12-19 15:28:21	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=1835008	threadsize=1835136	testsize=1835136	repeats=12482	testvol=22906167552	testaccess=2863270944	time=1.5001657158136367798	bandwidth=15269091481.387777328	rate=5.2393425042685609071e-10
+Running nthreads=1 factor=22903637222 areasize=2097152 thrsize=2097280 testsize=2097280 repeats=10921 testvol=22904394880 testaccess=2863049360
+run time = 1.59274 -> next test with repeat factor=21570712550
+RESULT	datetime=2013-12-19 15:28:23	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=2097152	threadsize=2097280	testsize=2097280	repeats=10921	testvol=22904394880	testaccess=2863049360	time=1.5927425781264901161	bandwidth=14380475033.788549423	rate=5.5630985632971764012e-10
+Running nthreads=1 factor=21570712550 areasize=2359296 thrsize=2359424 testsize=2359424 repeats=9143 testvol=21572213632 testaccess=2696526704
+run time = 1.50749 -> next test with repeat factor=21465085709
+RESULT	datetime=2013-12-19 15:28:24	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=2359296	threadsize=2359424	testsize=2359424	repeats=9143	testvol=21572213632	testaccess=2696526704	time=1.5074861980974674225	bandwidth=14310057139.644363403	rate=5.5904738338443962717e-10
+Running nthreads=1 factor=21465085709 areasize=2621440 thrsize=2621568 testsize=2621568 repeats=8188 testvol=21465398784 testaccess=2683174848
+run time = 1.57058 -> next test with repeat factor=20500804617
+RESULT	datetime=2013-12-19 15:28:26	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=2621440	threadsize=2621568	testsize=2621568	repeats=8188	testvol=21465398784	testaccess=2683174848	time=1.570577290840446949	bandwidth=13667203078.24738884	rate=5.8534287916836013431e-10
+Running nthreads=1 factor=20500804617 areasize=2883584 thrsize=2883712 testsize=2883712 repeats=7110 testvol=20503192320 testaccess=2562899040
+run time = 1.72912 -> next test with repeat factor=17786374362
+RESULT	datetime=2013-12-19 15:28:28	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=2883584	threadsize=2883712	testsize=2883712	repeats=7110	testvol=20503192320	testaccess=2562899040	time=1.7291207220405340195	bandwidth=11857582908.268081665	rate=6.7467375618531351016e-10
+Running nthreads=1 factor=17786374362 areasize=3145728 thrsize=3145856 testsize=3145856 repeats=5654 testvol=17786669824 testaccess=2223333728
+run time = 1.62059 -> next test with repeat factor=16463184325
+RESULT	datetime=2013-12-19 15:28:29	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=3145728	threadsize=3145856	testsize=3145856	repeats=5654	testvol=17786669824	testaccess=2223333728	time=1.6205859212204813957	bandwidth=10975456216.850667953	rate=7.2889908555396202238e-10
+Running nthreads=1 factor=16463184325 areasize=4194304 thrsize=4194432 testsize=4194432 repeats=3926 testvol=16467340032 testaccess=2058417504
+run time = 2.20663 -> next test with repeat factor=11193980488
+RESULT	datetime=2013-12-19 15:28:31	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=4194304	threadsize=4194432	testsize=4194432	repeats=3926	testvol=16467340032	testaccess=2058417504	time=2.2066332949325442314	bandwidth=7462653658.773601532	rate=1.0720047272453355297e-09
+Running nthreads=1 factor=11193980488 areasize=5242880 thrsize=5243008 testsize=5243008 repeats=2136 testvol=11199065088 testaccess=1399883136
+run time = 2.13723 -> next test with repeat factor=7859983707
+RESULT	datetime=2013-12-19 15:28:34	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=5242880	threadsize=5243008	testsize=5243008	repeats=2136	testvol=11199065088	testaccess=1399883136	time=2.1372305918484926224	bandwidth=5239989138.6141529083	rate=1.5267207218135190251e-09
+Running nthreads=1 factor=7859983707 areasize=6291456 thrsize=6291584 testsize=6291584 repeats=1250 testvol=7864480000 testaccess=983060000
+run time = 1.79497 -> next test with repeat factor=6572080655
+RESULT	datetime=2013-12-19 15:28:35	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=6291456	threadsize=6291584	testsize=6291584	repeats=1250	testvol=7864480000	testaccess=983060000	time=1.7949749277904629707	bandwidth=4381387103.6521034241	rate=1.8259057715607011472e-09
+Running nthreads=1 factor=6572080655 areasize=7340032 thrsize=7340160 testsize=7340160 repeats=896 testvol=6576783360 testaccess=822097920
+run time = 1.63068 -> next test with repeat factor=6049744437
+RESULT	datetime=2013-12-19 15:28:37	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=7340032	threadsize=7340160	testsize=7340160	repeats=896	testvol=6576783360	testaccess=822097920	time=1.6306763272732496262	bandwidth=4033162958.2171149254	rate=1.9835548632372767708e-09
+Running nthreads=1 factor=6049744437 areasize=8388608 thrsize=8388736 testsize=8388736 repeats=722 testvol=6056667392 testaccess=757083424
+run time = 1.57416 -> next test with repeat factor=5771337625
+RESULT	datetime=2013-12-19 15:28:39	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=8388608	threadsize=8388736	testsize=8388736	repeats=722	testvol=6056667392	testaccess=757083424	time=1.5741586573421955109	bandwidth=3847558417.1585717201	rate=2.0792406852936135477e-09
+Running nthreads=1 factor=5771337625 areasize=9437184 thrsize=9437312 testsize=9437312 repeats=612 testvol=5775634944 testaccess=721954368
+run time = 1.5429 -> next test with repeat factor=5615058499
+RESULT	datetime=2013-12-19 15:28:40	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=9437184	threadsize=9437312	testsize=9437312	repeats=612	testvol=5775634944	testaccess=721954368	time=1.5428961990401148796	bandwidth=3743372332.8848743439	rate=2.1371104150451166676e-09
+Running nthreads=1 factor=5615058499 areasize=10485760 thrsize=10485888 testsize=10485888 repeats=536 testvol=5620435968 testaccess=702554496
+run time = 1.53283 -> next test with repeat factor=5500064277
+RESULT	datetime=2013-12-19 15:28:42	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=10485760	threadsize=10485888	testsize=10485888	repeats=536	testvol=5620435968	testaccess=702554496	time=1.5328282592818140984	bandwidth=3666709518.1513543129	rate=2.1817926837120603869e-09
+Running nthreads=1 factor=5500064277 areasize=12582912 thrsize=12583040 testsize=12583040 repeats=438 testvol=5511371520 testaccess=688921440
+run time = 1.53882 -> next test with repeat factor=5372345972
+RESULT	datetime=2013-12-19 15:28:43	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=12582912	threadsize=12583040	testsize=12583040	repeats=438	testvol=5511371520	testaccess=688921440	time=1.5388169940561056137	bandwidth=3581563981.4795637131	rate=2.2336610601872191845e-09
+Running nthreads=1 factor=5372345972 areasize=14680064 thrsize=14680192 testsize=14680192 repeats=366 testvol=5372950272 testaccess=671618784
+run time = 1.51633 -> next test with repeat factor=5315074113
+RESULT	datetime=2013-12-19 15:28:45	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=14680064	threadsize=14680192	testsize=14680192	repeats=366	testvol=5372950272	testaccess=671618784	time=1.5163335893303155899	bandwidth=3543382742.298116684	rate=2.2577295713788664123e-09
+Running nthreads=1 factor=5315074113 areasize=16777216 thrsize=16777344 testsize=16777344 repeats=317 testvol=5318418048 testaccess=664802256
+run time = 1.51002 -> next test with repeat factor=5283126383
+RESULT	datetime=2013-12-19 15:28:46	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=16777216	threadsize=16777344	testsize=16777344	repeats=317	testvol=5318418048	testaccess=664802256	time=1.5100201079621911049	bandwidth=3522084255.6708297729	rate=2.2713823461546602498e-09
+Running nthreads=1 factor=5283126383 areasize=20971520 thrsize=20971648 testsize=20971648 repeats=252 testvol=5284855296 testaccess=660606912
+run time = 1.50676 -> next test with repeat factor=5261133123
+RESULT	datetime=2013-12-19 15:28:48	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=20971520	threadsize=20971648	testsize=20971648	repeats=252	testvol=5284855296	testaccess=660606912	time=1.5067634209990501404	bandwidth=3507422082.5562047958	rate=2.2808774683227202744e-09
+Running nthreads=1 factor=5261133123 areasize=25165824 thrsize=25165952 testsize=25165952 repeats=210 testvol=5284849920 testaccess=660606240
+run time = 1.50861 -> next test with repeat factor=5254693370
+RESULT	datetime=2013-12-19 15:28:49	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=25165824	threadsize=25165952	testsize=25165952	repeats=210	testvol=5284849920	testaccess=660606240	time=1.508608461357653141	bandwidth=3503128913.4120101929	rate=2.2836727387825659543e-09
+Running nthreads=1 factor=5254693370 areasize=29360128 thrsize=29360256 testsize=29360256 repeats=179 testvol=5255485824 testaccess=656935728
+run time = 1.50046 -> next test with repeat factor=5253858142
+RESULT	datetime=2013-12-19 15:28:51	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=29360128	threadsize=29360256	testsize=29360256	repeats=179	testvol=5255485824	testaccess=656935728	time=1.5004647104069590569	bandwidth=3502572094.8642616272	rate=2.2840357837973443689e-09
+Running nthreads=1 factor=5253858142 areasize=33554432 thrsize=33554560 testsize=33554560 repeats=157 testvol=5268065920 testaccess=658508240
+run time = 1.50434 -> next test with repeat factor=5252863127
+RESULT	datetime=2013-12-19 15:28:52	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=33554432	threadsize=33554560	testsize=33554560	repeats=157	testvol=5268065920	testaccess=658508240	time=1.5043412875384092331	bandwidth=3501908751.4511194229	rate=2.2844684335892428748e-09
+Running nthreads=1 factor=5252863127 areasize=67108864 thrsize=67108992 testsize=67108992 repeats=79 testvol=5301610368 testaccess=662701296
+run time = 1.51367 -> next test with repeat factor=5253716806
+RESULT	datetime=2013-12-19 15:28:54	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=67108864	threadsize=67108992	testsize=67108992	repeats=79	testvol=5301610368	testaccess=662701296	time=1.5136741939932107925	bandwidth=3502477870.7588768005	rate=2.2840972292186537419e-09
+Running nthreads=1 factor=5253716806 areasize=134217728 thrsize=134217856 testsize=134217856 repeats=40 testvol=5368714240 testaccess=671089280
+run time = 1.53295 -> next test with repeat factor=5253324018
+RESULT	datetime=2013-12-19 15:28:55	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=134217728	threadsize=134217856	testsize=134217856	repeats=40	testvol=5368714240	testaccess=671089280	time=1.5329477740451693535	bandwidth=3502216012.1169314384	rate=2.2842680098319694654e-09
+Running nthreads=1 factor=5253324018 areasize=268435456 thrsize=268435584 testsize=268435584 repeats=20 testvol=5368711680 testaccess=671088960
+run time = 1.53301 -> next test with repeat factor=5253120080
+RESULT	datetime=2013-12-19 15:28:57	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=268435456	threadsize=268435584	testsize=268435584	repeats=20	testvol=5368711680	testaccess=671088960	time=1.533006555400788784	bandwidth=3502080053.7910327911	rate=2.2843566900590777546e-09
+Running nthreads=1 factor=5253120080 areasize=536870912 thrsize=536871040 testsize=536871040 repeats=10 testvol=5368710400 testaccess=671088800
+run time = 1.53299 -> next test with repeat factor=5253186144
+RESULT	datetime=2013-12-19 15:28:58	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=536870912	threadsize=536871040	testsize=536871040	repeats=10	testvol=5368710400	testaccess=671088800	time=1.5329869110137224197	bandwidth=3502124096.0562529564	rate=2.2843279622811802068e-09
+Running nthreads=1 factor=5253186144 areasize=1073741824 thrsize=1073741952 testsize=1073741952 repeats=5 testvol=5368709760 testaccess=671088720
+run time = 1.53324 -> next test with repeat factor=5252314509
+RESULT	datetime=2013-12-19 15:29:00	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=1073741824	threadsize=1073741952	testsize=1073741952	repeats=5	testvol=5368709760	testaccess=671088720	time=1.5332411313429474831	bandwidth=3501543006.022550106	rate=2.2847070523595562235e-09
+Running nthreads=1 factor=5252314509 areasize=2147483648 thrsize=2147483776 testsize=2147483776 repeats=3 testvol=6442451328 testaccess=805306416
+run time = 1.83983 -> next test with repeat factor=5252479049
+RESULT	datetime=2013-12-19 15:29:02	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=2147483648	threadsize=2147483776	testsize=2147483776	repeats=3	testvol=6442451328	testaccess=805306416	time=1.8398316111415624619	bandwidth=3501652699.6199641228	rate=2.2846354810881856761e-09
+Running nthreads=1 factor=5252479049 areasize=4294967296 thrsize=4294967424 testsize=4294967424 repeats=2 testvol=8589934848 testaccess=1073741856
+run time = 2.45319 -> next test with repeat factor=5252304186
+RESULT	datetime=2013-12-19 15:29:04	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=4294967296	threadsize=4294967424	testsize=4294967424	repeats=2	testvol=8589934848	testaccess=1073741856	time=2.4531904123723506927	bandwidth=3501536124.0113148689	rate=2.2847115427829150616e-09
+Running nthreads=1 factor=5252304186 areasize=8589934592 thrsize=8589934720 testsize=8589934720 repeats=1 testvol=8589934720 testaccess=1073741840
+run time = 2.45349 -> next test with repeat factor=5251660423
+RESULT	datetime=2013-12-19 15:29:07	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=8589934592	threadsize=8589934720	testsize=8589934720	repeats=1	testvol=8589934720	testaccess=1073741840	time=2.4534910945221781731	bandwidth=3501106948.8609271049	rate=2.2849916088975149874e-09
+Running nthreads=1 factor=5251660423 areasize=17179869184 thrsize=17179869312 testsize=17179869312 repeats=1 testvol=17179869312 testaccess=2147483664
+run time = 4.90841 -> next test with repeat factor=5250128645
+RESULT	datetime=2013-12-19 15:29:12	host=earth	version=0.6.2	funcname=ScanRead64PtrUnrollLoop	nthreads=1	areasize=17179869184	threadsize=17179869312	testsize=17179869312	repeats=1	testvol=17179869312	testaccess=2147483664	time=4.9084138134494423866	bandwidth=3500085763.9439034462	rate=2.2856582779804756895e-09
+Skipping ScanWrite64IndexSimpleLoop tests
+Skipping ScanWrite64IndexUnrollLoop tests
+Skipping ScanRead64IndexSimpleLoop tests
+Skipping ScanRead64IndexUnrollLoop tests
+Skipping ScanWrite128PtrSimpleLoop tests
+Skipping ScanWrite128PtrUnrollLoop tests
+Skipping ScanRead128PtrSimpleLoop tests
+Skipping ScanRead128PtrUnrollLoop tests
+Skipping ScanWrite256PtrSimpleLoop test due to missing CPU feature 'avx'.
+Skipping ScanWrite256PtrUnrollLoop test due to missing CPU feature 'avx'.
+Skipping ScanRead256PtrSimpleLoop test due to missing CPU feature 'avx'.
+Skipping ScanRead256PtrUnrollLoop test due to missing CPU feature 'avx'.
+Skipping ScanWrite32PtrSimpleLoop tests
+Skipping ScanWrite32PtrUnrollLoop tests
+Skipping ScanRead32PtrSimpleLoop tests
+Skipping ScanRead32PtrUnrollLoop tests
+Skipping PermRead64SimpleLoop tests
+Skipping PermRead64UnrollLoop tests

@@ -21,7 +21,7 @@
 ###############################################################################
 
 # find all .tex files in current directory
-file(GLOB tex_files "${CMAKE_CURRENT_SOURCE_DIR}/" "*.tex")
+file(GLOB tex_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/" "*.tex")
 
 # test processed output against saved output
 foreach(infile ${tex_files})
@@ -32,6 +32,6 @@ foreach(infile ${tex_files})
   # write test case
   add_test(NAME latex_${basename}
     COMMAND ${CMAKE_BINARY_DIR}/src/sp-latex -C ${infile} -o ${outfile}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/latex
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endforeach()

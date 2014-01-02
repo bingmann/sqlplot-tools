@@ -1,5 +1,5 @@
 ###############################################################################
-# tests/CMakeLists.txt
+# tests/gnuplot/CMakeLists.txt
 #
 # Runs sqlplot-tools against some test files and verify the output.
 #
@@ -20,5 +20,18 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-add_subdirectory(latex)
-add_subdirectory(gnuplot)
+# find all .gp files in current directory
+file(GLOB plot_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/" "*.gp")
+
+# test processed output against saved output
+foreach(infile ${plot_files})
+  # replace .gp -> .out
+  string(REGEX REPLACE "\\.gp" ".out" outfile ${infile})
+  # basename for test target name
+  get_filename_component(basename ${infile} NAME)
+  # write test case
+  add_test(NAME gnuplot_${basename}
+    COMMAND ${CMAKE_BINARY_DIR}/src/sp-gnuplot -C ${infile} -o ${outfile}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endforeach()
