@@ -18,7 +18,6 @@ plot \
     'multiplot1-data.txt' index 5 title "testsize=4224" with points, \
     'multiplot1-data.txt' index 6 title "testsize=6272" with lines, \
     'multiplot1-data.txt' index 7 title "testsize=8320" with lines, \
-    'multiplot1-data.txt' index 7 title "testsize=8320" with linespoints, \
     'multiplot1-data.txt' index 8 title "testsize=12416" with linespoints, \
     'multiplot1-data.txt' index 9 title "testsize=16512" with linespoints, \
     'multiplot1-data.txt' index 10 title "testsize=20608" with linespoints, \

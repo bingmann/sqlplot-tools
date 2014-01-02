@@ -170,6 +170,8 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
     while (eln < m_lines.size() &&
            boost::regex_match(m_lines[eln], rm, re_line))
     {
+        ++eln;
+
         // copy properties to new plot line
         if (entry < datasets.size())
         {
@@ -187,20 +189,15 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
             // output extended properties
             oss << rm[1];
 
-            // break if no \ was found at the end
-            if (rm[2].length() == 0) {
-                ++eln;
-                break;
-            }
-
             ++entry;
+
+            // break if no \ was found at the end
+            if (rm[2].length() == 0) break;
         }
         else
         {
             // gobble additional plot line
         }
-
-        ++eln;
     }
 
     // append missing plot descriptions
