@@ -25,7 +25,6 @@ file(GLOB tex_files "${CMAKE_CURRENT_SOURCE_DIR}/" "*.tex")
 
 # test processed output against saved output
 foreach(infile ${tex_files})
-  message("${infile} blah")
   # replace .tex -> .out
   string(REGEX REPLACE "\\.tex$" ".out" outfile ${infile})
   # basename for test target name

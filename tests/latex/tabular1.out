@@ -1,7 +1,7 @@
 line1
-% IMPORT-DATA -T test2 test2.data
+% IMPORT-DATA test test.data
 line2
-% TABULAR SELECT LOG(2,testsize) AS x, bandwidth, rate, areasize FROM test2 ORDER BY x LIMIT 10
+% TABULAR SELECT LOG(2,testsize) AS x, bandwidth, rate, areasize FROM test ORDER BY x LIMIT 10
 10.1699250014423124 & 21256634665.4957 &  3.7635308344391e-10 & 1024 \\
 10.1699250014423124 & 20004857425.2276 &   3.999028750843e-10 & 1024 \\
 11.0874628412503394 & 20059162540.3994 & 3.98820239074683e-10 & 2048 \\
@@ -15,7 +15,7 @@ line2
 % END TABULAR SELECT LOG(2,testsize) AS x, bandwidth, rate, areasize FROM tes...
 line3
 indentation start
-  % TABULAR SELECT LOG(2,testsize) AS x, bandwidth, rate, areasize FROM test2 ORDER BY x
+  % TABULAR SELECT LOG(2,testsize) AS x, bandwidth, rate, areasize FROM test ORDER BY x
   10.1699250014423124 & 21256634665.4957 &  3.7635308344391e-10 &        1024 \\ line1
   10.1699250014423124 & 20004857425.2276 &   3.999028750843e-10 &        1024 \\[40pt]
   11.0874628412503394 & 21206797610.8078 &  3.7723753236193e-10 &        2048 \\[1pt]
