@@ -103,7 +103,7 @@ process_importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdl
 
     argv[args.size()] = NULL;
 
-    ImportData().main(args.size(), argv);
+    ImportData(true).main(args.size(), argv);
 }
 
 //! Helper to rewrite Gnuplot "plot" directives with new datafile/index pairs
@@ -370,6 +370,60 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     gnuplot_plot_rewrite(ln, indent, datasets, "MULTIPLOT");
 }
 
+static inline
+std::string maybe_quote(const char* str)
+{
+    char *endptr;
+    strtod(str, &endptr);
+
+    if (endptr && *endptr == 0) // fully parsed
+        return str;
+    else // needs quoting
+        return std::string("'") + str + "'";
+}
+
+//! Process # MACRO commands
+static inline void
+process_macro(size_t ln, size_t indent, const std::string& cmdline)
+{
+    PGresult* r = PQexec(g_pg, cmdline.c_str());
+    if (PQresultStatus(r) != PGRES_TUPLES_OK)
+    {
+        PQclear(r);
+        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
+    }
+
+    int colnum = PQnfields(r);
+    int rownum = PQntuples(r);
+    OUT("--> " << rownum << " rows");
+
+    if (rownum != 1)
+        OUT_THROW("MACRO did not return exactly one row");
+
+    // write each column as macro value
+    std::ostringstream oss;
+
+    for (int col = 0; col < colnum; ++col)
+    {
+        oss << PQfname(r, col) << " = "
+            << maybe_quote( PQgetvalue(r, 0, col) ) << std::endl;
+    }
+
+    PQclear(r);
+
+    // scan following lines for macro defintions
+    static const boost::regex re_macro("[^=]+ = .*");
+
+    size_t eln = ln;
+    while (eln < g_lines.size() &&
+           boost::regex_match(g_lines[eln], re_macro))
+    {
+        ++eln;
+    }
+
+    g_lines.replace(ln, eln, indent, oss.str(), "MACRO");
+}
+
 //! process line-based file in place
 void process()
 {
@@ -418,6 +472,11 @@ void process()
         {
             OUT("# " << cmdline);
             process_multiplot(ln, indent, cmdline);
+        }
+        else if (first_word == "MACRO")
+        {
+            OUT("# " << cmdline);
+            process_macro(ln, indent, cmdline.substr(space_pos+1));
         }
     }
 }
