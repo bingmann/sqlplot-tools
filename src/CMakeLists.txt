@@ -32,7 +32,7 @@ add_executable(sp-importdata
 target_link_libraries(sp-importdata ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(sp-latex
-  sp-latex.cpp
+  latex.cpp
   common.cpp
   sql.cpp
   importdata.cpp
@@ -41,7 +41,7 @@ add_executable(sp-latex
 target_link_libraries(sp-latex ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(sp-gnuplot
-  sp-gnuplot.cpp
+  gnuplot.cpp
   common.cpp
   sql.cpp
   importdata.cpp
