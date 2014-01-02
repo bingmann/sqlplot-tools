@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/sp-latex.cc
+ * src/latex.cpp
  *
  * Process embedded SQL plot instructions in LaTeX files.
  *
@@ -33,7 +33,6 @@
 #include <sstream>
 #include <vector>
 
-#include <getopt.h>
 #include <boost/regex.hpp>
 
 #include "common.h"
@@ -42,34 +41,61 @@
 #include "textlines.h"
 #include "importdata.h"
 
-TextLines g_lines;
-
-//! scan line for LaTeX comment, returns index of % or -1 if the line is not a
-//! plain comment
-inline int
-is_comment_line(const std::string& line)
+class SpLatex
 {
-    int i = 0;
-    while (isblank(line[i])) ++i;
-    return (line[i] == '%') ? i : -1;
-}
+public:
 
-//! scan for next comment line with given prefix
-static inline ssize_t
-scan_lines_for_comment(size_t ln, const std::string& cprefix)
-{
-    return g_lines.scan_for_comment<is_comment_line>(ln, cprefix);
-}
+    //! processed line data
+    TextLines&  m_lines;
+
+    //! scan line for LaTeX comment, returns index of % or -1 if the line is
+    //! not a plain comment
+    static inline int
+    is_comment_line(const std::string& line)
+    {
+        int i = 0;
+        while (isblank(line[i])) ++i;
+        return (line[i] == '%') ? i : -1;
+    }
+
+    //! scan for next comment line with given prefix
+    inline ssize_t
+    scan_lines_for_comment(size_t ln, const std::string& cprefix)
+    {
+        return m_lines.scan_for_comment<is_comment_line>(ln, cprefix);
+    }
+
+    //! Process % SQL commands
+    void sql(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process % IMPORT-DATA commands
+    void importdata(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process % TEXTTABLE commands
+    void texttable(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process % PLOT commands
+    void plot(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process % MULTIPLOT commands
+    void multiplot(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process % TABULAR commands
+    void tabular(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process Textlines
+    SpLatex(TextLines& lines);
+};
 
 //! Process % SQL commands
-void process_sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+void SpLatex::sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     SqlQuery sql(cmdline);
     OUT("SQL command successful.");
 }
 
 //! Process % IMPORT-DATA commands
-void process_importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+void SpLatex::importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     // split argument at whitespaces
     std::vector<std::string> args = split_ws(cmdline);
@@ -86,7 +112,7 @@ void process_importdata(size_t /* ln */, size_t /* indent */, const std::string&
 }
 
 //! Process % TEXTTABLE commands
-void process_texttable(size_t ln, size_t indent, const std::string& cmdline)
+void SpLatex::texttable(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql(cmdline);
     OUT("--> " << sql.num_rows() << " rows");
@@ -100,15 +126,15 @@ void process_texttable(size_t ln, size_t indent, const std::string& cmdline)
     ssize_t eln = scan_lines_for_comment(ln, "END TEXTTABLE");
 
     if (eln < 0) {
-        g_lines.replace(ln, ln, indent, output, "TEXTTABLE");
+        m_lines.replace(ln, ln, indent, output, "TEXTTABLE");
     }
     else {
-        g_lines.replace(ln, eln+1, indent, output, "TEXTTABLE");
+        m_lines.replace(ln, eln+1, indent, output, "TEXTTABLE");
     }
 }
 
 //! Process % PLOT commands
-void process_plot(size_t ln, size_t indent, const std::string& cmdline)
+void SpLatex::plot(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql(cmdline);
     OUT("--> " << sql.num_rows() << " rows");
@@ -130,21 +156,21 @@ void process_plot(size_t ln, size_t indent, const std::string& cmdline)
         re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
     boost::smatch rm;
 
-    if (ln < g_lines.size() &&
-        boost::regex_match(g_lines[ln], rm, re_addplot))
+    if (ln < m_lines.size() &&
+        boost::regex_match(m_lines[ln], rm, re_addplot))
     {
         std::string output = rm[1].str() + oss.str() + " " + rm[2].str();
-        g_lines.replace(ln, ln+1, indent, output, "PLOT");
+        m_lines.replace(ln, ln+1, indent, output, "PLOT");
     }
     else
     {
         std::string output = "\\addplot coordinates {" + oss.str() + " };";
-        g_lines.replace(ln, ln, indent, output, "PLOT");
+        m_lines.replace(ln, ln, indent, output, "PLOT");
     }
 }
 
 //! Process % MULTIPLOT commands
-void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
+void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 {
     // extract MULTIPLOT columns
     static const boost::regex
@@ -259,8 +285,8 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     boost::smatch rm;
 
     // check whether line contains an \addplot command
-    while (eln < g_lines.size() &&
-           boost::regex_match(g_lines[eln], rm, re_addplot))
+    while (eln < m_lines.size() &&
+           boost::regex_match(m_lines[eln], rm, re_addplot))
     {
         // copy styles from \addplot line
         if (entry < coordlist.size())
@@ -268,8 +294,8 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
             out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
 
             // check following \addlegendentry
-            if (eln+1 < g_lines.size() &&
-                boost::regex_match(g_lines[eln+1], rm, re_legend))
+            if (eln+1 < m_lines.size() &&
+                boost::regex_match(m_lines[eln+1], rm, re_legend))
             {
                 // copy styles
                 out << rm[1] << legendlist[entry] << rm[2] << std::endl;
@@ -287,8 +313,8 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
         else
         {
             // remove \addplot and following \addlegendentry as well.
-            if (eln+1 < g_lines.size() &&
-                boost::regex_match(g_lines[eln+1], re_legend))
+            if (eln+1 < m_lines.size() &&
+                boost::regex_match(m_lines[eln+1], re_legend))
             {
                 // skip thus remove \addlegendentry
                 ++eln;
@@ -310,11 +336,11 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
         ++entry;
     }
 
-    g_lines.replace(ln, eln, indent, out.str(), "MULTIPLOT");
+    m_lines.replace(ln, eln, indent, out.str(), "MULTIPLOT");
 }
 
 //! Process % TABULAR commands
-void process_tabular(size_t ln, size_t indent, const std::string& cmdline)
+void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
 {
     const std::string& query = cmdline;
 
@@ -351,14 +377,14 @@ void process_tabular(size_t ln, size_t indent, const std::string& cmdline)
 
     // scan lines forward till next comment directive
     size_t eln = ln;
-    while (eln < g_lines.size() && is_comment_line(g_lines[eln]) < 0)
+    while (eln < m_lines.size() && is_comment_line(m_lines[eln]) < 0)
         ++eln;
 
     static const boost::regex
         re_endtabular("[[:blank:]]*% END TABULAR .*");
 
-    if (eln < g_lines.size() &&
-        boost::regex_match(g_lines[eln], re_endtabular))
+    if (eln < m_lines.size() &&
+        boost::regex_match(m_lines[eln], re_endtabular))
     {
         // found END TABULAR
         size_t rln = ln;
@@ -369,44 +395,44 @@ void process_tabular(size_t ln, size_t indent, const std::string& cmdline)
 
         // iterate over tabular lines, copy styles to replacement
         while (entry < tlines.size() && rln < eln &&
-               boost::regex_match(g_lines[rln], rm, re_tabular))
+               boost::regex_match(m_lines[rln], rm, re_tabular))
         {
             tlines[entry++] += rm[1];
             ++rln;
         }
 
         tlines.push_back(shorten("% END TABULAR " + query));
-        g_lines.replace(ln, eln+1, indent, tlines, "TABULAR");
+        m_lines.replace(ln, eln+1, indent, tlines, "TABULAR");
     }
     else
     {
         // could not find END TABULAR: insert whole table.
         tlines.push_back(shorten("% END TABULAR " + query));
-        g_lines.replace(ln, ln, indent, tlines, "TABULAR");
+        m_lines.replace(ln, ln, indent, tlines, "TABULAR");
     }
 }
 
 //! process line-based file in place
-static inline void
-process()
+SpLatex::SpLatex(TextLines& lines)
+    : m_lines(lines)
 {
     // iterate over all lines
-    for (size_t ln = 0; ln < g_lines.size();)
+    for (size_t ln = 0; ln < m_lines.size();)
     {
         // try to collect an aligned comment block
-        int indent = is_comment_line(g_lines[ln]);
+        int indent = is_comment_line(m_lines[ln]);
         if (indent < 0) {
             ++ln;
             continue;
         }
 
-        std::string cmdline = g_lines[ln++].substr(indent+1);
+        std::string cmdline = m_lines[ln++].substr(indent+1);
 
         // collect lines while they are at the same indentation level
-        while ( ln < g_lines.size() &&
-                is_comment_line(g_lines[ln]) == indent )
+        while ( ln < m_lines.size() &&
+                is_comment_line(m_lines[ln]) == indent )
         {
-            cmdline += g_lines[ln++].substr(indent+1);
+            cmdline += m_lines[ln++].substr(indent+1);
         }
 
         cmdline = trim(cmdline);
@@ -419,194 +445,38 @@ process()
         if (first_word == "SQL")
         {
             OUT("% " << cmdline);
-            process_sql(ln, indent, cmdline.substr(space_pos+1));
+            sql(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "IMPORT-DATA")
         {
             OUT("% " << cmdline);
-            process_importdata(ln, indent, cmdline);
+            importdata(ln, indent, cmdline);
         }
         else if (first_word == "TEXTTABLE")
         {
             OUT("% " << cmdline);
-            process_texttable(ln, indent, cmdline.substr(space_pos+1));
+            texttable(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "PLOT")
         {
             OUT("% " << cmdline);
-            process_plot(ln, indent, cmdline.substr(space_pos+1));
+            plot(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "MULTIPLOT")
         {
             OUT("% " << cmdline);
-            process_multiplot(ln, indent, cmdline);
+            multiplot(ln, indent, cmdline);
         }
         else if (first_word == "TABULAR")
         {
             OUT("% " << cmdline);
-            process_tabular(ln, indent, cmdline.substr(space_pos+1));
+            tabular(ln, indent, cmdline.substr(space_pos+1));
         }
     }
 }
 
-//! process a stream
-static inline void
-process_stream(const std::string& filename, std::istream& is)
+//! Process LaTeX file
+void sp_latex(const std::string& /* filename */, TextLines& lines)
 {
-    // read complete LaTeX file line-wise
-    g_lines.read_stream(is);
-
-    // process lines in place
-    process();
-
-    OUT("--- Finished processing " << filename << " successfully.");
-}
-
-//! print command line usage
-static inline int
-print_usage(const std::string& progname)
-{
-    OUT("Usage: " << progname << " [options] [files...]" << std::endl <<
-        std::endl <<
-        "Options: " << std::endl <<
-        "  -v         Increase verbosity." << std::endl <<
-        "  -o <file>  Output all processed files to this stream." << std::endl <<
-        "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
-        std::endl);
-
-    return EXIT_FAILURE;
-}
-
-//! process latex, main function
-static inline int
-sp_latex(int argc, char* argv[])
-{
-    // parse command line parameters
-    int opt;
-
-    //! output file name
-    std::string opt_outputfile;
-
-    while ((opt = getopt(argc, argv, "vo:C")) != -1) {
-        switch (opt) {
-        case 'v':
-            gopt_verbose++;
-            break;
-        case 'o':
-            opt_outputfile = optarg;
-            break;
-        case 'C':
-            gopt_check_output = true;
-            break;
-        case 'h': default:
-            return print_usage(argv[0]);
-        }
-    }
-
-    // make connection to the database
-    g_pg = PQconnectdb("");
-
-    // check to see that the backend connection was successfully made
-    if (PQstatus(g_pg) != CONNECTION_OK)
-        OUT_THROW("Connection to database failed: " << PQerrorMessage(g_pg));
-
-    // open output file or string stream
-    std::ostream* output = NULL;
-    if (gopt_check_output)
-    {
-        if (!opt_outputfile.size())
-            OUT_THROW("Error: checking output requires and output filename.");
-
-        output = new std::ostringstream;
-    }
-    else if (opt_outputfile.size())
-    {
-        output = new std::ofstream(opt_outputfile.c_str());
-
-        if (!output->good())
-            OUT_THROW("Error opening output stream: " << strerror(errno));
-    }
-
-    // process file commandline arguments
-    if (optind < argc)
-    {
-        while (optind < argc)
-        {
-            const char* filename = argv[optind];
-
-            std::ifstream in(filename);
-            if (!in.good()) {
-                OUT_THROW("Error reading " << filename << ": " << strerror(errno));
-            }
-            else {
-                process_stream(filename, in);
-
-                if (output)  {
-                    // write to common output
-                    g_lines.write_stream(*output);
-                }
-                else {
-                    // overwrite input file
-                    in.close();
-                    std::ofstream out(filename);
-                    if (!out.good())
-                        OUT_THROW("Error writing " << filename << ": " << strerror(errno));
-
-                    g_lines.write_stream(out);
-                    if (!out.good())
-                        OUT_THROW("Error writing " << filename << ": " << strerror(errno));
-                }
-            }
-            ++optind;
-        }
-    }
-    else // no file arguments -> process stdin
-    {
-        OUT("Reading stdin ...");
-        process_stream("stdin", std::cin);
-
-        if (output)  {
-            // write to common output
-            g_lines.write_stream(*output);
-        }
-        else {
-            // write to stdout
-            g_lines.write_stream(std::cout);
-        }
-    }
-
-    // verify processed output against file
-    if (gopt_check_output)
-    {
-        std::ifstream in(opt_outputfile.c_str());
-        if (!in.good()) {
-            OUT("Error reading " << opt_outputfile << ": " << strerror(errno));
-            return EXIT_FAILURE;
-        }
-        std::string checkdata = read_stream(in);
-
-        assert(output);
-        std::ostringstream* oss = (std::ostringstream*)output;
-
-        if (checkdata != oss->str())
-            OUT_THROW("Mismatch to expected output file " << opt_outputfile);
-    }
-
-    if (output) delete output;
-
-    PQfinish(g_pg);
-    return EXIT_SUCCESS;
-}
-
-//! main(), yay.
-int main(int argc, char* argv[])
-{
-    try {
-        return sp_latex(argc, argv);
-    }
-    catch (std::runtime_error& e)
-    {
-        OUT(e.what());
-        return EXIT_FAILURE;
-    }
+    SpLatex sp(lines);
 }

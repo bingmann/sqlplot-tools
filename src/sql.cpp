@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/sql.cc
+ * src/sql.cpp
  *
  * Encapsulate SQL queries into a generic C++ class, which is specialized for
  * different SQL database interfaces.

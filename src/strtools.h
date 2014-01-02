@@ -25,6 +25,7 @@
 
 #include <string>
 #include <ostream>
+#include <vector>
 
 /**
  * Trims the given string on the left and right. Removes all characters in the
@@ -131,6 +132,16 @@ static inline bool is_prefix(const std::string& str, const std::string& match)
 {
     if (match.size() > str.size()) return false;
     return std::equal( match.begin(), match.end(), str.begin() );
+}
+
+/**
+ * Checks if the given match string is located at the end of this string.
+ */
+static inline bool is_suffix(const std::string& str, const std::string& match)
+{
+    if (match.size() > str.size()) return false;
+    return std::equal( match.begin(), match.end(),
+		       str.end() - match.size() );
 }
 
 /**

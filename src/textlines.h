@@ -24,6 +24,7 @@
 #define TEXTLINES_HEADER
 
 #include "strtools.h"
+#include <cassert>
 
 //! Class to work with text files line by line.
 class TextLines

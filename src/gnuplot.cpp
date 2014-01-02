@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/sp-gnuplot.cc
+ * src/gnuplot.cpp
  *
  * Process embedded SQL plot instructions in Gnuplot files.
  *
@@ -33,7 +33,6 @@
 #include <sstream>
 #include <vector>
 
-#include <getopt.h>
 #include <boost/regex.hpp>
 
 #include "common.h"
@@ -42,42 +41,79 @@
 #include "textlines.h"
 #include "importdata.h"
 
-TextLines g_lines;
-
-// *** current gnuplot datafile ***
-
-static std::ostream* g_datafile;
-static std::string g_datafilename;
-static unsigned int g_dataindex;
-
-// scan line for Gnuplot comment, returns index of # or -1 if the line is not a
-// plain comment
-inline int
-is_comment_line(const std::string& line)
+class SpGnuplot
 {
-    int i = 0;
-    while (isblank(line[i])) ++i;
-    return (line[i] == '#') ? i : -1;
-}
+public:
 
-//! scan for next comment line with given prefix
-static inline ssize_t
-scan_lines_for_comment(size_t ln, const std::string& cprefix)
-{
-    return g_lines.scan_for_comment<is_comment_line>(ln, cprefix);
-}
+    //! processed line data
+    TextLines&  m_lines;
+
+    // *** current gnuplot datafile ***
+
+    std::ostream* m_datafile;
+    std::string m_datafilename;
+    unsigned int m_dataindex;
+
+    // scan line for Gnuplot comment, returns index of # or -1 if the line is
+    // not a plain comment
+    static inline int
+    is_comment_line(const std::string& line)
+    {
+        int i = 0;
+        while (isblank(line[i])) ++i;
+        return (line[i] == '#') ? i : -1;
+    }
+
+    //! scan for next comment line with given prefix
+    inline ssize_t
+    scan_lines_for_comment(size_t ln, const std::string& cprefix)
+    {
+        return m_lines.scan_for_comment<is_comment_line>(ln, cprefix);
+    }
+
+    //! Process # SQL commands
+    void sql(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process # IMPORT-DATA commands
+    void importdata(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Struct to rewrite Gnuplot "plot" directives with new datafile/index pairs
+    struct Dataset
+    {
+        unsigned int index;
+        std::string title;
+    };
+
+    //! Helper to rewrite Gnuplot "plot" directives with new datafile/index pairs
+    void plot_rewrite(size_t ln, size_t indent,
+                      const std::vector<Dataset>& datasets,
+                      const char* plot_type);
+
+    //! Process # PLOT commands
+    void plot(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process # MULTIPLOT commands
+    void multiplot(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process # MACRO commands
+    void macro(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process TextLines
+    void process();
+
+    //! Process Textlines
+    SpGnuplot(const std::string& filename, TextLines& lines);
+};
 
 //! Process # SQL commands
-static inline void
-process_sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+void SpGnuplot::sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     SqlQuery sql(cmdline);
     OUT("SQL command successful.");
 }
 
 //! Process # IMPORT-DATA commands
-static inline void
-process_importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+void SpGnuplot::importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     // split argument at whitespaces
     std::vector<std::string> args = split_ws(cmdline);
@@ -94,24 +130,17 @@ process_importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdl
 }
 
 //! Helper to rewrite Gnuplot "plot" directives with new datafile/index pairs
-struct GnuplotDataset
-{
-    unsigned int index;
-    std::string title;
-};
-
-static inline void
-gnuplot_plot_rewrite(size_t ln, size_t indent,
-                     const std::vector<GnuplotDataset>& datasets,
-                     const char* plot_type)
+void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
+                             const std::vector<Dataset>& datasets,
+                             const char* plot_type)
 {
     std::ostringstream oss;
 
     // check whether line contains an "plot" command
     static const boost::regex re_plot("[[:blank:]]*plot.*\\\\[[:blank:]]*");
 
-    if (ln >= g_lines.size() ||
-        !boost::regex_match(g_lines[ln], re_plot))
+    if (ln >= m_lines.size() ||
+        !boost::regex_match(m_lines[ln], re_plot))
     {
         // no "plot" command: construct default version from scratch
 
@@ -120,12 +149,12 @@ gnuplot_plot_rewrite(size_t ln, size_t indent,
         {
             if (i != 0) oss << ',';
             oss << " \\" << std::endl
-                << "    '" << g_datafilename << "' index " << datasets[i].index
+                << "    '" << m_datafilename << "' index " << datasets[i].index
                 << " with linespoints";
         }
         oss << std::endl;
 
-        g_lines.replace(ln, ln, indent, oss.str(), plot_type);
+        m_lines.replace(ln, ln, indent, oss.str(), plot_type);
         return;
     }
 
@@ -138,15 +167,15 @@ gnuplot_plot_rewrite(size_t ln, size_t indent,
     size_t eln = ln+1;
     size_t entry = 0; // dataset entry
 
-    while (eln < g_lines.size() &&
-           boost::regex_match(g_lines[eln], rm, re_line))
+    while (eln < m_lines.size() &&
+           boost::regex_match(m_lines[eln], rm, re_line))
     {
         // copy properties to new plot line
         if (entry < datasets.size())
         {
             if (entry != 0) oss << ',';
             oss << " \\" << std::endl
-                << "    '" << g_datafilename << "' index " << datasets[entry].index;
+                << "    '" << m_datafilename << "' index " << datasets[entry].index;
 
             // if properties do not contain a title (or notitle), add it
             if (rm[1].str().find("title ") == std::string::npos &&
@@ -179,7 +208,7 @@ gnuplot_plot_rewrite(size_t ln, size_t indent,
     {
         if (entry != 0) oss << ',';
         oss << " \\" << std::endl
-            << "    '" << g_datafilename << "' index " << datasets[entry].index;
+            << "    '" << m_datafilename << "' index " << datasets[entry].index;
 
         if (datasets[entry].title.size())
             oss << " title \"" << datasets[entry].title << '"';
@@ -191,18 +220,17 @@ gnuplot_plot_rewrite(size_t ln, size_t indent,
 
     oss << std::endl;
 
-    g_lines.replace(ln, eln, indent, oss.str(), plot_type);
+    m_lines.replace(ln, eln, indent, oss.str(), plot_type);
 }
 
 //! Process # PLOT commands
-static inline void
-process_plot(size_t ln, size_t indent, const std::string& cmdline)
+void SpGnuplot::plot(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql(cmdline);
     OUT("--> " << sql.num_rows() << " rows");
 
     // write a header to the datafile containing the query
-    std::ostream& df = *g_datafile;
+    std::ostream& df = *m_datafile;
 
     df << std::string(80, '#') << std::endl
        << "# PLOT " << cmdline << std::endl
@@ -220,19 +248,18 @@ process_plot(size_t ln, size_t indent, const std::string& cmdline)
     }
 
     // append plot line to gnuplot
-    std::vector<GnuplotDataset> datasets(1);
-    datasets[0].index = g_dataindex;
+    std::vector<Dataset> datasets(1);
+    datasets[0].index = m_dataindex;
 
     // finish index in datafile
     df << std::endl << std::endl;
-    ++g_dataindex;
+    ++m_dataindex;
 
-    gnuplot_plot_rewrite(ln, indent, datasets, "PLOT");
+    plot_rewrite(ln, indent, datasets, "PLOT");
 }
 
 //! Process # MULTIPLOT commands
-static inline void
-process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
+void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 {
     // extract MULTIPLOT columns
     static const boost::regex
@@ -280,14 +307,14 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     }
 
     // write a header to the datafile containing the query
-    std::ostream& df = *g_datafile;
+    std::ostream& df = *m_datafile;
 
     df << std::string(80, '#') << std::endl
        << "# " << cmdline << std::endl
        << '#' << std::endl;
 
     // collect coordinates groups
-    std::vector<GnuplotDataset> datasets;
+    std::vector<Dataset> datasets;
 
     {
         std::vector<std::string> lastgroup;
@@ -305,7 +332,7 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
                 // group fields mismatch (or first row) -> start new group
                 if (sql.curr_row() != 0) {
                     df << std::endl << std::endl;
-                    ++g_dataindex;
+                    ++m_dataindex;
                 }
 
                 lastgroup  = rowgroup;
@@ -316,11 +343,11 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
                     if (i != 0) os << ',';
                     os << groupfields[i] << '=' << rowgroup[i];
                 }
-                datasets.push_back(GnuplotDataset());
-                datasets.back().index = g_dataindex;
+                datasets.push_back(Dataset());
+                datasets.back().index = m_dataindex;
                 datasets.back().title = os.str();
 
-                df << "# index " << g_dataindex << ' ' << os.str() << std::endl;
+                df << "# index " << m_dataindex << ' ' << os.str() << std::endl;
             }
 
             // group fields match with last row -> append coordinates.
@@ -330,10 +357,10 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
         // finish last plot
         df << std::endl << std::endl;
-        ++g_dataindex;
+        ++m_dataindex;
     }
 
-    gnuplot_plot_rewrite(ln, indent, datasets, "MULTIPLOT");
+    plot_rewrite(ln, indent, datasets, "MULTIPLOT");
 }
 
 static inline
@@ -349,8 +376,7 @@ std::string maybe_quote(const char* str)
 }
 
 //! Process # MACRO commands
-static inline void
-process_macro(size_t ln, size_t indent, const std::string& cmdline)
+void SpGnuplot::macro(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql(cmdline);
     OUT("--> " << sql.num_rows() << " rows");
@@ -373,35 +399,35 @@ process_macro(size_t ln, size_t indent, const std::string& cmdline)
     static const boost::regex re_macro("[^=]+ = .*");
 
     size_t eln = ln;
-    while (eln < g_lines.size() &&
-           boost::regex_match(g_lines[eln], re_macro))
+    while (eln < m_lines.size() &&
+           boost::regex_match(m_lines[eln], re_macro))
     {
         ++eln;
     }
 
-    g_lines.replace(ln, eln, indent, oss.str(), "MACRO");
+    m_lines.replace(ln, eln, indent, oss.str(), "MACRO");
 }
 
 //! process line-based file in place
-void process()
+void SpGnuplot::process()
 {
     // iterate over all lines
-    for (size_t ln = 0; ln < g_lines.size();)
+    for (size_t ln = 0; ln < m_lines.size();)
     {
         // try to collect an aligned comment block
-        int indent = is_comment_line(g_lines[ln]);
+        int indent = is_comment_line(m_lines[ln]);
         if (indent < 0) {
             ++ln;
             continue;
         }
 
-        std::string cmdline = g_lines[ln++].substr(indent+1);
+        std::string cmdline = m_lines[ln++].substr(indent+1);
 
         // collect lines while they are at the same indentation level
-        while ( ln < g_lines.size() &&
-                is_comment_line(g_lines[ln]) == indent )
+        while ( ln < m_lines.size() &&
+                is_comment_line(m_lines[ln]) == indent )
         {
-            cmdline += g_lines[ln++].substr(indent+1);
+            cmdline += m_lines[ln++].substr(indent+1);
         }
 
         cmdline = trim(cmdline);
@@ -414,61 +440,58 @@ void process()
         if (first_word == "SQL")
         {
             OUT("# " << cmdline);
-            process_sql(ln, indent, cmdline.substr(space_pos+1));
+            sql(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "IMPORT-DATA")
         {
             OUT("# " << cmdline);
-            process_importdata(ln, indent, cmdline);
+            importdata(ln, indent, cmdline);
         }
         else if (first_word == "PLOT")
         {
             OUT("# " << cmdline);
-            process_plot(ln, indent, cmdline.substr(space_pos+1));
+            plot(ln, indent, cmdline.substr(space_pos+1));
         }
         else if (first_word == "MULTIPLOT")
         {
             OUT("# " << cmdline);
-            process_multiplot(ln, indent, cmdline);
+            multiplot(ln, indent, cmdline);
         }
         else if (first_word == "MACRO")
         {
             OUT("# " << cmdline);
-            process_macro(ln, indent, cmdline.substr(space_pos+1));
+            macro(ln, indent, cmdline.substr(space_pos+1));
         }
     }
 }
 
 //! process a stream
-static inline void
-process_stream(const std::string& filename, std::istream& is)
+SpGnuplot::SpGnuplot(const std::string& filename, TextLines& lines)
+    : m_lines(lines)
 {
-    // read complete Gnuplot file line-wise
-    g_lines.read_stream(is);
-
     // construct output data file
-    g_datafilename = filename;
-    std::string::size_type dotpos = g_datafilename.rfind('.');
+    m_datafilename = filename;
+    std::string::size_type dotpos = m_datafilename.rfind('.');
     if (dotpos != std::string::npos)
-        g_datafilename = g_datafilename.substr(0, dotpos);
-    g_datafilename += "-data.txt";
+        m_datafilename = m_datafilename.substr(0, dotpos);
+    m_datafilename += "-data.txt";
 
     // open output data file
     if (!gopt_check_output)
     {
-        g_datafile = new std::ofstream(g_datafilename.c_str());
-        if (!g_datafile->good()) {
-            OUT("Fatal error opening datafile " << g_datafilename << ": " << strerror(errno));
-            delete g_datafile;
+        m_datafile = new std::ofstream(m_datafilename.c_str());
+        if (!m_datafile->good()) {
+            OUT("Fatal error opening datafile " << m_datafilename << ": " << strerror(errno));
+            delete m_datafile;
             return;
         }
     }
     else
     {
         // open temporary data file
-        g_datafile = new std::ostringstream();
+        m_datafile = new std::ostringstream();
     }
-    g_dataindex = 0;
+    m_dataindex = 0;
 
     // process lines in place
     process();
@@ -476,173 +499,26 @@ process_stream(const std::string& filename, std::istream& is)
     // verify processed output against file
     if (gopt_check_output)
     {
-        std::ifstream in(g_datafilename.c_str());
+        std::ifstream in(m_datafilename.c_str());
         if (!in.good()) {
-            OUT("Error reading " << g_datafilename << ": " << strerror(errno));
+            OUT("Error reading " << m_datafilename << ": " << strerror(errno));
             exit(EXIT_FAILURE);
         }
         std::string checkdata = read_stream(in);
 
-        std::ostringstream* oss = (std::ostringstream*)g_datafile;
+        std::ostringstream* oss = (std::ostringstream*)m_datafile;
 
         if (checkdata != oss->str())
-            OUT_THROW("Mismatch to expected output data file " << g_datafilename);
+            OUT_THROW("Mismatch to expected output data file " << m_datafilename);
         else
-            OUT("Good match to expected output data file " << g_datafilename);
+            OUT("Good match to expected output data file " << m_datafilename);
     }
 
-    delete g_datafile;
-
-    OUT("--- Finished processing " << filename << " successfully.");
+    delete m_datafile;
 }
 
-//! print command line usage
-static inline int
-print_usage(const std::string& progname)
+//! Process Gnuplot file
+void sp_gnuplot(const std::string& filename, TextLines& lines)
 {
-    OUT("Usage: " << progname << " [options] [files...]" << std::endl <<
-        std::endl <<
-        "Options: " << std::endl <<
-        "  -v         Increase verbosity." << std::endl <<
-        "  -o <file>  Output all processed files to this stream." << std::endl <<
-        "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
-        std::endl);
-
-    return EXIT_FAILURE;
-}
-
-//! process Gnuplot, main function
-static inline int
-sp_gnuplot(int argc, char* argv[])
-{
-    // parse command line parameters
-    int opt;
-
-    //! output file name
-    std::string opt_outputfile;
-
-    while ((opt = getopt(argc, argv, "vo:C")) != -1) {
-        switch (opt) {
-        case 'v':
-            gopt_verbose++;
-            break;
-        case 'o':
-            opt_outputfile = optarg;
-            break;
-        case 'C':
-            gopt_check_output = true;
-            break;
-        case 'h': default:
-            return print_usage(argv[0]);
-        }
-    }
-
-    // make connection to the database
-    g_pg = PQconnectdb("");
-
-    // check to see that the backend connection was successfully made
-    if (PQstatus(g_pg) != CONNECTION_OK)
-        OUT_THROW("Connection to database failed: " << PQerrorMessage(g_pg));
-
-    // open output file or string stream
-    std::ostream* output = NULL;
-    if (gopt_check_output)
-    {
-        if (!opt_outputfile.size())
-            OUT_THROW("Error: checking output requires and output filename.");
-
-        output = new std::ostringstream;
-    }
-    else if (opt_outputfile.size())
-    {
-        output = new std::ofstream(opt_outputfile.c_str());
-
-        if (!output->good())
-            OUT_THROW("Error opening output stream: " << strerror(errno));
-    }
-
-    // process file commandline arguments
-    if (optind < argc)
-    {
-        while (optind < argc)
-        {
-            const char* filename = argv[optind];
-
-            std::ifstream in(filename);
-            if (!in.good()) {
-                OUT_THROW("Error reading " << filename << ": " << strerror(errno));
-            }
-            else {
-                process_stream(filename, in);
-
-                if (output)  {
-                    // write to common output
-                    g_lines.write_stream(*output);
-                }
-                else {
-                    // overwrite input file
-                    in.close();
-                    std::ofstream out(filename);
-                    if (!out.good())
-                        OUT_THROW("Error writing " << filename << ": " << strerror(errno));
-
-                    g_lines.write_stream(out);
-                    if (!out.good())
-                        OUT_THROW("Error writing " << filename << ": " << strerror(errno));
-                }
-            }
-            ++optind;
-        }
-    }
-    else // no file arguments -> process stdin
-    {
-        OUT("Reading stdin ...");
-        process_stream("stdin", std::cin);
-
-        if (output)  {
-            // write to common output
-            g_lines.write_stream(*output);
-        }
-        else {
-            // write to stdout
-            g_lines.write_stream(std::cout);
-        }
-    }
-
-    // verify processed output against file
-    if (gopt_check_output)
-    {
-        std::ifstream in(opt_outputfile.c_str());
-        if (!in.good()) {
-            OUT("Error reading " << opt_outputfile << ": " << strerror(errno));
-            return EXIT_FAILURE;
-        }
-        std::string checkdata = read_stream(in);
-
-        assert(output);
-        std::ostringstream* oss = (std::ostringstream*)output;
-
-        if (checkdata != oss->str())
-            OUT_THROW("Mismatch to expected output file " << opt_outputfile);
-        else
-            OUT("Good match to expected output file " << opt_outputfile);
-    }
-
-    if (output) delete output;
-
-    PQfinish(g_pg);
-    return EXIT_SUCCESS;
-}
-
-//! main(), yay.
-int main(int argc, char* argv[])
-{
-    try {
-        return sp_gnuplot(argc, argv);
-    }
-    catch (std::runtime_error& e)
-    {
-        OUT(e.what());
-        return EXIT_FAILURE;
-    }
+    SpGnuplot sp(filename, lines);
 }

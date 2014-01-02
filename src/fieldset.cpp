@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/fieldset.cc
+ * src/fieldset.cpp
  *
  * FieldSet class to automatically detect SQL column types from data set.
  *

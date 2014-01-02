@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/importdata.cc
+ * src/importdata.cpp
  *
  * Import RESULT files into the local PostgreSQL database for further
  * processing. Automatically detects the SQL column types.
