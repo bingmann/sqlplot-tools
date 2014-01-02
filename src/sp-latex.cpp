@@ -177,7 +177,7 @@ void process_importdata(size_t /* ln */, size_t /* indent */, const std::string&
 
     argv[args.size()] = NULL;
 
-    ImportData().main(args.size(), argv);
+    ImportData(true).main(args.size(), argv);
 }
 
 //! Process % TEXTTABLE commands

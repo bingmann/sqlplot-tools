@@ -305,12 +305,13 @@ void ImportData::process_linedata()
 }
 
 //! initializing constructor
-ImportData::ImportData()
+ImportData::ImportData(bool temporary_table)
     : mopt_verbose(gopt_verbose),
       mopt_firstline(false),
       mopt_all_lines(false),
       mopt_noduplicates(false),
       mopt_colnums(false),
+      mopt_temporary_table(temporary_table),
       m_total_count(0)
 {
 }

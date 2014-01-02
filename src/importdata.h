@@ -75,7 +75,7 @@ protected:
 
 public:
     //! initializing constructor
-    ImportData();
+    ImportData(bool temporary_table = false);
 
     //! returns true if the give table exists.
     static bool exist_table(const std::string& table);
