@@ -38,6 +38,7 @@
 
 #include "common.h"
 #include "strtools.h"
+#include "sql.h"
 #include "textlines.h"
 #include "importdata.h"
 
@@ -60,98 +61,11 @@ scan_lines_for_comment(size_t ln, const std::string& cprefix)
     return g_lines.scan_for_comment<is_comment_line>(ln, cprefix);
 }
 
-//! format PG result as a text table
-std::string format_texttable(PGresult* r)
-{
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-
-    // format SQL table: determine sizes
-
-    std::vector<size_t> width(colnum, 0);
-
-    for (int col = 0; col < colnum; ++col)
-    {
-        width[col] = std::max(width[col], strlen( PQfname(r,col) ));
-
-        assert(PQfformat(r,col) == 0);
-    }
-
-    for (int row = 0; row < rownum; ++row)
-    {
-        for (int col = 0; col < colnum; ++col)
-        {
-            width[col] = std::max(width[col], strlen( PQgetvalue(r,row,col) ));
-        }
-    }
-
-    // construct header/middle/footer breaks
-    std::ostringstream obreak;
-    obreak << "+-";
-    for (int col = 0; col < colnum; ++col)
-    {
-        if (col != 0) obreak << "+-";
-        obreak << std::string(width[col]+1, '-');
-    }
-    obreak << "+" << std::endl;
-
-    // format output
-    std::ostringstream os;
-
-    os << obreak.str();
-
-    os << "| ";
-    for (int col = 0; col < colnum; ++col)
-    {
-        if (col != 0) os << "| ";
-        os << std::setw(width[col]) << std::right
-           << PQfname(r, col) << ' ';
-    }
-    os << "|" << std::endl;
-    os << obreak.str();
-
-    for (int row = 0; row < rownum; ++row)
-    {
-         os << "| ";
-        for (int col = 0; col < colnum; ++col)
-        {
-            if (col != 0) os << "| ";
-            os << std::setw(width[col]);
-
-            //os << '-' << PQftype(r,col) << '-';
-            if (PQftype(r,col) == 23 || PQftype(r,col) == 20)
-                os << std::right;
-            else
-                os << std::left;
-
-            os << PQgetvalue(r, row, col) << ' ';
-        }
-        os << "|" << std::endl;
-    }
-    os << obreak.str();
-
-    return os.str();
-}
-
 //! Process % SQL commands
 void process_sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
-    PGresult* r = PQexec(g_pg, cmdline.c_str());
-    if (PQresultStatus(r) == PGRES_COMMAND_OK)
-    {
-        OUT("SQL command successful.");
-    }
-    else if (PQresultStatus(r) == PGRES_TUPLES_OK)
-    {
-        OUT("SQL returned tuples.");
-    }
-    else
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
-
-    PQclear(r);
+    SqlQuery sql(cmdline);
+    OUT("SQL command successful.");
 }
 
 //! Process % IMPORT-DATA commands
@@ -174,16 +88,11 @@ void process_importdata(size_t /* ln */, size_t /* indent */, const std::string&
 //! Process % TEXTTABLE commands
 void process_texttable(size_t ln, size_t indent, const std::string& cmdline)
 {
-    PGresult* r = PQexec(g_pg, cmdline.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
+    SqlQuery sql(cmdline);
+    OUT("--> " << sql.num_rows() << " rows");
 
     // format result as a text table
-    std::string output = format_texttable(r);
-    PQclear(r);
+    std::string output = sql.format_texttable();
 
     output += shorten("% END TEXTTABLE " + cmdline) + "\n";
 
@@ -201,30 +110,20 @@ void process_texttable(size_t ln, size_t indent, const std::string& cmdline)
 //! Process % PLOT commands
 void process_plot(size_t ln, size_t indent, const std::string& cmdline)
 {
-    PGresult* r = PQexec(g_pg, cmdline.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
-
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-    OUT("--> " << rownum << " rows");
+    SqlQuery sql(cmdline);
+    OUT("--> " << sql.num_rows() << " rows");
 
     std::ostringstream oss;
-    for (int row = 0; row < rownum; ++row)
+    while (sql.step())
     {
         oss << " (";
-        for (int col = 0; col < colnum; ++col)
+        for (unsigned int col = 0; col < sql.num_cols(); ++col)
         {
             if (col != 0) oss << ',';
-            oss << PQgetvalue(r, row, col);
+            oss << sql.text(col);
         }
         oss << ')';
     }
-
-    PQclear(r);
 
     // check whether line contains an \addplot command
     static const boost::regex
@@ -264,43 +163,32 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
     // execute query
-    PGresult* r = PQexec(g_pg, query.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
-
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-    OUT("--> " << rownum << " rows");
+    SqlQuery sql(query);
+    OUT("--> " << sql.num_rows() << " rows");
 
     // read column names
-    std::map<std::string, unsigned int> colmap;
-
-    for (int i = 0; i < colnum; ++i)
-        colmap[ PQfname(r,i) ] = i;
+    sql.read_colmap();
 
     // check for existing x and y columns.
-    if (colmap.find("x") == colmap.end())
+    if (!sql.exist_col("x"))
         OUT_THROW("MULTIPLOT failed: result contains no 'x' column.");
 
-    if (colmap.find("y") == colmap.end())
+    if (!sql.exist_col("y"))
         OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
 
-    int colx = colmap["x"], coly = colmap["y"];
+    unsigned int colx = sql.find_col("x"), coly = sql.find_col("y");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
     for (std::vector<std::string>::const_iterator gi = groupfields.begin();
          gi != groupfields.end(); ++gi)
     {
-        if (colmap.find(*gi) == colmap.end())
+        if (!sql.exist_col(*gi))
         {
             OUT_THROW("MULTIPLOT failed: result contains no '" << *gi <<
                       "' column, which is a MULTIPLOT group field.");
         }
-        groupcols.push_back(colmap[*gi]);
+        groupcols.push_back(sql.find_col(*gi));
     }
 
     // collect coordinates {...} clause groups
@@ -311,13 +199,15 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
         std::vector<std::string> lastgroup;
         std::ostringstream coord;
 
-        for (int row = 0; row < rownum; ++row)
+        for (unsigned int row = 0; row < sql.num_rows(); ++row)
         {
+            sql.step();
+
             // collect groupfields for this row
             std::vector<std::string> rowgroup (groupcols.size());
 
             for (size_t i = 0; i < groupcols.size(); ++i)
-                rowgroup[i] = PQgetvalue(r, row, groupcols[i]);
+                rowgroup[i] = sql.text(groupcols[i]);
 
             if (row == 0 || lastgroup != rowgroup)
             {
@@ -339,8 +229,8 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
 
             // group fields match with last row -> append coordinates.
-            coord << " (" << PQgetvalue(r, row, colx)
-                  <<  ',' << PQgetvalue(r, row, coly)
+            coord << " (" << sql.text(colx)
+                  <<  ',' << sql.text(coly)
                   <<  ')';
         }
 
@@ -426,40 +316,34 @@ void process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
 //! Process % TABULAR commands
 void process_tabular(size_t ln, size_t indent, const std::string& cmdline)
 {
-    std::string query = cmdline;
+    const std::string& query = cmdline;
 
     // execute query
-    PGresult* r = PQexec(g_pg, query.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
+    SqlQuery sql(query);
+    OUT("--> " << sql.num_rows() << " rows");
 
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-    OUT("--> " << rownum << " rows");
+    sql.read_complete();
 
     // calculate width of columns data
-    std::vector<size_t> cwidth(colnum, 0);
+    std::vector<size_t> cwidth(sql.num_cols(), 0);
 
-    for (int i = 0; i < rownum; ++i)
+    for (unsigned int i = 0; i < sql.num_rows(); ++i)
     {
-        for (int j = 0; j < colnum; ++j)
+        for (unsigned int j = 0; j < sql.num_cols(); ++j)
         {
-            cwidth[j] = std::max(cwidth[j], strlen( PQgetvalue(r,i,j) ));
+            cwidth[j] = std::max(cwidth[j], strlen( sql.text(i, j) ));
         }
     }
 
     // generate output
     std::vector<std::string> tlines;
-    for (int i = 0; i < rownum; ++i)
+    for (unsigned int i = 0; i < sql.num_rows(); ++i)
     {
         std::ostringstream out;
-        for (int j = 0; j < colnum; ++j)
+        for (unsigned j = 0; j < sql.num_cols(); ++j)
         {
             if (j != 0) out << " & ";
-            out << std::setw(cwidth[j]) << PQgetvalue(r,i,j);
+            out << std::setw(cwidth[j]) << sql.text(i,j);
         }
         out << " \\\\";
         tlines.push_back(out.str());

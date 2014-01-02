@@ -38,6 +38,7 @@
 
 #include "common.h"
 #include "strtools.h"
+#include "sql.h"
 #include "textlines.h"
 #include "importdata.h"
 
@@ -70,22 +71,8 @@ scan_lines_for_comment(size_t ln, const std::string& cprefix)
 static inline void
 process_sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
-    PGresult* r = PQexec(g_pg, cmdline.c_str());
-    if (PQresultStatus(r) == PGRES_COMMAND_OK)
-    {
-        OUT("SQL command successful.");
-    }
-    else if (PQresultStatus(r) == PGRES_TUPLES_OK)
-    {
-        OUT("SQL returned tuples.");
-    }
-    else
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
-
-    PQclear(r);
+    SqlQuery sql(cmdline);
+    OUT("SQL command successful.");
 }
 
 //! Process # IMPORT-DATA commands
@@ -211,16 +198,8 @@ gnuplot_plot_rewrite(size_t ln, size_t indent,
 static inline void
 process_plot(size_t ln, size_t indent, const std::string& cmdline)
 {
-    PGresult* r = PQexec(g_pg, cmdline.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
-
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-    OUT("--> " << rownum << " rows");
+    SqlQuery sql(cmdline);
+    OUT("--> " << sql.num_rows() << " rows");
 
     // write a header to the datafile containing the query
     std::ostream& df = *g_datafile;
@@ -230,17 +209,15 @@ process_plot(size_t ln, size_t indent, const std::string& cmdline)
        << '#' << std::endl;
 
     // write result data rows
-    for (int row = 0; row < rownum; ++row)
+    while (sql.step())
     {
-        for (int col = 0; col < colnum; ++col)
+        for (unsigned int col = 0; col < sql.num_cols(); ++col)
         {
             if (col != 0) df << '\t';
-            df << PQgetvalue(r, row, col);
+            df << sql.text(col);
         }
         df << std::endl;
     }
-
-    PQclear(r);
 
     // append plot line to gnuplot
     std::vector<GnuplotDataset> datasets(1);
@@ -274,43 +251,32 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
     // execute query
-    PGresult* r = PQexec(g_pg, query.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
-
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-    OUT("--> " << rownum << " rows");
+    SqlQuery sql(query);
+    OUT("--> " << sql.num_rows() << " rows");
 
     // read column names
-    std::map<std::string, unsigned int> colmap;
-
-    for (int i = 0; i < colnum; ++i)
-        colmap[ PQfname(r,i) ] = i;
+    sql.read_colmap();
 
     // check for existing x and y columns.
-    if (colmap.find("x") == colmap.end())
+    if (!sql.exist_col("x"))
         OUT_THROW("MULTIPLOT failed: result contains no 'x' column.");
 
-    if (colmap.find("y") == colmap.end())
+    if (!sql.exist_col("y"))
         OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
 
-    int colx = colmap["x"], coly = colmap["y"];
+    unsigned int colx = sql.find_col("x"), coly = sql.find_col("y");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
     for (std::vector<std::string>::const_iterator gi = groupfields.begin();
          gi != groupfields.end(); ++gi)
     {
-        if (colmap.find(*gi) == colmap.end())
+        if (!sql.exist_col(*gi))
         {
             OUT_THROW("MULTIPLOT failed: result contains no '" << *gi <<
                       "' column, which is a MULTIPLOT group field.");
         }
-        groupcols.push_back(colmap[*gi]);
+        groupcols.push_back(sql.find_col(*gi));
     }
 
     // write a header to the datafile containing the query
@@ -326,18 +292,18 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
     {
         std::vector<std::string> lastgroup;
 
-        for (int row = 0; row < rownum; ++row)
+        while (sql.step())
         {
             // collect groupfields for this row
             std::vector<std::string> rowgroup (groupcols.size());
 
             for (size_t i = 0; i < groupcols.size(); ++i)
-                rowgroup[i] = PQgetvalue(r, row, groupcols[i]);
+                rowgroup[i] = sql.text(groupcols[i]);
 
-            if (row == 0 || lastgroup != rowgroup)
+            if (sql.curr_row() == 0 || lastgroup != rowgroup)
             {
                 // group fields mismatch (or first row) -> start new group
-                if (row != 0) {
+                if (sql.curr_row() != 0) {
                     df << std::endl << std::endl;
                     ++g_dataindex;
                 }
@@ -358,8 +324,8 @@ process_multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
 
             // group fields match with last row -> append coordinates.
-            df << PQgetvalue(r, row, colx) << '\t'
-               << PQgetvalue(r, row, coly) << std::endl;
+            df << sql.text(colx) << '\t'
+               << sql.text(coly) << std::endl;
         }
 
         // finish last plot
@@ -386,30 +352,22 @@ std::string maybe_quote(const char* str)
 static inline void
 process_macro(size_t ln, size_t indent, const std::string& cmdline)
 {
-    PGresult* r = PQexec(g_pg, cmdline.c_str());
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SQL failed: " << PQerrorMessage(g_pg));
-    }
+    SqlQuery sql(cmdline);
+    OUT("--> " << sql.num_rows() << " rows");
 
-    int colnum = PQnfields(r);
-    int rownum = PQntuples(r);
-    OUT("--> " << rownum << " rows");
-
-    if (rownum != 1)
+    if (sql.num_rows() != 1)
         OUT_THROW("MACRO did not return exactly one row");
+
+    sql.step();
 
     // write each column as macro value
     std::ostringstream oss;
 
-    for (int col = 0; col < colnum; ++col)
+    for (unsigned int col = 0; col < sql.num_cols(); ++col)
     {
-        oss << PQfname(r, col) << " = "
-            << maybe_quote( PQgetvalue(r, 0, col) ) << std::endl;
+        oss << sql.col_name(col) << " = "
+            << maybe_quote( sql.text(col) ) << std::endl;
     }
-
-    PQclear(r);
 
     // scan following lines for macro defintions
     static const boost::regex re_macro("[^=]+ = .*");

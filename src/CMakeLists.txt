@@ -25,6 +25,7 @@ include_directories(${PostgreSQL_INCLUDE_DIRS})
 add_executable(sp-importdata
   sp-importdata.cpp
   common.cpp
+  sql.cpp
   importdata.cpp
   fieldset.cpp
   )
@@ -33,6 +34,7 @@ target_link_libraries(sp-importdata ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
 add_executable(sp-latex
   sp-latex.cpp
   common.cpp
+  sql.cpp
   importdata.cpp
   fieldset.cpp
   )
@@ -41,6 +43,7 @@ target_link_libraries(sp-latex ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
 add_executable(sp-gnuplot
   sp-gnuplot.cpp
   common.cpp
+  sql.cpp
   importdata.cpp
   fieldset.cpp
   )
