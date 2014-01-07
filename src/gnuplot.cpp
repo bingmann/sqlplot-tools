@@ -144,25 +144,34 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
     {
         // no "plot" command: construct default version from scratch
 
-        oss << "plot";
+        if (datasets.size())
+            oss << "plot";
+
         for (size_t i = 0; i < datasets.size(); ++i)
         {
             if (i != 0) oss << ',';
             oss << " \\" << std::endl
-                << "    '" << m_datafilename << "' index " << datasets[i].index
-                << " with linespoints";
+                << "    '" << m_datafilename << "' index " << datasets[i].index;
+
+            if (datasets[i].title.size())
+                oss << " title \"" << datasets[i].title << '"';
+
+            oss << " with linespoints";
         }
-        oss << std::endl;
+
+        if (datasets.size())
+            oss << std::endl;
 
         m_lines.replace(ln, ln, indent, oss.str(), plot_type);
         return;
     }
 
     // scan following lines for plot descriptions
-    static const boost::regex re_line("[[:blank:]]*'[^']+' index [0-9]+( .*?)(, \\\\)?[[:blank:]]*");
+    static const boost::regex re_line("[[:blank:]]*'[^']+' index [0-9]+( title \"[^\"]*\")?( .*?)(, \\\\)?[[:blank:]]*");
     boost::smatch rm;
 
-    oss << "plot";
+    if (datasets.size())
+        oss << "plot";
 
     size_t eln = ln+1;
     size_t entry = 0; // dataset entry
@@ -179,20 +188,17 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
             oss << " \\" << std::endl
                 << "    '" << m_datafilename << "' index " << datasets[entry].index;
 
-            // if properties do not contain a title (or notitle), add it
-            if (rm[1].str().find("title ") == std::string::npos &&
-                datasets[entry].title.size())
-            {
+            // if dataset contains a title, add it
+            if (datasets[entry].title.size())
                 oss << " title \"" << datasets[entry].title << '"';
-            }
 
             // output extended properties
-            oss << rm[1];
+            oss << rm[2];
 
             ++entry;
 
             // break if no \ was found at the end
-            if (rm[2].length() == 0) break;
+            if (rm[3].length() == 0) break;
         }
         else
         {
@@ -215,7 +221,8 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
         ++entry;
     }
 
-    oss << std::endl;
+    if (datasets.size())
+        oss << std::endl;
 
     m_lines.replace(ln, eln, indent, oss.str(), plot_type);
 }
@@ -278,6 +285,11 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     SqlQuery sql(query);
     OUT("--> " << sql.num_rows() << " rows");
 
+    std::vector<Dataset> datasets;
+
+    if (sql.num_rows() == 0)
+        return plot_rewrite(ln, indent, datasets, "MULTIPLOT");
+
     // read column names
     sql.read_colmap();
 
@@ -311,8 +323,6 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
        << '#' << std::endl;
 
     // collect coordinates groups
-    std::vector<Dataset> datasets;
-
     {
         std::vector<std::string> lastgroup;
 

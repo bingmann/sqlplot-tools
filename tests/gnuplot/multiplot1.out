@@ -6,8 +6,8 @@ set key top right
 # MULTIPLOT(funcname) SELECT LOG(2,testsize) AS x, bandwidth AS y, MULTIPLOT
 # FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
 plot \
-    'multiplot1-data.txt' index 0 with linespoints, \
-    'multiplot1-data.txt' index 1 with linespoints
+    'multiplot1-data.txt' index 0 title "funcname=ScanRead64PtrUnrollLoop" with linespoints, \
+    'multiplot1-data.txt' index 1 title "funcname=ScanWrite64PtrUnrollLoop" with linespoints
 
 # MULTIPLOT(testsize) SELECT LOG(2,testsize) AS x, bandwidth AS y, MULTIPLOT
 # FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
