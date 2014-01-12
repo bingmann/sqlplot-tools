@@ -1,11 +1,11 @@
 /******************************************************************************
- * src/sql.h
+ * src/pgsql.h
  *
- * Encapsulate SQL queries into a generic C++ class, which is specialized for
- * different SQL database interfaces.
+ * Encapsulate PostgreSQL queries into a C++ class, which is a specialization
+ * of the generic SQL database interface.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -21,15 +21,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef SQL_HEADER
-#define SQL_HEADER
+#ifndef PGSQL_HEADER
+#define PGSQL_HEADER
 
 #include <string>
 #include <map>
 
 #include <libpq-fe.h>
 
-class SqlQuery
+class PgSqlQuery
 {
 private:
     //! Saved query string
@@ -50,10 +50,10 @@ private:
 public:
     
     //! Execute a SQL query without parameters, throws on errors.
-    SqlQuery(const std::string& query);
+    PgSqlQuery(const std::string& query);
 
     //! Free result
-    ~SqlQuery();
+    ~PgSqlQuery();
 
     //! Return number of rows in result, throws if no tuples.
     unsigned int num_rows() const;
@@ -67,7 +67,7 @@ public:
     const char* col_name(unsigned int col) const;
 
     //! Read column name map for the following col -> num mappings.
-    SqlQuery& read_colmap();
+    PgSqlQuery& read_colmap();
 
     //! Check if a column name exists.
     bool exist_col(const std::string& name) const;
@@ -89,7 +89,7 @@ public:
     // *** Complete Result Caching ***
 
     //! read complete result into memory
-    SqlQuery& read_complete();
+    PgSqlQuery& read_complete();
 
     //! Return text representation of cell (row,col).
     const char* text(unsigned int row, unsigned int col) const;
@@ -100,4 +100,6 @@ public:
     std::string format_texttable();
 };
 
-#endif // SQL_HEADER
+typedef PgSqlQuery SqlQuery;
+
+#endif // PGSQL_HEADER

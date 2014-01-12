@@ -1,11 +1,11 @@
 /******************************************************************************
  * src/sql.cpp
  *
- * Encapsulate SQL queries into a generic C++ class, which is specialized for
- * different SQL database interfaces.
+ * Encapsulate PostgreSQL queries into a C++ class, which is a specialization
+ * of the generic SQL database interface.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -21,7 +21,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "sql.h"
+#include "pgsql.h"
 #include "common.h"
 
 #include <cassert>
@@ -30,7 +30,7 @@
 #include <vector>
 
 //! Execute a SQL query without parameters, throws on errors.
-SqlQuery::SqlQuery(const std::string& query)
+PgSqlQuery::PgSqlQuery(const std::string& query)
     : m_query(query)
 {
     m_res = PQexec(g_pg, query.c_str());
@@ -49,13 +49,13 @@ SqlQuery::SqlQuery(const std::string& query)
 }
 
 //! Free result
-SqlQuery::~SqlQuery()
+PgSqlQuery::~PgSqlQuery()
 {
     PQclear(m_res);
 }
 
 //! Return number of rows in result, throws if no tuples.
-unsigned int SqlQuery::num_rows() const
+unsigned int PgSqlQuery::num_rows() const
 {
     if (PQresultStatus(m_res) != PGRES_TUPLES_OK)
     {
@@ -75,13 +75,13 @@ unsigned int SqlQuery::num_rows() const
 }
 
 //! Return column name of col
-const char* SqlQuery::col_name(unsigned int col) const
+const char* PgSqlQuery::col_name(unsigned int col) const
 {
     return PQfname(m_res, col);
 }
 
 //! Return number of columns in result, throws if no tuples.
-unsigned int SqlQuery::num_cols() const
+unsigned int PgSqlQuery::num_cols() const
 {
     if (PQresultStatus(m_res) != PGRES_TUPLES_OK)
     {
@@ -101,7 +101,7 @@ unsigned int SqlQuery::num_cols() const
 }
 
 //! Read column name map for the following col -> num mappings.
-SqlQuery& SqlQuery::read_colmap()
+PgSqlQuery& PgSqlQuery::read_colmap()
 {
     m_colmap.clear();
 
@@ -112,13 +112,13 @@ SqlQuery& SqlQuery::read_colmap()
 }
 
 //! Check if a column name exists.
-bool SqlQuery::exist_col(const std::string& name) const
+bool PgSqlQuery::exist_col(const std::string& name) const
 {
     return (m_colmap.find(name) != m_colmap.end());
 }
 
 //! Returns column number of name or throws if it does not exist.
-unsigned int SqlQuery::find_col(const std::string& name) const
+unsigned int PgSqlQuery::find_col(const std::string& name) const
 {
     colmap_type::const_iterator it = m_colmap.find(name);
 
@@ -132,20 +132,20 @@ unsigned int SqlQuery::find_col(const std::string& name) const
 }
 
 //! Advance current result row to next (or first if uninitialized)
-bool SqlQuery::step()
+bool PgSqlQuery::step()
 {
     ++m_row;
     return (m_row < num_rows());
 }
 
 //! Return the current row number
-unsigned int SqlQuery::curr_row() const
+unsigned int PgSqlQuery::curr_row() const
 {
     return m_row;
 }
 
 //! Return text representation of column col of current row.
-const char* SqlQuery::text(unsigned int col) const
+const char* PgSqlQuery::text(unsigned int col) const
 {
     assert(m_row < num_rows());
     assert(col < num_cols());
@@ -153,20 +153,20 @@ const char* SqlQuery::text(unsigned int col) const
 }
 
 //! read complete result into memory
-SqlQuery& SqlQuery::read_complete()
+PgSqlQuery& PgSqlQuery::read_complete()
 {
     // noop on PostgreSQL
     return *this;
 }
 
 //! Return text representation of cell (row,col).
-const char* SqlQuery::text(unsigned int row, unsigned int col) const
+const char* PgSqlQuery::text(unsigned int row, unsigned int col) const
 {
     return PQgetvalue(m_res, row, col);
 }
 
 //! format result as a text table
-std::string SqlQuery::format_texttable()
+std::string PgSqlQuery::format_texttable()
 {
     read_complete();
 

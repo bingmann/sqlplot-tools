@@ -25,7 +25,7 @@ include_directories(${PostgreSQL_INCLUDE_DIRS})
 add_executable(sp-importdata
   sp-importdata.cpp
   common.cpp
-  sql.cpp
+  pgsql.cpp
   importdata.cpp
   fieldset.cpp
   )
@@ -36,7 +36,7 @@ add_executable(sp-process
   latex.cpp
   gnuplot.cpp
   common.cpp
-  sql.cpp
+  pgsql.cpp
   importdata.cpp
   fieldset.cpp
   )

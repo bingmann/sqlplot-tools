@@ -37,7 +37,7 @@
 
 #include "common.h"
 #include "strtools.h"
-#include "sql.h"
+#include "pgsql.h"
 #include "textlines.h"
 #include "importdata.h"
 
