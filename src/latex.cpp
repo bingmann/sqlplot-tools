@@ -472,6 +472,11 @@ SpLatex::SpLatex(TextLines& lines)
             OUT("% " << cmdline);
             tabular(ln, indent, cmdline.substr(space_pos+1));
         }
+        else
+        {
+            if (first_word.size() >= 4 && first_word[0] != '-')
+                OUT("? maybe unknown keyword " << first_word);
+        }
     }
 }
 
