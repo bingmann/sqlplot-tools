@@ -83,6 +83,9 @@ public:
     //! Return the current row number.
     unsigned int curr_row() const;
 
+    //! Returns true if cell (row,col) is NULL.
+    bool isNULL(unsigned int col) const;
+
     //! Return text representation of column col of current row.
     const char* text(unsigned int col) const;
 
@@ -90,6 +93,9 @@ public:
 
     //! read complete result into memory
     PgSqlQuery& read_complete();
+
+    //! Returns true if cell (row,col) is NULL.
+    bool isNULL(unsigned int row, unsigned int col) const;
 
     //! Return text representation of cell (row,col).
     const char* text(unsigned int row, unsigned int col) const;

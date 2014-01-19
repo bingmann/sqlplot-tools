@@ -250,6 +250,15 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         {
             sql.step();
 
+            if (sql.isNULL(colx)) {
+                OUT("MULTIPLOT warning: 'x' is NULL in row " << row << ".");
+                continue;
+            }
+            if (sql.isNULL(coly)) {
+                OUT("MULTIPLOT warning: 'y' is NULL in row " << row << ".");
+                continue;
+            }
+
             // collect groupfields for this row
             std::vector<std::string> rowgroup (groupcols.size());
 

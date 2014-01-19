@@ -144,6 +144,14 @@ unsigned int PgSqlQuery::curr_row() const
     return m_row;
 }
 
+//! Returns true if cell (row,col) is NULL.
+bool PgSqlQuery::isNULL(unsigned int col) const
+{
+    assert(m_row < num_rows());
+    assert(col < num_cols());
+    return PQgetisnull(m_res, m_row, col);
+}
+
 //! Return text representation of column col of current row.
 const char* PgSqlQuery::text(unsigned int col) const
 {
@@ -159,9 +167,19 @@ PgSqlQuery& PgSqlQuery::read_complete()
     return *this;
 }
 
+//! Returns true if cell (row,col) is NULL.
+bool PgSqlQuery::isNULL(unsigned int row, unsigned int col) const
+{
+    assert(row < num_rows());
+    assert(col < num_cols());
+    return PQgetisnull(m_res, row, col);
+}
+
 //! Return text representation of cell (row,col).
 const char* PgSqlQuery::text(unsigned int row, unsigned int col) const
 {
+    assert(row < num_rows());
+    assert(col < num_cols());
     return PQgetvalue(m_res, row, col);
 }
 
