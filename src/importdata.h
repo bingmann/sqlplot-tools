@@ -35,7 +35,7 @@ class ImportData
 protected:
 
     //! verbosity
-    bool mopt_verbose;
+    int mopt_verbose;
     
     //! take field types from first line and process stream
     bool mopt_firstline;

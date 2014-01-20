@@ -112,6 +112,33 @@ split_keyvalue(const std::string& field, size_t col,
     }
 }
 
+//! deduplicate key names by appending numbers
+static inline std::string
+dedup_key(const std::string& key, std::set<std::string>& keyset)
+{
+    // unique key
+    if (keyset.find(key) == keyset.end())
+    {
+        keyset.insert(key);
+        return key;
+    }
+
+    // append numbers and to make unique
+    for (size_t num = 1; ; ++num)
+    {
+        std::ostringstream nkey;
+        nkey << key << num;
+
+        if (keyset.find(nkey.str()) == keyset.end())
+        {
+            keyset.insert(nkey.str());
+            return nkey.str();
+        }
+    }
+
+    abort();
+}
+
 //! returns true if the give table exists.
 bool ImportData::exist_table(const std::string& table)
 {
@@ -188,6 +215,8 @@ bool ImportData::insert_line(const std::string& line)
     // split line and construct INSERT command
     slist_type slist = split_result_line(line);
 
+    std::set<std::string> keyset;
+
     std::ostringstream cmd;
     cmd << "INSERT INTO \"" << m_tablename << "\" (";
 
@@ -197,8 +226,11 @@ bool ImportData::insert_line(const std::string& line)
     for (size_t i = 0; i < slist.size(); ++i)
     {
         if (slist[i].size() == 0) continue;
+
         std::string key;
         split_keyvalue(slist[i], i, key, paramValues[i]);
+
+        key = dedup_key(key, keyset);
 
         if (i != 0) cmd << ",";
         cmd << "\"" << key << "\"";
@@ -243,6 +275,8 @@ void ImportData::process_stream(std::istream& is)
         if (mopt_verbose >= 2)
             OUT("line: " << line);
 
+        std::set<std::string> keyset;
+
         if (!mopt_firstline)
         {
             // split line and detect types of each field
@@ -255,6 +289,7 @@ void ImportData::process_stream(std::istream& is)
                 if (si->size() == 0) continue;
                 std::string key, value;
                 split_keyvalue(*si, col, key, value);
+                key = dedup_key(key, keyset);
                 m_fieldset.add_field(key, value);
             }
 
@@ -276,6 +311,7 @@ void ImportData::process_stream(std::istream& is)
                     if (si->size() == 0) continue;
                     std::string key, value;
                     split_keyvalue(*si, col, key, value);
+                    key = dedup_key(key, keyset);
                     m_fieldset.add_field(key, value);
                 }
 
@@ -319,7 +355,7 @@ ImportData::ImportData(bool temporary_table)
 //! print command line usage
 int ImportData::print_usage(const std::string& progname)
 {
-    OUT("Usage: " << progname << " [-1] [-a] [-D] <table-name> [files...]" << std::endl <<
+    OUT("Usage: " << progname << " [options] <table-name> [files...]" << std::endl <<
         std::endl <<
         "Options: " << std::endl <<
         "  -1       Take field types from first line and process stream." << std::endl <<
