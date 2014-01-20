@@ -48,21 +48,22 @@ public:
     //! processed line data
     TextLines&  m_lines;
 
+    //! comment character
+    static const char comment_char = '%';
+
     //! scan line for LaTeX comment, returns index of % or -1 if the line is
     //! not a plain comment
-    static inline int
-    is_comment_line(const std::string& line)
+    inline int
+    is_comment_line(size_t ln)
     {
-        int i = 0;
-        while (isblank(line[i])) ++i;
-        return (line[i] == '%') ? i : -1;
+        return m_lines.is_comment_line<comment_char>(ln);
     }
 
     //! scan for next comment line with given prefix
     inline ssize_t
     scan_lines_for_comment(size_t ln, const std::string& cprefix)
     {
-        return m_lines.scan_for_comment<is_comment_line>(ln, cprefix);
+        return m_lines.scan_for_comment<comment_char>(ln, cprefix);
     }
 
     //! escape special latex characters
@@ -407,7 +408,7 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
 
     // scan lines forward till next comment directive
     size_t eln = ln;
-    while (eln < m_lines.size() && is_comment_line(m_lines[eln]) < 0)
+    while (eln < m_lines.size() && is_comment_line(eln) < 0)
         ++eln;
 
     static const boost::regex
@@ -450,7 +451,7 @@ SpLatex::SpLatex(TextLines& lines)
     for (size_t ln = 0; ln < m_lines.size();)
     {
         // try to collect an aligned comment block
-        int indent = is_comment_line(m_lines[ln]);
+        int indent = is_comment_line(ln);
         if (indent < 0) {
             ++ln;
             continue;
@@ -458,9 +459,10 @@ SpLatex::SpLatex(TextLines& lines)
 
         std::string cmdline = m_lines[ln++].substr(indent+1);
 
-        // collect lines while they are at the same indentation level
+        // collect lines while they are at the same indentation level, and have
+        // \ continuation
         while ( ln < m_lines.size() &&
-                is_comment_line(m_lines[ln]) == indent )
+                is_comment_line(ln) == indent )
         {
             cmdline += m_lines[ln++].substr(indent+1);
         }

@@ -48,27 +48,28 @@ public:
     //! processed line data
     TextLines&  m_lines;
 
+    //! comment character
+    static const char comment_char = '#';
+
     // *** current gnuplot datafile ***
 
     std::ostream* m_datafile;
     std::string m_datafilename;
     unsigned int m_dataindex;
 
-    // scan line for Gnuplot comment, returns index of # or -1 if the line is
-    // not a plain comment
-    static inline int
-    is_comment_line(const std::string& line)
+    //! scan line for Gnuplot comment, returns index of % or -1 if the line is
+    //! not a plain comment
+    inline int
+    is_comment_line(size_t ln)
     {
-        int i = 0;
-        while (isblank(line[i])) ++i;
-        return (line[i] == '#') ? i : -1;
+        return m_lines.is_comment_line<comment_char>(ln);
     }
 
     //! scan for next comment line with given prefix
     inline ssize_t
     scan_lines_for_comment(size_t ln, const std::string& cprefix)
     {
-        return m_lines.scan_for_comment<is_comment_line>(ln, cprefix);
+        return m_lines.scan_for_comment<comment_char>(ln, cprefix);
     }
 
     //! Process # SQL commands
@@ -422,7 +423,7 @@ void SpGnuplot::process()
     for (size_t ln = 0; ln < m_lines.size();)
     {
         // try to collect an aligned comment block
-        int indent = is_comment_line(m_lines[ln]);
+        int indent = is_comment_line(ln);
         if (indent < 0) {
             ++ln;
             continue;
@@ -432,7 +433,7 @@ void SpGnuplot::process()
 
         // collect lines while they are at the same indentation level
         while ( ln < m_lines.size() &&
-                is_comment_line(m_lines[ln]) == indent )
+                is_comment_line(ln) == indent )
         {
             cmdline += m_lines[ln++].substr(indent+1);
         }

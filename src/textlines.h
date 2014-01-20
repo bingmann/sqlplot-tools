@@ -130,13 +130,31 @@ public:
         }
     }
 
+    //! check for comment line prefixed with given character, returns index of
+    //! comment char or -1 if the line is not a comment
+    template <char CommentChar>
+    static inline int is_comment_line(const std::string& line)
+    {
+        int i = 0;
+        while (isblank(line[i])) ++i;
+        return (line[i] == CommentChar) ? i : -1;
+    }
+
+    //! check for comment line prefixed with given character, returns index of
+    //! comment char or -1 if the line is not a comment
+    template <char CommentChar>
+    inline int is_comment_line(size_t ln) const
+    {
+        return is_comment_line<CommentChar>(line(ln));
+    }
+
     //! scan for next comment line with given prefix
-    template <int (*is_comment_line)(const std::string&)>
+    template <char CommentChar>
     ssize_t scan_for_comment(size_t ln, const std::string& cprefix) const
     {
         // scan lines forward till next comment line
         size_t cln = ln;
-        while ( cln < size() && is_comment_line(line(cln)) < 0 )
+        while ( cln < size() && is_comment_line<CommentChar>(cln) < 0 )
         {
             ++cln;
         }
@@ -145,7 +163,9 @@ public:
         if ( cln >= size() )
             return -1;
 
-        std::string comment = line(cln).substr( is_comment_line(line(cln))+1 );
+        std::string comment = line(cln).substr(
+            is_comment_line<CommentChar>(cln)+1
+            );
         comment = trim(comment);
 
         return is_prefix(comment, cprefix) ? cln : -1;
