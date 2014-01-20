@@ -38,7 +38,7 @@ protected:
     slist_type m_lines;
 
 public:
- 
+
     //! return number of lines
     size_t size() const
     {
@@ -133,19 +133,21 @@ public:
     //! check for comment line prefixed with given character, returns index of
     //! comment char or -1 if the line is not a comment
     template <char CommentChar>
-    static inline int is_comment_line(const std::string& line)
+    static inline int is_comment_line(const std::string& line, size_t rep = 1)
     {
         int i = 0;
         while (isblank(line[i])) ++i;
-        return (line[i] == CommentChar) ? i : -1;
+        for (size_t r = 0; r < rep; ++r)
+            if (line[i+r] != CommentChar) return -1;
+        return i;
     }
 
     //! check for comment line prefixed with given character, returns index of
     //! comment char or -1 if the line is not a comment
     template <char CommentChar>
-    inline int is_comment_line(size_t ln) const
+    inline int is_comment_line(size_t ln, size_t rep = 1) const
     {
-        return is_comment_line<CommentChar>(line(ln));
+        return is_comment_line<CommentChar>(line(ln), rep);
     }
 
     //! scan for next comment line with given prefix
@@ -169,6 +171,40 @@ public:
         comment = trim(comment);
 
         return is_prefix(comment, cprefix) ? cln : -1;
+    }
+
+    //! try to collect an aligned comment block, advances ln at least one, and
+    //! maybe more for a multiline command.
+    template <char CommentChar>
+    bool collect_comment(size_t& ln, std::string& out_cmd,
+                         size_t& out_indent) const
+    {
+        // try to collect an aligned comment block
+        int indent = is_comment_line<CommentChar>(ln);
+        if (indent < 0) {
+            ++ln; // not a comment
+            return false;
+        }
+
+        std::string cmd = line(ln++).substr(indent+1);
+
+        // multi-line command prefixed with two comment chars
+        if (cmd[0] == CommentChar)
+        {
+            // trim second comment char
+            cmd = cmd.substr(1);
+
+            // collect lines while they are at the same indentation level
+            while ( ln < m_lines.size() &&
+                    is_comment_line<CommentChar>(ln, 2) == indent )
+            {
+                cmd += m_lines[ln++].substr(indent+2);
+            }
+        }
+
+        out_cmd = trim(cmd);
+        out_indent = indent;
+        return true;
     }
 };
 

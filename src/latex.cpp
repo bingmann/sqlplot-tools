@@ -450,59 +450,47 @@ SpLatex::SpLatex(TextLines& lines)
     // iterate over all lines
     for (size_t ln = 0; ln < m_lines.size();)
     {
-        // try to collect an aligned comment block
-        int indent = is_comment_line(ln);
-        if (indent < 0) {
-            ++ln;
+        // collect command from comment lines
+        std::string cmd;
+        size_t indent;
+
+        if (!m_lines.collect_comment<comment_char>(ln, cmd, indent))
             continue;
-        }
-
-        std::string cmdline = m_lines[ln++].substr(indent+1);
-
-        // collect lines while they are at the same indentation level, and have
-        // \ continuation
-        while ( ln < m_lines.size() &&
-                is_comment_line(ln) == indent )
-        {
-            cmdline += m_lines[ln++].substr(indent+1);
-        }
-
-        cmdline = trim(cmdline);
 
         // extract first word
         std::string::size_type space_pos =
-            cmdline.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ-_");
-        std::string first_word = cmdline.substr(0, space_pos);
+            cmd.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ-_");
+        std::string first_word = cmd.substr(0, space_pos);
 
         if (first_word == "SQL")
         {
-            OUT("% " << cmdline);
-            sql(ln, indent, cmdline.substr(space_pos+1));
+            OUT("% " << cmd);
+            sql(ln, indent, cmd.substr(space_pos+1));
         }
         else if (first_word == "IMPORT-DATA")
         {
-            OUT("% " << cmdline);
-            importdata(ln, indent, cmdline);
+            OUT("% " << cmd);
+            importdata(ln, indent, cmd);
         }
         else if (first_word == "TEXTTABLE")
         {
-            OUT("% " << cmdline);
-            texttable(ln, indent, cmdline.substr(space_pos+1));
+            OUT("% " << cmd);
+            texttable(ln, indent, cmd.substr(space_pos+1));
         }
         else if (first_word == "PLOT")
         {
-            OUT("% " << cmdline);
-            plot(ln, indent, cmdline.substr(space_pos+1));
+            OUT("% " << cmd);
+            plot(ln, indent, cmd.substr(space_pos+1));
         }
         else if (first_word == "MULTIPLOT")
         {
-            OUT("% " << cmdline);
-            multiplot(ln, indent, cmdline);
+            OUT("% " << cmd);
+            multiplot(ln, indent, cmd);
         }
         else if (first_word == "TABULAR")
         {
-            OUT("% " << cmdline);
-            tabular(ln, indent, cmdline.substr(space_pos+1));
+            OUT("% " << cmd);
+            tabular(ln, indent, cmd.substr(space_pos+1));
         }
         else
         {
