@@ -188,10 +188,23 @@ public:
 
         std::string cmd = line(ln++).substr(indent+1);
 
-        // multi-line command prefixed with two comment chars
-        if (cmd[0] == CommentChar)
+        // multi-line command prefixed with three comment chars
+        if (cmd[0] == CommentChar && cmd[1] == CommentChar)
         {
-            // trim second comment char
+            // trim two comment chars
+            cmd = cmd.substr(2);
+
+            // collect lines while they are at the same indentation level
+            while ( ln < m_lines.size() &&
+                    is_comment_line<CommentChar>(ln) == indent )
+            {
+                cmd += m_lines[ln++].substr(indent+1);
+            }
+        }
+        // multi-line command prefixed with two comment chars
+        else if (cmd[0] == CommentChar)
+        {
+            // trim additional comment char
             cmd = cmd.substr(1);
 
             // collect lines while they are at the same indentation level
