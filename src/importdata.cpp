@@ -5,7 +5,7 @@
  * processing. Automatically detects the SQL column types.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -139,46 +139,17 @@ dedup_key(const std::string& key, std::set<std::string>& keyset)
     abort();
 }
 
-//! returns true if the give table exists.
-bool ImportData::exist_table(const std::string& table)
-{
-    const char *paramValues[1];
-    paramValues[0] = table.c_str();
-
-    PGresult* r = PQexecParams(g_pg,
-                               "SELECT COUNT(*) FROM pg_tables WHERE tablename = $1",
-                               1, NULL, paramValues, NULL, NULL, 0);
-
-    if (PQresultStatus(r) != PGRES_TUPLES_OK)
-    {
-        PQclear(r);
-        OUT_THROW("SELECT failed: " << PQerrorMessage(g_pg));
-    }
-
-    assert(PQntuples(r) == 1 && PQnfields(r) == 1);
-
-    bool exist = ( strcmp(PQgetvalue(r,0,0), "1") == 0 );
-
-    PQclear(r);
-    return exist;
-}
-
 //! CREATE TABLE for the accumulated data set
 bool ImportData::create_table() const
 {
-    if (exist_table(m_tablename))
+    if (g_db->exist_table(m_tablename))
     {
         OUT("Table \"" << m_tablename << "\" exists. Replacing data.");
 
         std::ostringstream cmd;
         cmd << "DROP TABLE \"" << m_tablename << "\"";
 
-        PGresult* r = PQexec(g_pg, cmd.str().c_str());
-        if (PQresultStatus(r) != PGRES_COMMAND_OK)
-        {
-            PQclear(r);
-            OUT_THROW("DROP TABLE failed: " << PQerrorMessage(g_pg));
-        }
+        g_db->query(cmd.str());
     }
 
     std::string createtable = m_fieldset.make_create_table(m_tablename, mopt_temporary_table);
@@ -186,12 +157,7 @@ bool ImportData::create_table() const
     if (mopt_verbose >= 1)
         OUT(createtable);
 
-    PGresult* r = PQexec(g_pg, createtable.c_str());
-    if (PQresultStatus(r) != PGRES_COMMAND_OK)
-    {
-        PQclear(r);
-        OUT_THROW("CREATE TABLE failed: " << PQerrorMessage(g_pg));
-    }
+    g_db->query(createtable);
 
     return true;
 }
@@ -220,8 +186,7 @@ bool ImportData::insert_line(const std::string& line)
     std::ostringstream cmd;
     cmd << "INSERT INTO \"" << m_tablename << "\" (";
 
-    std::string paramValues[slist.size()];
-    const char* paramValuesC[slist.size()];
+    std::vector<std::string> paramValues(slist.size());
 
     for (size_t i = 0; i < slist.size(); ++i)
     {
@@ -232,34 +197,23 @@ bool ImportData::insert_line(const std::string& line)
 
         key = dedup_key(key, keyset);
 
-        if (i != 0) cmd << ",";
-        cmd << "\"" << key << "\"";
-        paramValuesC[i] = paramValues[i].c_str();
+        if (i != 0) cmd << ',';
+        cmd << '"' << key << '"';
     }
 
     cmd << ") VALUES (";
     for (size_t i = 0; i < slist.size(); ++i)
     {
-        if (i != 0) cmd << ",";
-        cmd << "$" << (i+1);
+        if (i != 0) cmd << ',';
+        cmd << g_db->placeholder(i);
     }
     cmd << ")";
 
     if (mopt_verbose >= 2) OUT(cmd.str());
 
-    PGresult* r = PQexecParams(g_pg, cmd.str().c_str(),
-                               slist.size(), NULL, paramValuesC, NULL, NULL, 1);
+    g_db->query(cmd.str(), paramValues);
 
-    if (PQresultStatus(r) != PGRES_COMMAND_OK)
-    {
-        PQclear(r);
-        OUT_THROW("INSERT failed: " << PQerrorMessage(g_pg));
-    }
-    else
-    {
-        PQclear(r);
-        return true;
-    }
+    return true;
 }
 
 //! process an input stream (file or stdin), cache lines or insert directly.
@@ -412,15 +366,7 @@ int ImportData::main(int argc, char* const argv[])
     m_tablename = argv[optind++];
 
     // begin transaction
-    {
-        PGresult* r = PQexec(g_pg, "BEGIN TRANSACTION");
-        if (PQresultStatus(r) != PGRES_COMMAND_OK)
-        {
-            PQclear(r);
-            OUT_THROW("BEGIN TRANSACTION failed: " << PQerrorMessage(g_pg));
-        }
-        PQclear(r);
-    }
+    g_db->query("BEGIN TRANSACTION");
 
     // process file commandline arguments
     if (optind < argc)
@@ -472,15 +418,7 @@ int ImportData::main(int argc, char* const argv[])
     }
 
     // finish transaction
-    {
-        PGresult* r = PQexec(g_pg, "COMMIT TRANSACTION");
-        if (PQresultStatus(r) != PGRES_COMMAND_OK)
-        {
-            PQclear(r);
-            OUT_THROW("COMMIT TRANSACTION failed: " << PQerrorMessage(g_pg));
-        }
-        PQclear(r);
-    }
+    g_db->query("COMMIT TRANSACTION");
 
     OUT("Imported in total " << m_total_count << " rows of data containing " << m_fieldset.count() << " fields each.");
 

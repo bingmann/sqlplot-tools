@@ -4,7 +4,7 @@
  * Process embedded SQL plot instructions in LaTeX files.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -37,14 +37,13 @@
 
 #include "common.h"
 #include "strtools.h"
-#include "pgsql.h"
+#include "sql.h"
 #include "textlines.h"
 #include "importdata.h"
 
 class SpLatex
 {
 public:
-
     //! processed line data
     TextLines&  m_lines;
 
@@ -112,7 +111,7 @@ inline std::string SpLatex::escape(const std::string& str)
 //! Process % SQL commands
 void SpLatex::sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
-    SqlQuery sql(cmdline);
+    SqlQuery sql = g_db->query(cmdline);
     OUT("SQL command successful.");
 }
 
@@ -136,11 +135,11 @@ void SpLatex::importdata(size_t /* ln */, size_t /* indent */, const std::string
 //! Process % TEXTTABLE commands
 void SpLatex::texttable(size_t ln, size_t indent, const std::string& cmdline)
 {
-    SqlQuery sql(cmdline);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(cmdline);
+    OUT("--> " << sql->num_rows() << " rows");
 
     // format result as a text table
-    std::string output = sql.format_texttable();
+    std::string output = sql->format_texttable();
 
     output += shorten("% END TEXTTABLE " + cmdline) + "\n";
 
@@ -158,17 +157,17 @@ void SpLatex::texttable(size_t ln, size_t indent, const std::string& cmdline)
 //! Process % PLOT commands
 void SpLatex::plot(size_t ln, size_t indent, const std::string& cmdline)
 {
-    SqlQuery sql(cmdline);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(cmdline);
+    OUT("--> " << sql->num_rows() << " rows");
 
     std::ostringstream oss;
-    while (sql.step())
+    while (sql->step())
     {
         oss << " (";
-        for (unsigned int col = 0; col < sql.num_cols(); ++col)
+        for (unsigned int col = 0; col < sql->num_cols(); ++col)
         {
             if (col != 0) oss << ',';
-            oss << sql.text(col);
+            oss << sql->text(col);
         }
         oss << ')';
     }
@@ -211,32 +210,32 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
     // execute query
-    SqlQuery sql(query);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(query);
+    OUT("--> " << sql->num_rows() << " rows");
 
     // read column names
-    sql.read_colmap();
+    sql->read_colmap();
 
     // check for existing x and y columns.
-    if (!sql.exist_col("x"))
+    if (!sql->exist_col("x"))
         OUT_THROW("MULTIPLOT failed: result contains no 'x' column.");
 
-    if (!sql.exist_col("y"))
+    if (!sql->exist_col("y"))
         OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
 
-    unsigned int colx = sql.find_col("x"), coly = sql.find_col("y");
+    unsigned int colx = sql->find_col("x"), coly = sql->find_col("y");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
     for (std::vector<std::string>::const_iterator gi = groupfields.begin();
          gi != groupfields.end(); ++gi)
     {
-        if (!sql.exist_col(*gi))
+        if (!sql->exist_col(*gi))
         {
             OUT_THROW("MULTIPLOT failed: result contains no '" << *gi <<
                       "' column, which is a MULTIPLOT group field.");
         }
-        groupcols.push_back(sql.find_col(*gi));
+        groupcols.push_back(sql->find_col(*gi));
     }
 
     // collect coordinates {...} clause groups
@@ -247,15 +246,15 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         std::vector<std::string> lastgroup;
         std::ostringstream coord;
 
-        for (unsigned int row = 0; row < sql.num_rows(); ++row)
+        for (unsigned int row = 0; row < sql->num_rows(); ++row)
         {
-            sql.step();
+            sql->step();
 
-            if (sql.isNULL(colx)) {
+            if (sql->isNULL(colx)) {
                 OUT("MULTIPLOT warning: 'x' is NULL in row " << row << ".");
                 continue;
             }
-            if (sql.isNULL(coly)) {
+            if (sql->isNULL(coly)) {
                 OUT("MULTIPLOT warning: 'y' is NULL in row " << row << ".");
                 continue;
             }
@@ -264,7 +263,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             std::vector<std::string> rowgroup (groupcols.size());
 
             for (size_t i = 0; i < groupcols.size(); ++i)
-                rowgroup[i] = sql.text(groupcols[i]);
+                rowgroup[i] = sql->text(groupcols[i]);
 
             if (row == 0 || lastgroup != rowgroup)
             {
@@ -286,8 +285,8 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
 
             // group fields match with last row -> append coordinates.
-            coord << " (" << sql.text(colx)
-                  <<  ',' << sql.text(coly)
+            coord << " (" << sql->text(colx)
+                  <<  ',' << sql->text(coly)
                   <<  ')';
         }
 
@@ -376,31 +375,31 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
     const std::string& query = cmdline;
 
     // execute query
-    SqlQuery sql(query);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(query);
+    OUT("--> " << sql->num_rows() << " rows");
 
-    sql.read_complete();
+    sql->read_complete();
 
     // calculate width of columns data
-    std::vector<size_t> cwidth(sql.num_cols(), 0);
+    std::vector<size_t> cwidth(sql->num_cols(), 0);
 
-    for (unsigned int i = 0; i < sql.num_rows(); ++i)
+    for (unsigned int i = 0; i < sql->num_rows(); ++i)
     {
-        for (unsigned int j = 0; j < sql.num_cols(); ++j)
+        for (unsigned int j = 0; j < sql->num_cols(); ++j)
         {
-            cwidth[j] = std::max(cwidth[j], strlen( sql.text(i, j) ));
+            cwidth[j] = std::max(cwidth[j], strlen( sql->text(i, j) ));
         }
     }
 
     // generate output
     std::vector<std::string> tlines;
-    for (unsigned int i = 0; i < sql.num_rows(); ++i)
+    for (unsigned int i = 0; i < sql->num_rows(); ++i)
     {
         std::ostringstream out;
-        for (unsigned j = 0; j < sql.num_cols(); ++j)
+        for (unsigned j = 0; j < sql->num_cols(); ++j)
         {
             if (j != 0) out << " & ";
-            out << std::setw(cwidth[j]) << sql.text(i,j);
+            out << std::setw(cwidth[j]) << sql->text(i,j);
         }
         out << " \\\\";
         tlines.push_back(out.str());

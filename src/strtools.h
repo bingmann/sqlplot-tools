@@ -4,7 +4,7 @@
  * Generic string tools for std::string.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -234,6 +234,44 @@ split(const std::string& str, char sep, std::string::size_type limit = std::stri
 	out.push_back(std::string(last, it));
 
     return out;
+}
+
+// ***                                        ***
+// *** String Stream Transformation Functions ***
+// ***                                        ***
+
+/**
+ * Template transformation function which uses std::ostringstream to serialize
+ * any ostreamable type into a std::string.
+ */
+template <typename Type>
+static inline std::string to_str(const Type& val)
+{
+    std::ostringstream os;
+    os << val;
+    return os.str();
+}
+
+/**
+ * Template transformation function which uses std::istringstream to parse any
+ * istreamable type from a std::string.
+ */
+template <typename Type>
+static inline bool from_str(const std::string& str, Type& outval)
+{
+    std::istringstream is(str);
+    is >> outval;
+    return is.eof();
+}
+
+/**
+ * Test if a string can be parsed as a double or integer number, or is empty.
+ */
+static inline bool str_is_double(const std::string& str)
+{
+    if (str.size() == 0) return true;
+    double d;
+    return from_str(str, d);
 }
 
 /**

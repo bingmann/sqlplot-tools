@@ -4,7 +4,7 @@
  * Common global variables across all programs.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -28,5 +28,31 @@ int gopt_verbose = 0;
 //! check processed output matches the output file
 bool gopt_check_output = false;
 
-//! global PostgreSQL connection handle
-PGconn* g_pg = NULL;
+//! global SQL datbase connection handle
+SqlDatabase* g_db = NULL;
+
+#include "pgsql.h"
+
+//! initialize global SQL database connection
+bool g_db_initialize()
+{
+    g_db_free();
+
+    //! first try to connect to a PostgreSQL database
+
+    g_db = new PgSqlDatabase;
+    if (g_db->initialize())
+        return true;
+    delete g_db;
+
+    return false;
+}
+
+//! free global SQL database connection
+void g_db_free()
+{
+    if (g_db) {
+        delete g_db;
+        g_db = NULL;
+    }
+}

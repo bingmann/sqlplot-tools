@@ -4,7 +4,7 @@
  * Common global variables across all programs.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -27,7 +27,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <libpq-fe.h>
+#include "sql.h"
 
 //! verbosity, common global option.
 extern int gopt_verbose;
@@ -35,8 +35,14 @@ extern int gopt_verbose;
 //! check processed output matches the output file
 extern bool gopt_check_output;
 
-//! global PostgreSQL connection handle
-extern PGconn* g_pg;
+//! global SQL database connection handle
+extern SqlDatabase* g_db;
+
+//! initialize global SQL database connection
+extern bool g_db_initialize();
+
+//! free global SQL database connection
+extern void g_db_free();
 
 //! conditional debug output
 #define OUTC(dbg,X)   do { if (dbg) { std::cerr << X; } } while(0)

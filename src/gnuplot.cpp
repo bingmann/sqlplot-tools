@@ -4,7 +4,7 @@
  * Process embedded SQL plot instructions in Gnuplot files.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -37,14 +37,13 @@
 
 #include "common.h"
 #include "strtools.h"
-#include "pgsql.h"
+#include "sql.h"
 #include "textlines.h"
 #include "importdata.h"
 
 class SpGnuplot
 {
 public:
-
     //! processed line data
     TextLines&  m_lines;
 
@@ -101,7 +100,7 @@ public:
 //! Process # SQL commands
 void SpGnuplot::sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
-    SqlQuery sql(cmdline);
+    SqlQuery sql = g_db->query(cmdline);
     OUT("SQL command successful.");
 }
 
@@ -223,8 +222,8 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
 //! Process # PLOT commands
 void SpGnuplot::plot(size_t ln, size_t indent, const std::string& cmdline)
 {
-    SqlQuery sql(cmdline);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(cmdline);
+    OUT("--> " << sql->num_rows() << " rows");
 
     // write a header to the datafile containing the query
     std::ostream& df = *m_datafile;
@@ -234,12 +233,12 @@ void SpGnuplot::plot(size_t ln, size_t indent, const std::string& cmdline)
        << '#' << std::endl;
 
     // write result data rows
-    while (sql.step())
+    while (sql->step())
     {
-        for (unsigned int col = 0; col < sql.num_cols(); ++col)
+        for (unsigned int col = 0; col < sql->num_cols(); ++col)
         {
             if (col != 0) df << '\t';
-            df << sql.text(col);
+            df << sql->text(col);
         }
         df << std::endl;
     }
@@ -275,37 +274,37 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
     // execute query
-    SqlQuery sql(query);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(query);
+    OUT("--> " << sql->num_rows() << " rows");
 
     std::vector<Dataset> datasets;
 
-    if (sql.num_rows() == 0)
+    if (sql->num_rows() == 0)
         return plot_rewrite(ln, indent, datasets, "MULTIPLOT");
 
     // read column names
-    sql.read_colmap();
+    sql->read_colmap();
 
     // check for existing x and y columns.
-    if (!sql.exist_col("x"))
+    if (!sql->exist_col("x"))
         OUT_THROW("MULTIPLOT failed: result contains no 'x' column.");
 
-    if (!sql.exist_col("y"))
+    if (!sql->exist_col("y"))
         OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
 
-    unsigned int colx = sql.find_col("x"), coly = sql.find_col("y");
+    unsigned int colx = sql->find_col("x"), coly = sql->find_col("y");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
     for (std::vector<std::string>::const_iterator gi = groupfields.begin();
          gi != groupfields.end(); ++gi)
     {
-        if (!sql.exist_col(*gi))
+        if (!sql->exist_col(*gi))
         {
             OUT_THROW("MULTIPLOT failed: result contains no '" << *gi <<
                       "' column, which is a MULTIPLOT group field.");
         }
-        groupcols.push_back(sql.find_col(*gi));
+        groupcols.push_back(sql->find_col(*gi));
     }
 
     // write a header to the datafile containing the query
@@ -319,18 +318,18 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     {
         std::vector<std::string> lastgroup;
 
-        while (sql.step())
+        while (sql->step())
         {
             // collect groupfields for this row
             std::vector<std::string> rowgroup (groupcols.size());
 
             for (size_t i = 0; i < groupcols.size(); ++i)
-                rowgroup[i] = sql.text(groupcols[i]);
+                rowgroup[i] = sql->text(groupcols[i]);
 
-            if (sql.curr_row() == 0 || lastgroup != rowgroup)
+            if (sql->current_row() == 0 || lastgroup != rowgroup)
             {
                 // group fields mismatch (or first row) -> start new group
-                if (sql.curr_row() != 0) {
+                if (sql->current_row() != 0) {
                     df << std::endl << std::endl;
                     ++m_dataindex;
                 }
@@ -351,8 +350,8 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
 
             // group fields match with last row -> append coordinates.
-            df << sql.text(colx) << '\t'
-               << sql.text(coly) << std::endl;
+            df << sql->text(colx) << '\t'
+               << sql->text(coly) << std::endl;
         }
 
         // finish last plot
@@ -378,21 +377,21 @@ std::string maybe_quote(const char* str)
 //! Process # MACRO commands
 void SpGnuplot::macro(size_t ln, size_t indent, const std::string& cmdline)
 {
-    SqlQuery sql(cmdline);
-    OUT("--> " << sql.num_rows() << " rows");
+    SqlQuery sql = g_db->query(cmdline);
+    OUT("--> " << sql->num_rows() << " rows");
 
-    if (sql.num_rows() != 1)
+    if (sql->num_rows() != 1)
         OUT_THROW("MACRO did not return exactly one row");
 
-    sql.step();
+    sql->step();
 
     // write each column as macro value
     std::ostringstream oss;
 
-    for (unsigned int col = 0; col < sql.num_cols(); ++col)
+    for (unsigned int col = 0; col < sql->num_cols(); ++col)
     {
-        oss << sql.col_name(col) << " = "
-            << maybe_quote( sql.text(col) ) << std::endl;
+        oss << sql->col_name(col) << " = "
+            << maybe_quote( sql->text(col) ) << std::endl;
     }
 
     // scan following lines for macro defintions

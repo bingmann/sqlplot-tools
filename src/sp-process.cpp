@@ -4,7 +4,7 @@
  * Process embedded SQL plot instructions in LaTeX or Gnuplot files.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -131,11 +131,7 @@ sp_process(int argc, char* argv[])
     }
 
     // make connection to the database
-    g_pg = PQconnectdb("");
-
-    // check to see that the backend connection was successfully made
-    if (PQstatus(g_pg) != CONNECTION_OK)
-        OUT_THROW("Connection to database failed: " << PQerrorMessage(g_pg));
+    g_db_initialize();
 
     // open output file or string stream
     std::ostream* output = NULL;
@@ -221,7 +217,8 @@ sp_process(int argc, char* argv[])
 
     if (output) delete output;
 
-    PQfinish(g_pg);
+    g_db_free();
+
     return EXIT_SUCCESS;
 }
 

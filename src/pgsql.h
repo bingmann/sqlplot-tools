@@ -24,16 +24,15 @@
 #ifndef PGSQL_HEADER
 #define PGSQL_HEADER
 
-#include <string>
-#include <map>
-
 #include <libpq-fe.h>
 
-class PgSqlQuery
+#include "sql.h"
+
+class PgSqlQuery : public SqlQueryImpl
 {
 private:
-    //! Saved query string
-    std::string m_query;
+    //! PostgreSQL database connection
+    class PgSqlDatabase& m_db;
 
     //! PostgreSQL result object
     PGresult* m_res;
@@ -41,16 +40,14 @@ private:
     //! Current result row
     unsigned int m_row;
 
-    //! Type of m_colmap
-    typedef std::map<std::string, unsigned int> colmap_type;
-
-    //! Mapping column name -> number
-    colmap_type m_colmap;
-
 public:
     
-    //! Execute a SQL query without parameters, throws on errors.
-    PgSqlQuery(const std::string& query);
+    //! Execute a SQL query without placeholders, throws on errors.
+    PgSqlQuery(class PgSqlDatabase& db, const std::string& query);
+
+    //! Execute a SQL query with placeholders, throws on errors.
+    PgSqlQuery(class PgSqlDatabase& db, const std::string& query,
+               const std::vector<std::string>& params);
 
     //! Free result
     ~PgSqlQuery();
@@ -66,24 +63,15 @@ public:
     //! Return column name of col
     const char* col_name(unsigned int col) const;
 
-    //! Read column name map for the following col -> num mappings.
-    PgSqlQuery& read_colmap();
-
-    //! Check if a column name exists.
-    bool exist_col(const std::string& name) const;
-
-    //! Returns column number of name or throws if it does not exist.
-    unsigned int find_col(const std::string& name) const;
-
     // *** Result Iteration ***
+
+    //! Return the current row number.
+    unsigned int current_row() const;
 
     //! Advance current result row to next (or first if uninitialized)
     bool step();
 
-    //! Return the current row number.
-    unsigned int curr_row() const;
-
-    //! Returns true if cell (row,col) is NULL.
+    //! Returns true if cell (current_row,col) is NULL.
     bool isNULL(unsigned int col) const;
 
     //! Return text representation of column col of current row.
@@ -92,20 +80,47 @@ public:
     // *** Complete Result Caching ***
 
     //! read complete result into memory
-    PgSqlQuery& read_complete();
+    void read_complete();
 
     //! Returns true if cell (row,col) is NULL.
     bool isNULL(unsigned int row, unsigned int col) const;
 
     //! Return text representation of cell (row,col).
     const char* text(unsigned int row, unsigned int col) const;
-
-    // *** TEXTTABLE formatting ***
-
-    //! format result as a text table
-    std::string format_texttable();
 };
 
-typedef PgSqlQuery SqlQuery;
+//! PostgreSQL database connection
+class PgSqlDatabase : public SqlDatabase
+{
+protected:
+    //! database connection
+    PGconn* m_pg;
+
+    //! for access to database connection
+    friend class PgSqlQuery;
+
+public:
+    //! virtual destructor to free connection
+    virtual ~PgSqlDatabase();
+
+    //! try to connect to the database with default parameters
+    virtual bool initialize();
+
+    //! return string for the i-th placeholder, where i starts at 0.
+    virtual std::string placeholder(unsigned int i) const;
+
+    //! construct query object for given string
+    virtual SqlQuery query(const std::string& query);
+
+    //! construct query object for given string with placeholder parameters
+    virtual SqlQuery query(const std::string& query,
+                           const std::vector<std::string>& params);
+
+    //! test if a table exists in the database
+    virtual bool exist_table(const std::string& table);
+
+    //! return last error message string
+    virtual const char* errmsg() const;
+};
 
 #endif // PGSQL_HEADER

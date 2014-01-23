@@ -5,7 +5,7 @@
  * processing. Automatically detects the SQL column types.
  *
  ******************************************************************************
- * Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -27,15 +27,7 @@
 
 int main(int argc, char* argv[])
 {
-    // make connection to the database
-    g_pg = PQconnectdb("");
-
-    // check to see that the backend connection was successfully made
-    if (PQstatus(g_pg) != CONNECTION_OK)
-    {
-        OUT("Connection to database failed: " << PQerrorMessage(g_pg));
-        return -1;
-    }
+    g_db_initialize();
 
     try {
         ImportData().main(argc, argv);
@@ -43,10 +35,12 @@ int main(int argc, char* argv[])
     catch (std::runtime_error& e)
     {
         OUT(e.what());
+        g_db_free();
+
         return EXIT_FAILURE;
     }
 
+    g_db_free();
 
-    PQfinish(g_pg);
     return EXIT_SUCCESS;
 }

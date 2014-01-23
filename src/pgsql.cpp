@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/sql.cpp
+ * src/pgsql.cpp
  *
  * Encapsulate PostgreSQL queries into a C++ class, which is a specialization
  * of the generic SQL database interface.
@@ -23,17 +23,19 @@
 
 #include "pgsql.h"
 #include "common.h"
+#include "strtools.h"
 
 #include <cassert>
 #include <cstring>
 #include <iomanip>
 #include <vector>
 
-//! Execute a SQL query without parameters, throws on errors.
-PgSqlQuery::PgSqlQuery(const std::string& query)
-    : m_query(query)
+//! Execute a SQL query without placeholders, throws on errors.
+PgSqlQuery::PgSqlQuery(class PgSqlDatabase& db, const std::string& query)
+    : SqlQueryImpl(query),
+      m_db(db)
 {
-    m_res = PQexec(g_pg, query.c_str());
+    m_res = PQexec(m_db.m_pg, query.c_str());
 
     ExecStatusType r = PQresultStatus(m_res);
 
@@ -42,7 +44,37 @@ PgSqlQuery::PgSqlQuery(const std::string& query)
     {
         OUT_THROW("SQL query " << query << "\n" <<
                   "Failed with " << PQresStatus(r) <<
-                  " : " << PQerrorMessage(g_pg));
+                  " : " << m_db.errmsg());
+    }
+
+    m_row = -1;
+}
+
+//! Execute a SQL query with placeholders, throws on errors.
+PgSqlQuery::PgSqlQuery(class PgSqlDatabase& db, const std::string& query,
+                       const std::vector<std::string>& params)
+    : SqlQueryImpl(query),
+      m_db(db)
+{
+    // construct vector of const char* for interface
+    std::vector<const char*> paramsC(params.size());
+
+    for (size_t i = 0; i < params.size(); ++i)
+        paramsC[i] = params[i].c_str();
+
+    // execute query with string variables
+
+    m_res = PQexecParams(m_db.m_pg, query.c_str(),
+                         params.size(), NULL, paramsC.data(), NULL, NULL, 0);
+
+    ExecStatusType r = PQresultStatus(m_res);
+
+    if (r == PGRES_BAD_RESPONSE ||
+        r == PGRES_FATAL_ERROR)
+    {
+        OUT_THROW("SQL query " << query << "\n" <<
+                  "Failed with " << PQresStatus(r) <<
+                  " : " << m_db.errmsg());
     }
 
     m_row = -1;
@@ -59,16 +91,16 @@ unsigned int PgSqlQuery::num_rows() const
 {
     if (PQresultStatus(m_res) != PGRES_TUPLES_OK)
     {
-        OUT_THROW("SQL query " << m_query << "\n" <<
-                  "Did not return tuples : " << PQerrorMessage(g_pg));
+        OUT_THROW("SQL query " << query() << "\n" <<
+                  "Did not return tuples : " << m_db.errmsg());
     }
 
     int num = PQntuples(m_res);
 
     if (num < 0)
     {
-        OUT_THROW("SQL query " << m_query << "\n" <<
-                  "Did not return tuples : " << PQerrorMessage(g_pg));
+        OUT_THROW("SQL query " << query() << "\n" <<
+                  "Did not return tuples : " << m_db.errmsg());
     }
 
     return num;
@@ -85,50 +117,25 @@ unsigned int PgSqlQuery::num_cols() const
 {
     if (PQresultStatus(m_res) != PGRES_TUPLES_OK)
     {
-        OUT_THROW("SQL query " << m_query << "\n" <<
-                  "Did not return tuples : " << PQerrorMessage(g_pg));
+        OUT_THROW("SQL query " << query() << "\n" <<
+                  "Did not return tuples : " << m_db.errmsg());
     }
 
     int num = PQnfields(m_res);
 
     if (num < 0)
     {
-        OUT_THROW("SQL query " << m_query << "\n" <<
-                  "Did not return tuples : " << PQerrorMessage(g_pg));
+        OUT_THROW("SQL query " << query() << "\n" <<
+                  "Did not return tuples : " << m_db.errmsg());
     }
 
     return num;
 }
 
-//! Read column name map for the following col -> num mappings.
-PgSqlQuery& PgSqlQuery::read_colmap()
+//! Return the current row number
+unsigned int PgSqlQuery::current_row() const
 {
-    m_colmap.clear();
-
-    for (unsigned int col = 0; col < num_cols(); ++col)
-        m_colmap[ PQfname(m_res, col) ] = col;
-
-    return *this;
-}
-
-//! Check if a column name exists.
-bool PgSqlQuery::exist_col(const std::string& name) const
-{
-    return (m_colmap.find(name) != m_colmap.end());
-}
-
-//! Returns column number of name or throws if it does not exist.
-unsigned int PgSqlQuery::find_col(const std::string& name) const
-{
-    colmap_type::const_iterator it = m_colmap.find(name);
-
-    if (it == m_colmap.end())
-    {
-        OUT_THROW("SQL query " << m_query << "\n" <<
-                  "Column " << name << " not found in result!");
-    }
-
-    return it->second;
+    return m_row;
 }
 
 //! Advance current result row to next (or first if uninitialized)
@@ -136,12 +143,6 @@ bool PgSqlQuery::step()
 {
     ++m_row;
     return (m_row < num_rows());
-}
-
-//! Return the current row number
-unsigned int PgSqlQuery::curr_row() const
-{
-    return m_row;
 }
 
 //! Returns true if cell (row,col) is NULL.
@@ -161,10 +162,10 @@ const char* PgSqlQuery::text(unsigned int col) const
 }
 
 //! read complete result into memory
-PgSqlQuery& PgSqlQuery::read_complete()
+void PgSqlQuery::read_complete()
 {
     // noop on PostgreSQL
-    return *this;
+    return;
 }
 
 //! Returns true if cell (row,col) is NULL.
@@ -183,72 +184,68 @@ const char* PgSqlQuery::text(unsigned int row, unsigned int col) const
     return PQgetvalue(m_res, row, col);
 }
 
-//! format result as a text table
-std::string PgSqlQuery::format_texttable()
+////////////////////////////////////////////////////////////////////////////////
+
+//! try to connect to the database with default parameters
+bool PgSqlDatabase::initialize()
 {
-    read_complete();
+    // make connection to the database
+    m_pg = PQconnectdb("");
 
-    // format SQL table: read data and determine column widths
-
-    std::vector<size_t> width(num_cols(), 0);
-
-    for (unsigned int col = 0; col < num_cols(); ++col)
+    // check to see that the backend connection was successfully made
+    if (PQstatus(m_pg) != CONNECTION_OK)
     {
-        width[col] = std::max(width[col], strlen( col_name(col) ));
+        OUT("Connection to PostgreSQL database failed: " << errmsg());
+        return false;
     }
 
-    for (unsigned int row = 0; row < num_rows(); ++row)
-    {
-        for (unsigned int col = 0; col < num_cols(); ++col)
-        {
-            width[col] = std::max(width[col], strlen(text(row, col)) );
-        }
-    }
-
-    // construct header/middle/footer breaks
-    std::ostringstream obreak;
-    obreak << "+-";
-    for (unsigned int col = 0; col < num_cols(); ++col)
-    {
-        if (col != 0) obreak << "+-";
-        obreak << std::string(width[col]+1, '-');
-    }
-    obreak << "+" << std::endl;
-
-    // format output
-    std::ostringstream os;
-
-    os << obreak.str();
-
-    os << "| ";
-    for (unsigned int col = 0; col < num_cols(); ++col)
-    {
-        if (col != 0) os << "| ";
-        os << std::setw(width[col]) << std::right
-           << col_name(col) << ' ';
-    }
-    os << '|' << std::endl;
-    os << obreak.str();
-
-    for (unsigned int row = 0; row < num_rows(); ++row)
-    {
-        os << "| ";
-        for (unsigned int col = 0; col < num_cols(); ++col)
-        {
-            if (col != 0) os << "| ";
-            os << std::setw(width[col]);
-
-            //os << '-' << PQftype(m_res, col) << '-';
-            if (PQftype(m_res, col) == 23 || PQftype(m_res, col) == 20)
-                os << std::right;
-            else
-                os << std::left;
-
-            os << text(row, col) << ' ';
-        }
-        os << '|' << std::endl;
-    }
-    os << obreak.str();
-
-    return os.str();
+    return true;
 }
+
+PgSqlDatabase::~PgSqlDatabase()
+{
+    PQfinish(m_pg);
+}
+
+//! return string for the i-th placeholder, where i starts at 0.
+std::string PgSqlDatabase::placeholder(unsigned int i) const
+{
+    return "$" + to_str(i+1);
+}
+
+//! construct query object for given string
+SqlQuery PgSqlDatabase::query(const std::string& query)
+{
+    return SqlQuery( new PgSqlQuery(*this, query) );
+}
+
+//! construct query object for given string with placeholder parameters
+SqlQuery PgSqlDatabase::query(const std::string& query,
+                              const std::vector<std::string>& params)
+{
+    return SqlQuery( new PgSqlQuery(*this, query, params) );
+}
+
+//! test if a table exists in the database
+bool PgSqlDatabase::exist_table(const std::string& table)
+{
+    std::vector<std::string> params;
+    params.push_back(table);
+
+    PgSqlQuery sql(*this,
+                   "SELECT COUNT(*) FROM pg_tables WHERE tablename = $1",
+                   params);
+
+    assert(sql.num_rows() == 1 && sql.num_cols() == 1);
+    sql.step();
+
+    return strcmp(sql.text(0), "1") == 0;
+}
+
+//! return last error message string
+const char* PgSqlDatabase::errmsg() const
+{
+    return PQerrorMessage(m_pg);
+}
+
+////////////////////////////////////////////////////////////////////////////////
