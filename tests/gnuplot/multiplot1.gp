@@ -3,10 +3,10 @@ set output "test.pdf"
 # IMPORT-DATA test test.data
 set key top right
 
-## MULTIPLOT(funcname) SELECT LOG(2,testsize) AS x, bandwidth AS y, MULTIPLOT
+## MULTIPLOT(funcname) SELECT testsize AS x, CAST(bandwidth AS BIGINT) AS y, MULTIPLOT
 ## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
 
-## MULTIPLOT(testsize) SELECT LOG(2,testsize) AS x, bandwidth AS y, MULTIPLOT
+## MULTIPLOT(testsize) SELECT testsize AS x, CAST(bandwidth AS BIGINT) AS y, MULTIPLOT
 ## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
 plot \
     'stdin-data.txt' index 0 with lines linetype 4, \

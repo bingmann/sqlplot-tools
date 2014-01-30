@@ -32,7 +32,7 @@
 
 class SqlQueryImpl
 {
-private:
+protected:
     //! Saved query string
     std::string m_query;
 
@@ -43,7 +43,7 @@ private:
     colmap_type m_colmap;
 
 public:
-    
+
     //! Execute a SQL query, throws on errors.
     SqlQueryImpl(const std::string& query);
 
@@ -62,7 +62,7 @@ public:
     // *** Column Name Mapping ***
 
     //! Return column name of col
-    virtual const char* col_name(unsigned int col) const = 0;
+    virtual std::string col_name(unsigned int col) const = 0;
 
     //! Read column name map for the following col -> num mappings.
     virtual void read_colmap();
@@ -111,14 +111,24 @@ typedef boost::shared_ptr<SqlQueryImpl> SqlQuery;
 class SqlDatabase
 {
 public:
+    //! enum describing supported SQL databases
+    enum db_type { DB_PGSQL, DB_MYSQL, DB_SQLITE };
+
+public:
     //! virtual destructor to free connection
     virtual ~SqlDatabase();
+
+    //! return type of SQL database
+    virtual db_type type() const = 0;
 
     //! try to connect to the database with default parameters
     virtual bool initialize() = 0;
 
     //! return string for the i-th placeholder, where i starts at 0.
     virtual std::string placeholder(unsigned int i) const = 0;
+
+    //! execute SQL query without result
+    virtual bool execute(const std::string& query) = 0;
 
     //! construct query object for given string
     virtual SqlQuery query(const std::string& query) = 0;
@@ -132,6 +142,84 @@ public:
 
     //! return last error message string
     virtual const char* errmsg() const = 0;
+};
+
+//! Cache complete data from SQL results
+class SqlDataCache
+{
+protected:
+
+    //! complete table read
+    bool m_complete;
+
+    //! type of each row
+    typedef std::vector< std::pair<bool,std::string> > row_type;
+
+    //! type of the whole table
+    typedef std::vector<row_type> table_type;
+
+    //! cache table
+    table_type m_table;
+
+protected:
+    //! simple initializer
+    SqlDataCache()
+        : m_complete(false)
+    {
+    }
+
+    //! cache complete data of a query
+    void read_complete(SqlQueryImpl& sql)
+    {
+        if (m_complete) return;
+
+        while (sql.step())
+        {
+            row_type row;
+
+            for (size_t col = 0; col < sql.num_cols(); ++col)
+            {
+                if (sql.isNULL(col))
+                    row.push_back( std::make_pair(true, std::string()) );
+                else
+                    row.push_back( std::make_pair(false, sql.text(col)) );
+            }
+
+            m_table.push_back(row);
+        }
+
+        m_complete = true;
+    }
+
+    //! Test if complete result set is cached
+    bool is_complete() const
+    {
+        return m_complete;
+    }
+
+    //! Return number of cached rows
+    size_t num_rows() const
+    {
+        return m_table.size();
+    }
+
+    //! Returns true if cell (row,col) is NULL.
+    bool isNULL(unsigned int row, unsigned int col) const
+    {
+        assert(m_complete);
+        assert(row < m_table.size());
+        assert(col < m_table[row].size());
+        return m_table[row][col].first;
+    }
+
+    //! Return text representation of cell (row,col).
+    const char* text(unsigned int row, unsigned int col) const
+    {
+        assert(m_complete);
+        assert(row < m_table.size());
+        assert(col < m_table[row].size());
+        return m_table[row][col].second.c_str();
+    }
 };
 
 #endif // SQL_HEADER

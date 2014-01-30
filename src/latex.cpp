@@ -136,7 +136,6 @@ void SpLatex::importdata(size_t /* ln */, size_t /* indent */, const std::string
 void SpLatex::texttable(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql = g_db->query(cmdline);
-    OUT("--> " << sql->num_rows() << " rows");
 
     // format result as a text table
     std::string output = sql->format_texttable();
@@ -158,7 +157,6 @@ void SpLatex::texttable(size_t ln, size_t indent, const std::string& cmdline)
 void SpLatex::plot(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql = g_db->query(cmdline);
-    OUT("--> " << sql->num_rows() << " rows");
 
     std::ostringstream oss;
     while (sql->step())
@@ -211,7 +209,6 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
     // execute query
     SqlQuery sql = g_db->query(query);
-    OUT("--> " << sql->num_rows() << " rows");
 
     // read column names
     sql->read_colmap();
@@ -246,9 +243,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         std::vector<std::string> lastgroup;
         std::ostringstream coord;
 
-        for (unsigned int row = 0; row < sql->num_rows(); ++row)
+        while (sql->step())
         {
-            sql->step();
+            unsigned int row = sql->current_row();
 
             if (sql->isNULL(colx)) {
                 OUT("MULTIPLOT warning: 'x' is NULL in row " << row << ".");
@@ -376,7 +373,6 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
 
     // execute query
     SqlQuery sql = g_db->query(query);
-    OUT("--> " << sql->num_rows() << " rows");
 
     sql->read_complete();
 

@@ -4,7 +4,7 @@
 # Build script for sqlplot-tools utility set.
 #
 ###############################################################################
-# Copyright (C) 2013 Timo Bingmann <tb@panthema.net>
+# Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -41,8 +41,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
 # enable use of "make test"
 enable_testing()
 
-# Use PostgreSQL
+# Find PostgreSQL client library
 find_package(PostgreSQL REQUIRED)
+
+# Find Sqlite3 library
+find_path(SQLITE3_INCLUDE_DIR sqlite3.h
+  PATHS /usr/include /usr/local/include)
+
+find_library(SQLITE3_LIBRARIES NAMES sqlite3
+  PATHS /usr/lib /usr/local/lib)
+include_directories(${SQLITE3_INCLUDE_DIR})
 
 # Use Boost.Regex
 find_package(Boost 1.47.0 REQUIRED COMPONENTS regex)

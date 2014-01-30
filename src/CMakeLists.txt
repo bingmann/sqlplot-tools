@@ -27,10 +27,12 @@ add_executable(sp-importdata
   common.cpp
   sql.cpp
   pgsql.cpp
+  sqlite.cpp
   importdata.cpp
   fieldset.cpp
   )
-target_link_libraries(sp-importdata ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(sp-importdata
+  ${PostgreSQL_LIBRARIES} ${SQLITE3_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(sp-process
   sp-process.cpp
@@ -39,7 +41,9 @@ add_executable(sp-process
   common.cpp
   sql.cpp
   pgsql.cpp
+  sqlite.cpp
   importdata.cpp
   fieldset.cpp
   )
-target_link_libraries(sp-process ${PostgreSQL_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(sp-process
+  ${PostgreSQL_LIBRARIES} ${SQLITE3_LIBRARIES} ${Boost_LIBRARIES})

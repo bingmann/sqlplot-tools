@@ -32,6 +32,7 @@ bool gopt_check_output = false;
 SqlDatabase* g_db = NULL;
 
 #include "pgsql.h"
+#include "sqlite.h"
 
 //! initialize global SQL database connection
 bool g_db_initialize()
@@ -45,6 +46,12 @@ bool g_db_initialize()
         return true;
     delete g_db;
 
+/*
+    g_db = new SQLiteDatabase;
+    if (g_db->initialize())
+        return true;
+    delete g_db;
+*/
     return false;
 }
 

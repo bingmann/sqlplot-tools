@@ -1,11 +1,11 @@
 /******************************************************************************
- * src/pgsql.h
+ * src/sqlite.h
  *
- * Encapsulate PostgreSQL queries into a C++ class, which is a specialization
- * of the generic SQL database interface.
+ * Encapsulate SQLite3 queries into a C++ class, which is a specialization of
+ * the generic SQL database interface.
  *
  ******************************************************************************
- * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -21,36 +21,36 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef PGSQL_HEADER
-#define PGSQL_HEADER
+#ifndef SQLITE_HEADER
+#define SQLITE_HEADER
 
-#include <libpq-fe.h>
+#include <sqlite3.h>
 
 #include "sql.h"
 
-class PgSqlQuery : public SqlQueryImpl
+class SQLiteQuery : public SqlQueryImpl, protected SqlDataCache
 {
 protected:
-    //! PostgreSQL database connection
-    class PgSqlDatabase& m_db;
+    //! SQLite database connection
+    class SQLiteDatabase& m_db;
 
-    //! PostgreSQL result object
-    PGresult* m_res;
+    //! SQLite statement object
+    sqlite3_stmt* m_stmt;
 
     //! Current result row
-    unsigned int m_row;
+    int m_row;
 
 public:
-    
+
     //! Execute a SQL query without placeholders, throws on errors.
-    PgSqlQuery(class PgSqlDatabase& db, const std::string& query);
+    SQLiteQuery(class SQLiteDatabase& db, const std::string& query);
 
     //! Execute a SQL query with placeholders, throws on errors.
-    PgSqlQuery(class PgSqlDatabase& db, const std::string& query,
-               const std::vector<std::string>& params);
+    SQLiteQuery(class SQLiteDatabase& db, const std::string& query,
+                const std::vector<std::string>& params);
 
     //! Free result
-    ~PgSqlQuery();
+    ~SQLiteQuery();
 
     //! Return number of rows in result, throws if no tuples.
     unsigned int num_rows() const;
@@ -89,19 +89,19 @@ public:
     const char* text(unsigned int row, unsigned int col) const;
 };
 
-//! PostgreSQL database connection
-class PgSqlDatabase : public SqlDatabase
+//! SQLite database connection
+class SQLiteDatabase : public SqlDatabase
 {
 protected:
     //! database connection
-    PGconn* m_pg;
+    sqlite3* m_db;
 
     //! for access to database connection
-    friend class PgSqlQuery;
+    friend class SQLiteQuery;
 
 public:
     //! virtual destructor to free connection
-    virtual ~PgSqlDatabase();
+    virtual ~SQLiteDatabase();
 
     //! return type of SQL database
     virtual db_type type() const;
@@ -126,7 +126,7 @@ public:
     virtual bool exist_table(const std::string& table);
 
     //! return last error message string
-    virtual const char* errmsg() const;
+    const char* errmsg() const;
 };
 
-#endif // PGSQL_HEADER
+#endif // SQLITE_HEADER

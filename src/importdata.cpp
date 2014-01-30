@@ -123,7 +123,7 @@ dedup_key(const std::string& key, std::set<std::string>& keyset)
         return key;
     }
 
-    // append numbers and to make unique
+    // append numbers to make unique
     for (size_t num = 1; ; ++num)
     {
         std::ostringstream nkey;
@@ -149,7 +149,7 @@ bool ImportData::create_table() const
         std::ostringstream cmd;
         cmd << "DROP TABLE \"" << m_tablename << "\"";
 
-        g_db->query(cmd.str());
+        g_db->execute(cmd.str());
     }
 
     std::string createtable = m_fieldset.make_create_table(m_tablename, mopt_temporary_table);
@@ -366,7 +366,7 @@ int ImportData::main(int argc, char* const argv[])
     m_tablename = argv[optind++];
 
     // begin transaction
-    g_db->query("BEGIN TRANSACTION");
+    g_db->execute("BEGIN WORK");
 
     // process file commandline arguments
     if (optind < argc)
@@ -400,6 +400,8 @@ int ImportData::main(int argc, char* const argv[])
                     }
                 }
             }
+
+            globfree(&globbuf);
             ++optind;
         }
     }
@@ -418,7 +420,7 @@ int ImportData::main(int argc, char* const argv[])
     }
 
     // finish transaction
-    g_db->query("COMMIT TRANSACTION");
+    g_db->execute("COMMIT WORK");
 
     OUT("Imported in total " << m_total_count << " rows of data containing " << m_fieldset.count() << " fields each.");
 

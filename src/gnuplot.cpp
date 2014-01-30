@@ -223,7 +223,6 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
 void SpGnuplot::plot(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql = g_db->query(cmdline);
-    OUT("--> " << sql->num_rows() << " rows");
 
     // write a header to the datafile containing the query
     std::ostream& df = *m_datafile;
@@ -275,12 +274,8 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
     // execute query
     SqlQuery sql = g_db->query(query);
-    OUT("--> " << sql->num_rows() << " rows");
 
     std::vector<Dataset> datasets;
-
-    if (sql->num_rows() == 0)
-        return plot_rewrite(ln, indent, datasets, "MULTIPLOT");
 
     // read column names
     sql->read_colmap();
@@ -378,10 +373,6 @@ std::string maybe_quote(const char* str)
 void SpGnuplot::macro(size_t ln, size_t indent, const std::string& cmdline)
 {
     SqlQuery sql = g_db->query(cmdline);
-    OUT("--> " << sql->num_rows() << " rows");
-
-    if (sql->num_rows() != 1)
-        OUT_THROW("MACRO did not return exactly one row");
 
     sql->step();
 

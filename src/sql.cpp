@@ -86,7 +86,7 @@ std::string SqlQueryImpl::format_texttable()
 
     for (unsigned int col = 0; col < num_cols(); ++col)
     {
-        width[col] = std::max(width[col], strlen( col_name(col) ));
+        width[col] = std::max(width[col], col_name(col).size() );
     }
 
     for (unsigned int row = 0; row < num_rows(); ++row)

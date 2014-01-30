@@ -3,23 +3,23 @@ set output "test.pdf"
 # IMPORT-DATA test test.data
 set key top right
 
-# PLOT SELECT LOG(2,testsize) AS x, bandwidth AS y FROM test WHERE funcname='ScanWrite64PtrUnrollLoop' ORDER BY x
+# PLOT SELECT testsize AS x, CAST(bandwidth AS BIGINT) AS y FROM test WHERE funcname='ScanWrite64PtrUnrollLoop' ORDER BY x
 plot \
     'plot1-data.txt' index 0 with linespoints
 
-## PLOT SELECT LOG(2,testsize) AS x, bandwidth AS y FROM test
+## PLOT SELECT testsize AS x, CAST(bandwidth AS BIGINT) AS y FROM test
 ## WHERE funcname='ScanRead64PtrUnrollLoop' ORDER BY x
 plot \
     'plot1-data.txt' index 1 with linespoints
 
 # indentation start
 
-    ## PLOT SELECT LOG(2,testsize) AS x, rate AS y FROM test
+    ## PLOT SELECT testsize AS x, CAST(rate * 1e12 AS BIGINT) AS y FROM test
     ## WHERE funcname='ScanWrite64PtrUnrollLoop' ORDER BY x
     plot \
         'plot1-data.txt' index 2 with linespoints
 
-    ## PLOT SELECT LOG(2,testsize) AS x, rate AS y FROM test
+    ## PLOT SELECT testsize AS x, CAST(rate * 1e12 AS BIGINT) AS y FROM test
     ## WHERE funcname='ScanRead64PtrUnrollLoop' ORDER BY x
     plot \
         'plot1-data.txt' index 3 with linespoints

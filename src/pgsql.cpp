@@ -107,7 +107,7 @@ unsigned int PgSqlQuery::num_rows() const
 }
 
 //! Return column name of col
-const char* PgSqlQuery::col_name(unsigned int col) const
+std::string PgSqlQuery::col_name(unsigned int col) const
 {
     return PQfname(m_res, col);
 }
@@ -202,15 +202,46 @@ bool PgSqlDatabase::initialize()
     return true;
 }
 
+//! destructor to free connection
 PgSqlDatabase::~PgSqlDatabase()
 {
     PQfinish(m_pg);
+}
+
+//! return type of SQL database
+PgSqlDatabase::db_type PgSqlDatabase::type() const
+{
+    return DB_PGSQL;
 }
 
 //! return string for the i-th placeholder, where i starts at 0.
 std::string PgSqlDatabase::placeholder(unsigned int i) const
 {
     return "$" + to_str(i+1);
+}
+
+//! execute SQL query without result
+bool PgSqlDatabase::execute(const std::string& query)
+{
+    PGresult* res = PQexec(m_pg, query.c_str());
+
+    ExecStatusType r = PQresultStatus(res);
+
+    if (r == PGRES_TUPLES_OK)
+    {
+        OUT("SQL query " << query << "\n" <<
+            "Return TUPLES!!!");
+    }
+    else if (r != PGRES_COMMAND_OK)
+    {
+        OUT_THROW("SQL query " << query << "\n" <<
+                  "Failed with " << PQresStatus(r) <<
+                  " : " << errmsg());
+    }
+
+    PQclear(res);
+
+    return true;
 }
 
 //! construct query object for given string
@@ -239,7 +270,7 @@ bool PgSqlDatabase::exist_table(const std::string& table)
     assert(sql.num_rows() == 1 && sql.num_cols() == 1);
     sql.step();
 
-    return strcmp(sql.text(0), "1") == 0;
+    return strcmp(sql.text(0), "0") != 0;
 }
 
 //! return last error message string
