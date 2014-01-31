@@ -21,6 +21,7 @@
  *****************************************************************************/
 
 #include "fieldset.h"
+#include "common.h"
 
 #include <cassert>
 #include <sstream>
@@ -31,7 +32,13 @@ const char* FieldSet::sqlname(fieldtype t)
     switch (t) {
     default:
     case T_NONE: return "NONE";
-    case T_VARCHAR: return "VARCHAR";
+    case T_VARCHAR:
+    {
+        if (g_db->type() == SqlDatabase::DB_MYSQL)
+            return "TEXT";
+
+        return "VARCHAR";
+    }
     case T_DOUBLE: return "DOUBLE PRECISION";
     case T_INTEGER: return "BIGINT";
     }
@@ -119,13 +126,13 @@ std::string FieldSet::make_create_table(const std::string& tablename, bool tempo
     std::ostringstream os;
     os << "CREATE "
        << (temporary ? "TEMPORARY " : "")
-       << "TABLE \"" << tablename << "\" (";
+       << "TABLE " << g_db->quote_field(tablename) << " (";
 
     for (fieldset_type::const_iterator fi = m_fieldset.begin();
          fi != m_fieldset.end(); ++fi)
     {
         if (fi != m_fieldset.begin()) os << ", ";
-        os << "\"" << fi->first << "\" " << sqlname(fi->second);
+        os << g_db->quote_field(fi->first) << ' ' << sqlname(fi->second);
     }
 
     os << ")";

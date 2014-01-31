@@ -358,15 +358,12 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 }
 
 static inline
-std::string maybe_quote(const char* str)
+std::string maybe_quote(const std::string& str)
 {
-    char *endptr;
-    strtod(str, &endptr);
-
-    if (endptr && *endptr == 0) // fully parsed
+    if (str_is_double(str)) // fully parsed
         return str;
     else // needs quoting
-        return std::string("'") + str + "'";
+        return '\'' + str + '\'';
 }
 
 //! Process # MACRO commands

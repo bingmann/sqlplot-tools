@@ -154,11 +154,12 @@ bool PgSqlQuery::isNULL(unsigned int col) const
 }
 
 //! Return text representation of column col of current row.
-const char* PgSqlQuery::text(unsigned int col) const
+std::string PgSqlQuery::text(unsigned int col) const
 {
     assert(m_row < num_rows());
     assert(col < num_cols());
-    return PQgetvalue(m_res, m_row, col);
+    size_t length = PQgetlength(m_res, m_row, col);
+    return std::string(PQgetvalue(m_res, m_row, col), length);
 }
 
 //! read complete result into memory
@@ -177,11 +178,12 @@ bool PgSqlQuery::isNULL(unsigned int row, unsigned int col) const
 }
 
 //! Return text representation of cell (row,col).
-const char* PgSqlQuery::text(unsigned int row, unsigned int col) const
+std::string PgSqlQuery::text(unsigned int row, unsigned int col) const
 {
     assert(row < num_rows());
     assert(col < num_cols());
-    return PQgetvalue(m_res, row, col);
+    size_t length = PQgetlength(m_res, row, col);
+    return std::string(PQgetvalue(m_res, row, col), length);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -217,7 +219,13 @@ PgSqlDatabase::db_type PgSqlDatabase::type() const
 //! return string for the i-th placeholder, where i starts at 0.
 std::string PgSqlDatabase::placeholder(unsigned int i) const
 {
-    return "$" + to_str(i+1);
+    return '$' + to_str(i+1);
+}
+
+//! return quoted table or field identifier
+std::string PgSqlDatabase::quote_field(const std::string& field) const
+{
+    return '"' + field + '"';
 }
 
 //! execute SQL query without result
@@ -270,7 +278,7 @@ bool PgSqlDatabase::exist_table(const std::string& table)
     assert(sql.num_rows() == 1 && sql.num_cols() == 1);
     sql.step();
 
-    return strcmp(sql.text(0), "0") != 0;
+    return (sql.text(0) != "0");
 }
 
 //! return last error message string

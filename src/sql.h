@@ -85,7 +85,7 @@ public:
     virtual bool isNULL(unsigned int col) const = 0;
 
     //! Return text representation of column col of current row.
-    virtual const char* text(unsigned int col) const = 0;
+    virtual std::string text(unsigned int col) const = 0;
 
     // *** Complete Result Caching ***
 
@@ -96,7 +96,7 @@ public:
     virtual bool isNULL(unsigned int row, unsigned int col) const = 0;
 
     //! Return text representation of cell (row,col).
-    virtual const char* text(unsigned int row, unsigned int col) const = 0;
+    virtual std::string text(unsigned int row, unsigned int col) const = 0;
 
     // *** TEXTTABLE formatting ***
 
@@ -126,6 +126,9 @@ public:
 
     //! return string for the i-th placeholder, where i starts at 0.
     virtual std::string placeholder(unsigned int i) const = 0;
+
+    //! return quoted table or field identifier
+    virtual std::string quote_field(const std::string& field) const = 0;
 
     //! execute SQL query without result
     virtual bool execute(const std::string& query) = 0;
@@ -213,7 +216,7 @@ protected:
     }
 
     //! Return text representation of cell (row,col).
-    const char* text(unsigned int row, unsigned int col) const
+    std::string text(unsigned int row, unsigned int col) const
     {
         assert(m_complete);
         assert(row < m_table.size());

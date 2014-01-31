@@ -147,7 +147,7 @@ bool ImportData::create_table() const
         OUT("Table \"" << m_tablename << "\" exists. Replacing data.");
 
         std::ostringstream cmd;
-        cmd << "DROP TABLE \"" << m_tablename << "\"";
+        cmd << "DROP TABLE " << g_db->quote_field(m_tablename);
 
         g_db->execute(cmd.str());
     }
@@ -157,7 +157,30 @@ bool ImportData::create_table() const
     if (mopt_verbose >= 1)
         OUT(createtable);
 
-    g_db->query(createtable);
+    try
+    {
+        g_db->execute(createtable);
+    }
+    catch (std::runtime_error &e)
+    {
+        if (g_db->type() == SqlDatabase::DB_MYSQL)
+        {
+            // in MySQL there is no way to check for existing TEMPORARY TABLES,
+            // so we just DROP TABLE and retry CREATE TABLE if it fails onces.
+
+            OUT("Table \"" << m_tablename << "\" maybe exists. Replacing data.");
+
+            std::ostringstream cmd;
+            cmd << "DROP TABLE " << g_db->quote_field(m_tablename);
+
+            g_db->execute(cmd.str());
+
+            g_db->execute(createtable);
+        }
+        else {
+            throw; // other databases have real errors.
+        }
+    }
 
     return true;
 }
@@ -184,7 +207,7 @@ bool ImportData::insert_line(const std::string& line)
     std::set<std::string> keyset;
 
     std::ostringstream cmd;
-    cmd << "INSERT INTO \"" << m_tablename << "\" (";
+    cmd << "INSERT INTO " << g_db->quote_field(m_tablename) << " (";
 
     std::vector<std::string> paramValues(slist.size());
 
@@ -198,7 +221,7 @@ bool ImportData::insert_line(const std::string& line)
         key = dedup_key(key, keyset);
 
         if (i != 0) cmd << ',';
-        cmd << '"' << key << '"';
+        cmd << g_db->quote_field(key);
     }
 
     cmd << ") VALUES (";
@@ -207,7 +230,7 @@ bool ImportData::insert_line(const std::string& line)
         if (i != 0) cmd << ',';
         cmd << g_db->placeholder(i);
     }
-    cmd << ")";
+    cmd << ')';
 
     if (mopt_verbose >= 2) OUT(cmd.str());
 
@@ -366,7 +389,7 @@ int ImportData::main(int argc, char* const argv[])
     m_tablename = argv[optind++];
 
     // begin transaction
-    g_db->execute("BEGIN WORK");
+    g_db->execute("BEGIN");
 
     // process file commandline arguments
     if (optind < argc)
@@ -420,7 +443,7 @@ int ImportData::main(int argc, char* const argv[])
     }
 
     // finish transaction
-    g_db->execute("COMMIT WORK");
+    g_db->execute("COMMIT");
 
     OUT("Imported in total " << m_total_count << " rows of data containing " << m_fieldset.count() << " fields each.");
 

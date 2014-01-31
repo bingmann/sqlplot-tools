@@ -75,7 +75,7 @@ public:
     bool isNULL(unsigned int col) const;
 
     //! Return text representation of column col of current row.
-    const char* text(unsigned int col) const;
+    std::string text(unsigned int col) const;
 
     // *** Complete Result Caching ***
 
@@ -86,7 +86,7 @@ public:
     bool isNULL(unsigned int row, unsigned int col) const;
 
     //! Return text representation of cell (row,col).
-    const char* text(unsigned int row, unsigned int col) const;
+    std::string text(unsigned int row, unsigned int col) const;
 };
 
 //! PostgreSQL database connection
@@ -111,6 +111,9 @@ public:
 
     //! return string for the i-th placeholder, where i starts at 0.
     virtual std::string placeholder(unsigned int i) const;
+
+    //! return quoted table or field identifier
+    virtual std::string quote_field(const std::string& field) const;
 
     //! execute SQL query without result
     virtual bool execute(const std::string& query);

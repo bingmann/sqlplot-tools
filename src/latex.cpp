@@ -383,7 +383,7 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
     {
         for (unsigned int j = 0; j < sql->num_cols(); ++j)
         {
-            cwidth[j] = std::max(cwidth[j], strlen( sql->text(i, j) ));
+            cwidth[j] = std::max(cwidth[j], sql->text(i,j).size());
         }
     }
 

@@ -172,10 +172,13 @@ bool SQLiteQuery::isNULL(unsigned int col) const
 }
 
 //! Return text representation of column col of current row.
-const char* SQLiteQuery::text(unsigned int col) const
+std::string SQLiteQuery::text(unsigned int col) const
 {
     assert(col < num_cols());
-    return (const char*)sqlite3_column_text(m_stmt, col);
+
+    const unsigned char* data = sqlite3_column_text(m_stmt, col);
+    size_t size = sqlite3_column_bytes(m_stmt, col);
+    return std::string((const char*)data, size);
 }
 
 //! read complete result into memory
@@ -191,7 +194,7 @@ bool SQLiteQuery::isNULL(unsigned int row, unsigned int col) const
 }
 
 //! Return text representation of cell (row,col).
-const char* SQLiteQuery::text(unsigned int row, unsigned int col) const
+std::string SQLiteQuery::text(unsigned int row, unsigned int col) const
 {
     return SqlDataCache::text(row, col);
 }
@@ -227,7 +230,13 @@ SQLiteDatabase::db_type SQLiteDatabase::type() const
 //! return string for the i-th placeholder, where i starts at 0.
 std::string SQLiteDatabase::placeholder(unsigned int i) const
 {
-    return "$" + to_str(i+1);
+    return '$' + to_str(i+1);
+}
+
+//! return quoted table or field identifier
+std::string SQLiteDatabase::quote_field(const std::string& field) const
+{
+    return '"' + field + '"';
 }
 
 //! execute SQL query without result
@@ -275,7 +284,7 @@ bool SQLiteDatabase::exist_table(const std::string& table)
         OUT_THROW("exist_table() failed.");
     }
 
-    return strcmp(sql.text(0), "0") != 0;
+    return (sql.text(0) != "0");
 }
 
 //! return last error message string

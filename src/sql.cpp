@@ -93,7 +93,7 @@ std::string SqlQueryImpl::format_texttable()
     {
         for (unsigned int col = 0; col < num_cols(); ++col)
         {
-            width[col] = std::max(width[col], strlen(text(row, col)) );
+            width[col] = std::max(width[col], text(row, col).size() );
 
             if (is_number[col] && !str_is_double(text(row, col)))
                 is_number[col] = false;

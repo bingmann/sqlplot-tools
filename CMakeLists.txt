@@ -47,6 +47,14 @@ enable_testing()
 # Find PostgreSQL client library
 find_package(PostgreSQL REQUIRED)
 
+# Find MySQL client library
+find_path(MYSQL_INCLUDE_DIR mysql.h
+  PATHS /usr/include/mysql /usr/local/include/mysql)
+
+find_library(MYSQL_LIBRARIES NAMES mysqlclient
+  PATHS /usr/lib/mysql /usr/local/lib/mysql)
+include_directories(${MYSQL_INCLUDE_DIR})
+
 # Find Sqlite3 library
 find_path(SQLITE3_INCLUDE_DIR sqlite3.h
   PATHS /usr/include /usr/local/include)

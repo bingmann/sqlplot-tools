@@ -1,11 +1,11 @@
 /******************************************************************************
- * src/sqlite.h
+ * src/mysql.h
  *
- * Encapsulate SQLite3 queries into a C++ class, which is a specialization of
- * the generic SQL database interface.
+ * Encapsulate MySQL queries into a C++ class, which is a specialization
+ * of the generic SQL database interface.
  *
  ******************************************************************************
- * Copyright (C) 2014 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -21,36 +21,45 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef SQLITE_HEADER
-#define SQLITE_HEADER
+#ifndef MYSQL_HEADER
+#define MYSQL_HEADER
 
-#include <sqlite3.h>
+#include <mysql.h>
 
 #include "sql.h"
 
-class SQLiteQuery : public SqlQueryImpl, protected SqlDataCache
+class MySqlQuery : public SqlQueryImpl, protected SqlDataCache
 {
 protected:
-    //! SQLite database connection
-    class SQLiteDatabase& m_db;
+    //! MySQL database connection
+    class MySqlDatabase& m_db;
 
-    //! SQLite statement object
-    sqlite3_stmt* m_stmt;
+    //! MySQL prepared statement object
+    MYSQL_STMT* m_stmt;
 
     //! Current result row
-    int m_row;
+    unsigned int m_row;
+
+    //! Opaque structure for MYSQL_BIND
+    struct MySqlBind* m_bind;
+
+    //! Opaque structure used to retrieve results
+    struct MySqlColumn* m_result;
+
+    //! Bind output results and execute query
+    void execute();
 
 public:
 
     //! Execute a SQL query without placeholders, throws on errors.
-    SQLiteQuery(class SQLiteDatabase& db, const std::string& query);
+    MySqlQuery(class MySqlDatabase& db, const std::string& query);
 
     //! Execute a SQL query with placeholders, throws on errors.
-    SQLiteQuery(class SQLiteDatabase& db, const std::string& query,
-                const std::vector<std::string>& params);
+    MySqlQuery(class MySqlDatabase& db, const std::string& query,
+               const std::vector<std::string>& params);
 
     //! Free result
-    ~SQLiteQuery();
+    ~MySqlQuery();
 
     //! Return number of rows in result, throws if no tuples.
     unsigned int num_rows() const;
@@ -62,6 +71,9 @@ public:
 
     //! Return column name of col
     std::string col_name(unsigned int col) const;
+
+    //! Read column name map for the following col -> num mappings.
+    void read_colmap();
 
     // *** Result Iteration ***
 
@@ -89,19 +101,19 @@ public:
     std::string text(unsigned int row, unsigned int col) const;
 };
 
-//! SQLite database connection
-class SQLiteDatabase : public SqlDatabase
+//! MySQL database connection
+class MySqlDatabase : public SqlDatabase
 {
 protected:
     //! database connection
-    sqlite3* m_db;
+    MYSQL* m_db;
 
     //! for access to database connection
-    friend class SQLiteQuery;
+    friend class MySqlQuery;
 
 public:
     //! virtual destructor to free connection
-    virtual ~SQLiteDatabase();
+    virtual ~MySqlDatabase();
 
     //! return type of SQL database
     virtual db_type type() const;
@@ -132,4 +144,4 @@ public:
     const char* errmsg() const;
 };
 
-#endif // SQLITE_HEADER
+#endif // MYSQL_HEADER
