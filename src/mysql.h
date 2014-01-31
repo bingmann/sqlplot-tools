@@ -118,8 +118,8 @@ public:
     //! return type of SQL database
     virtual db_type type() const;
 
-    //! try to connect to the database with default parameters
-    virtual bool initialize();
+    //! try to connect to the database with given parameters
+    virtual bool initialize(const std::string& params);
 
     //! return string for the i-th placeholder, where i starts at 0.
     virtual std::string placeholder(unsigned int i) const;

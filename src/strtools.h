@@ -236,6 +236,25 @@ split(const std::string& str, char sep, std::string::size_type limit = std::stri
     return out;
 }
 
+/** tolower() functional for std::transform with correct signature. */
+static inline char char_tolower_functional(char c)
+{
+    return static_cast<char>(std::tolower(c));
+}
+
+/**
+ * Returns a copy of the given string converted to lowercase.
+ *
+ * @param str   string to process
+ * @return      new string lowercased
+ */
+static inline std::string str_tolower(const std::string& str)
+{
+    std::string strcopy(str.size(), 0);
+    std::transform(str.begin(), str.end(), strcopy.begin(), char_tolower_functional);
+    return strcopy;
+}
+
 // ***                                        ***
 // *** String Stream Transformation Functions ***
 // ***                                        ***

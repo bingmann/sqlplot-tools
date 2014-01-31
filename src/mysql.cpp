@@ -262,8 +262,10 @@ std::string MySqlQuery::text(unsigned int row, unsigned int col) const
 ////////////////////////////////////////////////////////////////////////////////
 
 //! try to connect to the database with default parameters
-bool MySqlDatabase::initialize()
+bool MySqlDatabase::initialize(const std::string& params)
 {
+    OUT("Connecting to MySQL database \"" << params << "\".");
+
     // create mysql connection object
     m_db = mysql_init(NULL);
 
@@ -272,12 +274,12 @@ bool MySqlDatabase::initialize()
     // open connection to the database
     if (mysql_real_connect(m_db, NULL, NULL, NULL, NULL, 0, NULL, 0) == NULL)
     {
-        OUT("Connection to MySQL database failed: " << errmsg());
+        OUT("Connection to MySQL failed: " << errmsg());
         return false;
     }
 
     // have to select a database
-    execute("USE test");
+    execute("USE " + quote_field(params));
 
     return true;
 }
@@ -335,7 +337,7 @@ SqlQuery MySqlDatabase::query(const std::string& query,
 }
 
 //! test if a table exists in the database
-bool MySqlDatabase::exist_table(const std::string& table)
+bool MySqlDatabase::exist_table(const std::string&)
 {
     // in MySQL there is no way to check for existing TEMPORARY TABLES, so we
     // just DROP TABLE and retry CREATE TABLE if it fails onces.

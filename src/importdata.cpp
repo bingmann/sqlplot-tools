@@ -338,7 +338,7 @@ int ImportData::print_usage(const std::string& progname)
         "  -1       Take field types from first line and process stream." << std::endl <<
         "  -a       Process all line, regardless of RESULT marker." << std::endl <<
         "  -C       Enumerate unnamed fields with col# instead of using key names." << std::endl <<
-        "  -D       Eliminate duplicate RESULT lines." << std::endl <<
+        "  -d       Eliminate duplicate RESULT lines." << std::endl <<
         "  -T       Import into TEMPORARY table (for in-file processing)." << std::endl <<
         "  -v       Increase verbosity." << std::endl <<
         std::endl);
@@ -357,7 +357,7 @@ int ImportData::main(int argc, char* const argv[])
     /* parse command line parameters */
     int opt;
 
-    while ((opt = getopt(argc, argv, "h1avDCT")) != -1) {
+    while ((opt = getopt(argc, argv, "h1avdCTD:")) != -1) {
         switch (opt) {
         case '1':
             mopt_firstline = true;
@@ -368,7 +368,7 @@ int ImportData::main(int argc, char* const argv[])
         case 'v':
             mopt_verbose++;
             break;
-        case 'D':
+        case 'd':
             mopt_noduplicates = true;
             break;
         case 'C':
@@ -376,6 +376,9 @@ int ImportData::main(int argc, char* const argv[])
             break;
         case 'T':
             mopt_temporary_table = true;
+            break;
+        case 'D':
+            gopt_db_connection = optarg;
             break;
         case 'h': default:
             return print_usage(argv[0]);

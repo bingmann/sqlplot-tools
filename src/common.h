@@ -35,6 +35,9 @@ extern int gopt_verbose;
 //! check processed output matches the output file
 extern bool gopt_check_output;
 
+//! globally selected SQL database type and file
+extern std::string gopt_db_connection;
+
 //! global SQL database connection handle
 extern SqlDatabase* g_db;
 

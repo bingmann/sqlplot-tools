@@ -96,6 +96,7 @@ sp_process_usage(const std::string& progname)
         "  -f <type>  Force input file type = latex or gnuplot." << std::endl <<
         "  -o <file>  Output all processed files to this stream." << std::endl <<
         "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
+        "  -D <type>  Select SQL database type and file or database." << std::endl <<
         std::endl);
 
     return EXIT_FAILURE;
@@ -111,7 +112,7 @@ sp_process(int argc, char* argv[])
     //! output file name
     std::string opt_outputfile;
 
-    while ((opt = getopt(argc, argv, "vo:Cf:")) != -1) {
+    while ((opt = getopt(argc, argv, "vo:Cf:D:")) != -1) {
         switch (opt) {
         case 'v':
             gopt_verbose++;
@@ -125,20 +126,24 @@ sp_process(int argc, char* argv[])
         case 'C':
             gopt_check_output = true;
             break;
+        case 'D':
+            gopt_db_connection = optarg;
+            break;
         case 'h': default:
             return sp_process_usage(argv[0]);
         }
     }
 
     // make connection to the database
-    g_db_initialize();
+    if (!g_db_initialize())
+        OUT_THROW("Fatal: could not connect to a SQL database");
 
     // open output file or string stream
     std::ostream* output = NULL;
     if (gopt_check_output)
     {
         if (!opt_outputfile.size())
-            OUT_THROW("Error: checking output requires and output filename.");
+            OUT_THROW("Fatal: checking output requires an output filename.");
 
         output = new std::ostringstream;
     }

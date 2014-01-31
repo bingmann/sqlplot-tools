@@ -189,15 +189,17 @@ std::string PgSqlQuery::text(unsigned int row, unsigned int col) const
 ////////////////////////////////////////////////////////////////////////////////
 
 //! try to connect to the database with default parameters
-bool PgSqlDatabase::initialize()
+bool PgSqlDatabase::initialize(const std::string& params)
 {
+    OUT("Connecting to PostgreSQL database \"" << params << "\".");
+
     // make connection to the database
-    m_pg = PQconnectdb("");
+    m_pg = PQconnectdb(params.c_str());
 
     // check to see that the backend connection was successfully made
     if (PQstatus(m_pg) != CONNECTION_OK)
     {
-        OUT("Connection to PostgreSQL database failed: " << errmsg());
+        OUT("Connection to PostgreSQL failed: " << errmsg());
         return false;
     }
 

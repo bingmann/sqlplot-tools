@@ -202,13 +202,16 @@ std::string SQLiteQuery::text(unsigned int row, unsigned int col) const
 ////////////////////////////////////////////////////////////////////////////////
 
 //! try to connect to the database with default parameters
-bool SQLiteDatabase::initialize()
+bool SQLiteDatabase::initialize(const std::string& params)
 {
+    OUT("Connecting to SQLite3 database \"" << params << "\".");
+
     // make connection to in-memory database
-    int rc = sqlite3_open_v2(":memory:", &m_db, SQLITE_OPEN_READWRITE, NULL);
+    int rc = sqlite3_open_v2(params.c_str(), &m_db,
+                             SQLITE_OPEN_READWRITE, NULL);
     if (rc != SQLITE_OK)
     {
-        OUT("Connection to SQLite3 database failed: " << sqlite3_errstr(rc));
+        OUT("Connection to SQLite3 failed: " << sqlite3_errstr(rc));
         return false;
     }
 
