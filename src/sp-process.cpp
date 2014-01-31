@@ -30,6 +30,7 @@
 #include "strtools.h"
 #include "pgsql.h"
 #include "textlines.h"
+#include "importdata.h"
 
 //! file type from command line
 static std::string sopt_filetype;
@@ -92,12 +93,12 @@ sp_process_usage(const std::string& progname)
     OUT("Usage: " << progname << " [options] [files...]" << std::endl <<
         std::endl <<
         "Options: " << std::endl <<
+        " import      Call IMPORT-DATA subprogram to load SQL tables." << std::endl <<
         "  -v         Increase verbosity." << std::endl <<
         "  -f <type>  Force input file type = latex or gnuplot." << std::endl <<
         "  -o <file>  Output all processed files to this stream." << std::endl <<
         "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
-        "  -D <type>  Select SQL database type and file or database." << std::endl <<
-        std::endl);
+        "  -D <type>  Select SQL database type and file or database." << std::endl);
 
     return EXIT_FAILURE;
 }
@@ -190,7 +191,7 @@ sp_process(int argc, char* argv[])
     }
     else // no file arguments -> process stdin
     {
-        OUT("Reading stdin ...");
+        OUT("Reading text from stdin ...");
         TextLines out = sp_process_stream("stdin", std::cin);
 
         if (output)  {
@@ -231,7 +232,16 @@ sp_process(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
     try {
-        return sp_process(argc, argv);
+        if (argc >= 2 &&
+            (strcmp(argv[1], "import") == 0 ||
+             strcmp(argv[1], "import-data") == 0))
+        {
+            return ImportData().main(argc-1, argv+1);
+        }
+        else
+        {
+            return sp_process(argc, argv);
+        }
     }
     catch (std::runtime_error& e)
     {

@@ -340,8 +340,8 @@ int ImportData::print_usage(const std::string& progname)
         "  -C       Enumerate unnamed fields with col# instead of using key names." << std::endl <<
         "  -d       Eliminate duplicate RESULT lines." << std::endl <<
         "  -T       Import into TEMPORARY table (for in-file processing)." << std::endl <<
-        "  -v       Increase verbosity." << std::endl <<
-        std::endl);
+        "  -P       Import into non-TEMPORARY table (reverts the default -T)." << std::endl <<
+        "  -v       Increase verbosity." << std::endl);
 
     return EXIT_FAILURE;
 }
@@ -357,7 +357,7 @@ int ImportData::main(int argc, char* const argv[])
     /* parse command line parameters */
     int opt;
 
-    while ((opt = getopt(argc, argv, "h1avdCTD:")) != -1) {
+    while ((opt = getopt(argc, argv, "h1avdCTPD:")) != -1) {
         switch (opt) {
         case '1':
             mopt_firstline = true;
@@ -377,6 +377,9 @@ int ImportData::main(int argc, char* const argv[])
         case 'T':
             mopt_temporary_table = true;
             break;
+        case 'P':
+            mopt_temporary_table = false;
+            break;
         case 'D':
             gopt_db_connection = optarg;
             break;
@@ -390,6 +393,15 @@ int ImportData::main(int argc, char* const argv[])
         print_usage(argv[0]);
 
     m_tablename = argv[optind++];
+
+    // maybe connect to database
+    bool opt_dbconnect = false;
+    if (!g_db)
+    {
+        if (!g_db_initialize())
+            OUT_THROW("Fatal: could not connect to a SQL database");
+        opt_dbconnect = true;
+    }
 
     // begin transaction
     g_db->execute("BEGIN");
@@ -433,6 +445,8 @@ int ImportData::main(int argc, char* const argv[])
     }
     else // no file arguments -> process stdin
     {
+        OUT("Reading data from stdin ...");
+
         process_stream(std::cin);
     }
 
@@ -449,6 +463,9 @@ int ImportData::main(int argc, char* const argv[])
     g_db->execute("COMMIT");
 
     OUT("Imported in total " << m_total_count << " rows of data containing " << m_fieldset.count() << " fields each.");
+
+    if (opt_dbconnect)
+        g_db_free();
 
     return EXIT_SUCCESS;
 }
