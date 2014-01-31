@@ -31,7 +31,7 @@ foreach(infile ${plot_files})
   get_filename_component(basename ${infile} NAME)
   # write test case
   add_test(NAME gnuplot_${basename}
-    COMMAND ${CMAKE_BINARY_DIR}/src/sp-process -C ${infile} -o ${outfile}
+    COMMAND ${CMAKE_BINARY_DIR}/src/sp-process ${TEST_OPTIONS} ${infile} -o ${outfile}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endforeach()
