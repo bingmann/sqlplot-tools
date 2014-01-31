@@ -22,19 +22,6 @@
 
 include_directories(${PostgreSQL_INCLUDE_DIRS})
 
-add_executable(sp-importdata
-  sp-importdata.cpp
-  common.cpp
-  sql.cpp
-  pgsql.cpp
-  mysql.cpp
-  sqlite.cpp
-  importdata.cpp
-  fieldset.cpp
-  )
-target_link_libraries(sp-importdata
-  ${PostgreSQL_LIBRARIES} ${MYSQL_LIBRARIES} ${SQLITE3_LIBRARIES} ${Boost_LIBRARIES})
-
 add_executable(sp-process
   sp-process.cpp
   latex.cpp
