@@ -52,6 +52,9 @@ protected:
     //! use TEMPORARY in CREATE TABLE for transient data
     bool mopt_temporary_table;
 
+    //! allow empty tables and globs matching no files
+    bool mopt_empty_okay;
+
     //! table imported
     std::string m_tablename;
 

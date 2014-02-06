@@ -325,6 +325,7 @@ ImportData::ImportData(bool temporary_table)
       mopt_noduplicates(false),
       mopt_colnums(false),
       mopt_temporary_table(temporary_table),
+      mopt_empty_okay(false),
       m_total_count(0)
 {
 }
@@ -338,6 +339,7 @@ int ImportData::print_usage(const std::string& progname)
         "  -1       Take field types from first line and process stream." << std::endl <<
         "  -a       Process all line, regardless of RESULT marker." << std::endl <<
         "  -C       Enumerate unnamed fields with col# instead of using key names." << std::endl <<
+        "  -E       Allow empty tables or globs without matching files." << std::endl <<
         "  -d       Eliminate duplicate RESULT lines." << std::endl <<
         "  -T       Import into TEMPORARY table (for in-file processing)." << std::endl <<
         "  -P       Import into non-TEMPORARY table (reverts the default -T)." << std::endl <<
@@ -357,7 +359,7 @@ int ImportData::main(int argc, char* const argv[])
     /* parse command line parameters */
     int opt;
 
-    while ((opt = getopt(argc, argv, "h1avdCTPD:")) != -1) {
+    while ((opt = getopt(argc, argv, "h1avdCETPD:")) != -1) {
         switch (opt) {
         case '1':
             mopt_firstline = true;
@@ -373,6 +375,9 @@ int ImportData::main(int argc, char* const argv[])
             break;
         case 'C':
             mopt_colnums = true;
+            break;
+        case 'E':
+            mopt_empty_okay = true;
             break;
         case 'T':
             mopt_temporary_table = true;
@@ -413,7 +418,11 @@ int ImportData::main(int argc, char* const argv[])
         {
             // glob() for matching file names
             glob_t globbuf;
-            int gr = glob(argv[optind], GLOB_NOCHECK | GLOB_TILDE | GLOB_TILDE, NULL, &globbuf);
+
+            int gflags = GLOB_TILDE | GLOB_BRACE;
+            if (mopt_empty_okay) gflags |= GLOB_NOCHECK;
+
+            int gr = glob(argv[optind], gflags, NULL, &globbuf);
             if (gr != 0) {
                 OUT_THROW("Error globing " << argv[optind] << ": " << strerror(errno));
             }
@@ -425,7 +434,10 @@ int ImportData::main(int argc, char* const argv[])
                 m_count = 0;
                 std::ifstream in(fname);
                 if (!in.good()) {
-                    OUT_THROW("Error reading " << fname << ": " << strerror(errno));
+                    if (mopt_empty_okay)
+                        OUT("Error reading " << fname << ": " << strerror(errno));
+                    else
+                        OUT_THROW("Error reading " << fname << ": " << strerror(errno));
                 }
                 else {
                     process_stream(in);
