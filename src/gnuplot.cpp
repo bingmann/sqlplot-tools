@@ -415,27 +415,27 @@ void SpGnuplot::process()
 
         if (first_word == "SQL")
         {
-            OUT("# " << cmd);
+            OUT(ln << "# " << cmd);
             sql(ln, indent, cmd.substr(space_pos+1));
         }
         else if (first_word == "IMPORT-DATA")
         {
-            OUT("# " << cmd);
+            OUT(ln << "# " << cmd);
             importdata(ln, indent, cmd);
         }
         else if (first_word == "PLOT")
         {
-            OUT("# " << cmd);
+            OUT(ln << "# " << cmd);
             plot(ln, indent, cmd.substr(space_pos+1));
         }
         else if (first_word == "MULTIPLOT")
         {
-            OUT("# " << cmd);
+            OUT(ln << "# " << cmd);
             multiplot(ln, indent, cmd);
         }
         else if (first_word == "MACRO")
         {
-            OUT("# " << cmd);
+            OUT(ln << "# " << cmd);
             macro(ln, indent, cmd.substr(space_pos+1));
         }
         else
