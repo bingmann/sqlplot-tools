@@ -33,6 +33,7 @@ add_executable(sp-process
   sqlite.cpp
   importdata.cpp
   fieldset.cpp
+  reformat.cpp
   )
 target_link_libraries(sp-process
   ${PostgreSQL_LIBRARIES} ${MYSQL_LIBRARIES} ${SQLITE3_LIBRARIES} ${Boost_LIBRARIES})

@@ -50,11 +50,14 @@ extern void g_db_free();
 //! conditional debug output
 #define OUTC(dbg,X)   do { if (dbg) { std::cerr << X; } } while(0)
 
-//! debug output to std::cerr without newline
+//! write output to std::cerr without newline
 #define OUTX(X)       OUTC(true, X)
 
-//! debug output to std::cerr
+//! write output to std::cerr
 #define OUT(X)        OUTX(X << std::endl)
+
+//! debug output to std::cerr
+#define DBG(X)        OUTC(debug, X << std::endl)
 
 //! format output and throw std::runtime_error
 #define OUT_THROW(X)  do { std::ostringstream os; os << X; throw(std::runtime_error(os.str())); } while (0)

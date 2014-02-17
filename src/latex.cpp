@@ -40,6 +40,7 @@
 #include "sql.h"
 #include "textlines.h"
 #include "importdata.h"
+#include "reformat.h"
 
 class SpLatex
 {
@@ -370,12 +371,19 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 //! Process % TABULAR commands
 void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
 {
-    const std::string& query = cmdline;
+    std::string query = cmdline;
+
+    // find REFORMAT, parse format and remove clause from query
+    Reformat reformat;
+    reformat.parse_query(query);
 
     // execute query
     SqlQuery sql = g_db->query(query);
 
     sql->read_complete();
+
+    // prepare reformatting
+    reformat.prepare(sql);
 
     // calculate width of columns data
     std::vector<size_t> cwidth(sql->num_cols(), 0);
@@ -384,7 +392,10 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
     {
         for (unsigned int j = 0; j < sql->num_cols(); ++j)
         {
-            cwidth[j] = std::max(cwidth[j], sql->text(i,j).size());
+            cwidth[j] = std::max(
+                cwidth[j],
+                reformat.format(i,j, sql->text(i,j)).size()
+                );
         }
     }
 
@@ -396,7 +407,8 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
         for (unsigned j = 0; j < sql->num_cols(); ++j)
         {
             if (j != 0) out << " & ";
-            out << std::setw(cwidth[j]) << sql->text(i,j);
+            out << std::setw(cwidth[j])
+                << reformat.format(i, j, sql->text(i,j));
         }
         out << " \\\\";
         tlines.push_back(out.str());
@@ -417,7 +429,7 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
         size_t rln = ln;
         size_t entry = 0;
 
-        static const boost::regex re_tabular(".*\\\\(.*)");
+        static const boost::regex re_tabular(".*?\\\\\\\\(.*)");
         boost::smatch rm;
 
         // iterate over tabular lines, copy styles to replacement
