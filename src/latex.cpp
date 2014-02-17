@@ -165,7 +165,7 @@ void SpLatex::plot(size_t ln, size_t indent, const std::string& cmdline)
         for (unsigned int col = 0; col < sql->num_cols(); ++col)
         {
             if (col != 0) oss << ',';
-            oss << sql->text(col);
+            oss << str_reduce(sql->text(col));
         }
         oss << ')';
     }
@@ -282,13 +282,14 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
 
             // group fields match with last row -> append coordinates.
-            coord << " (" << sql->text(colx)
-                  <<  ',' << sql->text(coly)
+            coord << " (" << str_reduce(sql->text(colx))
+                  <<  ',' << str_reduce(sql->text(coly))
                   <<  ')';
         }
 
         // store last coordates group
-        coordlist.push_back(coord.str());
+        if (coord.str().size())
+            coordlist.push_back(coord.str());
     }
 
     assert(coordlist.size() == legendlist.size());

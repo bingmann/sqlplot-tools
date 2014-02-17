@@ -25,7 +25,10 @@
 
 #include <string>
 #include <ostream>
+#include <iomanip>
 #include <vector>
+#include <algorithm>
+#include <sstream>
 
 /**
  * Trims the given string on the left and right. Removes all characters in the
@@ -291,6 +294,21 @@ static inline bool str_is_double(const std::string& str)
     if (str.size() == 0) return true;
     double d;
     return from_str(str, d);
+}
+
+/**
+ * Reduce the precision of a double number, pass on all other data.
+ */
+static inline std::string str_reduce(const std::string& str)
+{
+    if (str.size() <= 8) return str;
+
+    double d;
+    if (!from_str(str, d)) return str;
+
+    std::ostringstream oss;
+    oss << std::setprecision(6) << d;
+    return oss.str();
 }
 
 /**
