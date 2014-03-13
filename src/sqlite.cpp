@@ -213,7 +213,8 @@ bool SQLiteDatabase::initialize(const std::string& params)
                              SQLITE_OPEN_READWRITE, NULL);
     if (rc != SQLITE_OK)
     {
-        OUT("Connection to SQLite3 failed: " << sqlite3_errstr(rc));
+        OUT("Connection to SQLite3 failed: " << sqlite3_errmsg(m_db));
+        sqlite3_close(m_db);
         return false;
     }
 

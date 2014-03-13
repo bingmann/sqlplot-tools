@@ -46,26 +46,30 @@ bool g_db_initialize()
 
     if (gopt_db_connection.size() == 0)
     {
+#if HAVE_POSTGRESQL
         //! first try to connect to a PostgreSQL database
 
         g_db = new PgSqlDatabase;
         if (g_db->initialize(""))
             return true;
         delete g_db;
-
+#endif
+#if HAVE_MYSQL
         //! then try to connect to a MySQL database called "test"
 
         g_db = new MySqlDatabase();
         if (g_db->initialize("test"))
             return true;
         delete g_db;
-
+#endif
+#if HAVE_SQLITE3
         //! then try to connect to an in-memory SQLite database
 
         g_db = new SQLiteDatabase();
         if (g_db->initialize(":memory:"))
             return true;
         delete g_db;
+#endif
     }
     else
     {
@@ -80,14 +84,20 @@ bool g_db_initialize()
 
         sqlname = str_tolower(sqlname);
 
-        if (sqlname == "postgresql" || sqlname == "postgres" ||
-            sqlname == "pgsql" || sqlname == "pg")
+        if (0)
+        {
+        }
+#if HAVE_POSTGRESQL
+        else if (sqlname == "postgresql" || sqlname == "postgres" ||
+                 sqlname == "pgsql" || sqlname == "pg")
         {
             g_db = new PgSqlDatabase;
             if (g_db->initialize(dbname))
                 return true;
             delete g_db;
         }
+#endif
+#if HAVE_MYSQL
         else if (sqlname == "mysql" || sqlname == "my")
         {
             if (dbname.size() == 0) dbname = "test";
@@ -97,6 +107,8 @@ bool g_db_initialize()
                 return true;
             delete g_db;
         }
+#endif
+#if HAVE_SQLITE3
         else if (sqlname == "sqlite" || sqlname == "lite")
         {
             if (dbname.size() == 0) dbname = ":memory:";
@@ -106,6 +118,7 @@ bool g_db_initialize()
                 return true;
             delete g_db;
         }
+#endif
         else
         {
             OUT("ERROR: unknown (or not compiled) SQL database type \"" <<

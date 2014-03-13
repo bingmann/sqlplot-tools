@@ -20,7 +20,15 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-include_directories(${PostgreSQL_INCLUDE_DIRS})
+set(SQL_SOURCES "")
+
+if(PostgreSQL_FOUND)
+  set(SQL_SOURCES ${SQL_SOURCES} pgsql.cpp)
+endif()
+
+if(MYSQL_FOUND)
+  set(SQL_SOURCES ${SQL_SOURCES} mysql.cpp)
+endif()
 
 add_executable(sp-process
   sp-process.cpp
@@ -28,13 +36,12 @@ add_executable(sp-process
   gnuplot.cpp
   common.cpp
   sql.cpp
-  pgsql.cpp
-  mysql.cpp
   sqlite.cpp
   sqlite-functions.cpp
+  ${SQL_SOURCES}
   importdata.cpp
   fieldset.cpp
   reformat.cpp
   )
-target_link_libraries(sp-process
-  ${PostgreSQL_LIBRARIES} ${MYSQL_LIBRARIES} ${SQLITE3_LIBRARIES} ${Boost_LIBRARIES})
+
+target_link_libraries(sp-process ${SQL_LIBRARIES} ${Boost_LIBRARIES})

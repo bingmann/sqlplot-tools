@@ -44,24 +44,55 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
 # enable use of "make test"
 enable_testing()
 
+# Find SQL libraries
+set(SQL_LIBRARIES "")
+
 # Find PostgreSQL client library
-find_package(PostgreSQL REQUIRED)
+find_package(PostgreSQL)
+
+if(PostgreSQL_FOUND)
+  set(SQL_LIBRARIES ${SQL_LIBRARIES} ${PostgreSQL_LIBRARIES})
+  add_definitions(-DHAVE_POSTGRESQL=1)
+  message(STATUS "Found PostgreSQL: ${PostgreSQL_LIBRARIES}")
+  include_directories(${PostgreSQL_INCLUDE_DIRS})
+endif()
 
 # Find MySQL client library
-find_path(MYSQL_INCLUDE_DIR mysql.h
+find_path(MYSQL_INCLUDE_DIRS mysql.h
   PATHS /usr/include/mysql /usr/local/include/mysql)
 
 find_library(MYSQL_LIBRARIES NAMES mysqlclient
   PATHS /usr/lib/mysql /usr/local/lib/mysql)
-include_directories(${MYSQL_INCLUDE_DIR})
+
+if(MYSQL_INCLUDE_DIRS AND MYSQL_LIBRARIES)
+  set(MYSQL_FOUND TRUE)
+  add_definitions(-DHAVE_MYSQL=1)
+  message(STATUS "Found MySQL: ${MYSQL_LIBRARIES}")
+  include_directories(${MYSQL_INCLUDE_DIRS})
+  set(SQL_LIBRARIES ${SQL_LIBRARIES} ${MYSQL_LIBRARIES})
+else()
+  set(MYSQL_FOUND FALSE)
+  message(STATUS "Could NOT find MySQL library")
+endif()
 
 # Find Sqlite3 library
-find_path(SQLITE3_INCLUDE_DIR sqlite3.h
+find_path(SQLITE3_INCLUDE_DIRS sqlite3.h
   PATHS /usr/include /usr/local/include)
 
 find_library(SQLITE3_LIBRARIES NAMES sqlite3
   PATHS /usr/lib /usr/local/lib)
-include_directories(${SQLITE3_INCLUDE_DIR})
+include_directories(${SQLITE3_INCLUDE_DIRS})
+
+if(SQLITE3_INCLUDE_DIRS AND SQLITE3_LIBRARIES)
+  set(SQLITE3_FOUND TRUE)
+  add_definitions(-DHAVE_SQLITE3=1)
+  message(STATUS "Found SQLite3: ${SQLITE3_LIBRARIES}")
+  include_directories(${SQLITE3_INCLUDE_DIRS})
+  set(SQL_LIBRARIES ${SQL_LIBRARIES} ${SQLITE3_LIBRARIES})
+else()
+  set(SQLITE3_FOUND FALSE)
+  message(SEND_ERROR "Could NOT find SQLite3 library. It is required!")
+endif()
 
 # Use Boost.Regex
 find_package(Boost 1.47.0 REQUIRED COMPONENTS regex)

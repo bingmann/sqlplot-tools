@@ -24,6 +24,8 @@
 #ifndef PGSQL_HEADER
 #define PGSQL_HEADER
 
+#if HAVE_POSTGRESQL
+
 #include <libpq-fe.h>
 
 #include "sql.h"
@@ -131,5 +133,7 @@ public:
     //! return last error message string
     virtual const char* errmsg() const;
 };
+
+#endif // HAVE_POSTGRESQL
 
 #endif // PGSQL_HEADER

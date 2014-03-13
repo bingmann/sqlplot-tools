@@ -24,6 +24,8 @@
 #ifndef MYSQL_HEADER
 #define MYSQL_HEADER
 
+#if HAVE_MYSQL
+
 #include <mysql.h>
 
 #include "sql.h"
@@ -143,5 +145,7 @@ public:
     //! return last error message string
     const char* errmsg() const;
 };
+
+#endif // HAVE_MYSQL
 
 #endif // MYSQL_HEADER
