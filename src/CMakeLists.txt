@@ -31,6 +31,7 @@ add_executable(sp-process
   pgsql.cpp
   mysql.cpp
   sqlite.cpp
+  sqlite-functions.cpp
   importdata.cpp
   fieldset.cpp
   reformat.cpp

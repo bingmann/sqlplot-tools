@@ -201,6 +201,8 @@ std::string SQLiteQuery::text(unsigned int row, unsigned int col) const
 
 ////////////////////////////////////////////////////////////////////////////////
 
+extern int RegisterExtensionFunctions(sqlite3 *db);
+
 //! try to connect to the database with default parameters
 bool SQLiteDatabase::initialize(const std::string& params)
 {
@@ -214,6 +216,9 @@ bool SQLiteDatabase::initialize(const std::string& params)
         OUT("Connection to SQLite3 failed: " << sqlite3_errstr(rc));
         return false;
     }
+
+    // register additional math functions
+    RegisterExtensionFunctions(m_db);
 
     return true;
 }

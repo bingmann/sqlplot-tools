@@ -1,9 +1,9 @@
 line1
 % IMPORT-DATA test test.data
 line2
-%% MULTIPLOT(funcname) SELECT testsize AS x, bandwidth AS y, MULTIPLOT
+%% MULTIPLOT(funcname) SELECT LOG(testsize) / LOG(2) AS x, bandwidth AS y, MULTIPLOT
 %% FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
 line3
-%%% MULTIPLOT(testsize) SELECT testsize AS x, AVG(bandwidth) AS y, MULTIPLOT
+%%% MULTIPLOT(testsize) SELECT LOG(testsize) / LOG(2) AS x, AVG(bandwidth) AS y, MULTIPLOT
 % FROM test WHERE host='earth' GROUP BY MULTIPLOT ORDER BY MULTIPLOT,x
 line4
