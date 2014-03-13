@@ -1761,6 +1761,7 @@ int RegisterExtensionFunctions(sqlite3 *db){
     { "exp",                1, 0, SQLITE_UTF8,    0, expFunc  },
     { "log",                1, 0, SQLITE_UTF8,    0, logFunc  },
     { "log",                2, 0, SQLITE_UTF8,    0, logFunc2  },
+    { "ln",                 1, 0, SQLITE_UTF8,    0, logFunc  },
     { "log10",              1, 0, SQLITE_UTF8,    0, log10Func  },
     { "power",              2, 0, SQLITE_UTF8,    0, powerFunc  },
     { "sign",               1, 0, SQLITE_UTF8,    0, signFunc },
