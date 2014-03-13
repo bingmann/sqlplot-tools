@@ -54,7 +54,7 @@ Usage instructions for the sqlite3 program:
   security measure; see "Security Considerations" in
   http://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
   If the sqlite3 program and library are built this
-  way, you cannot use these functions from the program, you 
+  way, you cannot use these functions from the program, you
   must write your own program using the sqlite3 API, and call
   sqlite3_enable_load_extension as described above, or else
   rebuilt the sqlite3 program to allow loadable extensions.
@@ -302,7 +302,7 @@ static int sqlite3ReadUtf8(const unsigned char *z){
 ** pZ is a UTF-8 encoded unicode string. If nByte is less than zero,
 ** return the number of unicode characters in pZ up to (but not including)
 ** the first 0x00 byte. If nByte is not less than zero, return the
-** number of unicode characters in the first nByte of pZ (or up to 
+** number of unicode characters in the first nByte of pZ (or up to
 ** the first 0x00, whichever comes first).
 */
 static int sqlite3Utf8CharLen(const char *z, int nByte){
@@ -336,7 +336,7 @@ static int sqlite3Utf8CharLen(const char *z, int nByte){
 **
 ** Could have been implemented using pointers to functions but this way it's inline
 ** and thus more efficient. Lower * ranking though...
-** 
+**
 ** Parameters:
 ** name:      function name to de defined (eg: sinFunc)
 ** function:  function defined in math.h to wrap (eg: sin)
@@ -381,7 +381,7 @@ GEN_MATH_WRAP_DOUBLE_1(atanFunc, atan)
 
 /*
 ** Many of systems don't have inverse hyperbolic trig functions so this will emulate
-** them on those systems in terms of log and sqrt (formulas are too trivial to demand 
+** them on those systems in terms of log and sqrt (formulas are too trivial to demand
 ** written proof here)
 */
 
@@ -473,6 +473,28 @@ GEN_MATH_WRAP_DOUBLE_1(logFunc, log)
 GEN_MATH_WRAP_DOUBLE_1(log10Func, log10)
 GEN_MATH_WRAP_DOUBLE_1(expFunc, exp)
 
+static void logFunc2(sqlite3_context *context, int argc, sqlite3_value **argv){
+  double r1 = 0.0;
+  double r2 = 0.0;
+  double val;
+
+  assert( argc==2 );
+
+  if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
+    sqlite3_result_null(context);
+  }else{
+    r1 = sqlite3_value_double(argv[0]);
+    r2 = sqlite3_value_double(argv[1]);
+    errno = 0;
+    val = log(r2) / log(r1);
+    if (errno == 0) {
+      sqlite3_result_double(context, val);
+    } else {
+      sqlite3_result_error(context, strerror(errno), errno);
+    }
+  }
+}
+
 /*
 ** Fallback for systems where math.h doesn't define M_PI
 */
@@ -536,7 +558,7 @@ static void squareFunc(sqlite3_context *context, int argc, sqlite3_value **argv)
 ** (see sqrt just before this). Here the result is always double
 */
 /* LMH 2007-03-25 Changed to use errno; no pre-checking for errors.  Also removes
-  but that was present in the pre-checking that called sqlite3_result_error on 
+  but that was present in the pre-checking that called sqlite3_result_error on
   a non-positive first argument, which is not always an error. */
 static void powerFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   double r1 = 0.0;
@@ -544,9 +566,9 @@ static void powerFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   double val;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
-    sqlite3_result_null(context); 
+    sqlite3_result_null(context);
   }else{
     r1 = sqlite3_value_double(argv[0]);
     r2 = sqlite3_value_double(argv[1]);
@@ -554,9 +576,9 @@ static void powerFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
     val = pow(r1,r2);
     if (errno == 0) {
       sqlite3_result_double(context, val);
-    } else {  
+    } else {
       sqlite3_result_error(context, strerror(errno), errno);
-    }  
+    }
   }
 }
 
@@ -568,9 +590,9 @@ static void atn2Func(sqlite3_context *context, int argc, sqlite3_value **argv){
   double r2 = 0.0;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
-    sqlite3_result_null(context); 
+    sqlite3_result_null(context);
   }else{
     r1 = sqlite3_value_double(argv[0]);
     r2 = sqlite3_value_double(argv[1]);
@@ -660,14 +682,14 @@ static void floorFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
 }
 
 /*
-** Given a string (s) in the first argument and an integer (n) in the second returns the 
+** Given a string (s) in the first argument and an integer (n) in the second returns the
 ** string that constains s contatenated n times
 */
 static void replicateFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   unsigned char *z;        /* input string */
   unsigned char *zo;       /* result string */
   i64 iCount;              /* times to repeat */
-  i64 nLen;                /* length of the input string (no multibyte considerations) */ 
+  i64 nLen;                /* length of the input string (no multibyte considerations) */
   i64 nTLen;               /* length of the result string (no multibyte considerations) */
   i64 i=0;
 
@@ -702,7 +724,7 @@ static void replicateFunc(sqlite3_context *context, int argc, sqlite3_value **ar
   }
 }
 
-/* 
+/*
 ** Some systems (win32 among others) don't have an isblank function, this will emulate it.
 ** This function is not UFT-8 safe since it only analyses a byte character.
 */
@@ -767,9 +789,9 @@ static void padlFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *zt;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL ){
-    sqlite3_result_null(context); 
+    sqlite3_result_null(context);
   }else{
     zi = (char *)sqlite3_value_text(argv[0]);
     ilen = sqlite3_value_int64(argv[1]);
@@ -821,9 +843,9 @@ static void padrFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *zt;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL ){
-    sqlite3_result_null(context); 
+    sqlite3_result_null(context);
   }else{
     zi = (char *)sqlite3_value_text(argv[0]);
     ilen = sqlite3_value_int64(argv[1]);
@@ -876,9 +898,9 @@ static void padcFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *zt;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL ){
-    sqlite3_result_null(context); 
+    sqlite3_result_null(context);
   }else{
     zi = (char *)sqlite3_value_text(argv[0]);
     ilen = sqlite3_value_int64(argv[1]);
@@ -935,17 +957,17 @@ static void strfilterFunc(sqlite3_context *context, int argc, sqlite3_value **ar
   int c2 = 0;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
-    sqlite3_result_null(context); 
+    sqlite3_result_null(context);
   }else{
     zi1 = (char *)sqlite3_value_text(argv[0]);
     zi2 = (char *)sqlite3_value_text(argv[1]);
-    /* 
-    ** maybe I could allocate less, but that would imply 2 passes, rather waste 
+    /*
+    ** maybe I could allocate less, but that would imply 2 passes, rather waste
     ** (possibly) some memory
     */
-    zo = (char*)sqlite3_malloc(strlen(zi1)+1); 
+    zo = (char*)sqlite3_malloc(strlen(zi1)+1);
     if (!zo){
       sqlite3_result_error_nomem(context);
       return;
@@ -989,11 +1011,11 @@ static int _substr(const char* z1, const char* z2, int s, const char** p){
   if( '\0'==*z1 ){
     return -1;
   }
-  
+
   while( (sqliteCharVal((unsigned char *)z2) != 0) && (c++)<s){
     sqliteNextChar(z2);
   }
-  
+
   c = 0;
   while( (sqliteCharVal((unsigned char *)z2)) != 0 ){
     zt1 = z1;
@@ -1008,9 +1030,9 @@ static int _substr(const char* z1, const char* z2, int s, const char** p){
 
     if( c1 == 0 ){
       rVal = c;
-      break; 
+      break;
     }
-    
+
     sqliteNextChar(z2);
     ++c;
   }
@@ -1091,7 +1113,7 @@ static void leftFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   }
   strncpy((char*) rz, (char*) z, zt-z);
   *(rz+cc) = '\0';
-  sqlite3_result_text(context, (char*)rz, -1, SQLITE_TRANSIENT); 
+  sqlite3_result_text(context, (char*)rz, -1, SQLITE_TRANSIENT);
   sqlite3_free(rz);
 }
 
@@ -1130,7 +1152,7 @@ static void rightFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   cc=c-l;
   if(cc<0)
     cc=0;
-  
+
   while( cc-- > 0 ){
     sqliteNextChar(zt);
   }
@@ -1141,7 +1163,7 @@ static void rightFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
     return;
   }
   strcpy((char*) rz, (char*) (zt));
-  sqlite3_result_text(context, (char*)rz, -1, SQLITE_TRANSIENT); 
+  sqlite3_result_text(context, (char*)rz, -1, SQLITE_TRANSIENT);
   sqlite3_free(rz);
 }
 
@@ -1179,7 +1201,7 @@ static void ltrimFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
     return;
   }
   z = sqlite3_value_text(argv[0]);
-  sqlite3_result_text(context, ltrim(z), -1, SQLITE_TRANSIENT); 
+  sqlite3_result_text(context, ltrim(z), -1, SQLITE_TRANSIENT);
 }
 
 /*
@@ -1418,7 +1440,7 @@ static void modeStep(sqlite3_context *context, int argc, sqlite3_value **argv){
 
   if( type == SQLITE_NULL)
     return;
-  
+
   p = (ModeCtx*)sqlite3_aggregate_context(context, sizeof(*p));
 
   if( 0==(p->m) ){
@@ -1457,33 +1479,33 @@ static void modeIterate(void* e, i64 c, void* pp){
   i64 ei;
   double ed;
   ModeCtx *p = (ModeCtx*)pp;
-  
+
   if( 0==p->is_double ){
     ei = *(int*)(e);
 
-	if( p->mcnt==c ){
+        if( p->mcnt==c ){
       ++p->mn;
     }else if( p->mcnt<c ){
       p->riM = ei;
       p->mcnt = c;
-	  p->mn=1;
+          p->mn=1;
     }
   }else{
     ed = *(double*)(e);
 
-	if( p->mcnt==c ){
+        if( p->mcnt==c ){
       ++p->mn;
     }else if(p->mcnt<c){
       p->rdM = ed;
       p->mcnt = c;
-	  p->mn=1;
+          p->mn=1;
     }
   }
 }
 
 /*
 **  Auxiliary function that iterates all elements in a map and finds the median
-**  (the value such that the number of elements smaller is equal the the number of 
+**  (the value such that the number of elements smaller is equal the the number of
 **  elements larger)
 */
 static void medianIterate(void* e, i64 c, void* pp){
@@ -1554,9 +1576,9 @@ static void _medianFinalize(sqlite3_context *context){
 
     if( 0==p->is_double )
       if( 1==p->mn )
-      	sqlite3_result_int64(context, p->riM);
+        sqlite3_result_int64(context, p->riM);
       else
-      	sqlite3_result_double(context, p->riM*1.0/p->mn);
+        sqlite3_result_double(context, p->riM*1.0/p->mn);
     else
       sqlite3_result_double(context, p->rdM/p->mn);
   }
@@ -1676,12 +1698,12 @@ static void differenceFunc(sqlite3_context *context, int argc, sqlite3_value **a
   const u8 *zIn2;
 
   assert( argc==2 );
-  
+
   if( sqlite3_value_type(argv[0])==SQLITE_NULL || sqlite3_value_type(argv[1])==SQLITE_NULL ){
     sqlite3_result_null(context);
     return;
   }
-  
+
   zIn1 = (u8*)sqlite3_value_text(argv[0]);
   zIn2 = (u8*)sqlite3_value_text(argv[1]);
 
@@ -1738,6 +1760,7 @@ int RegisterExtensionFunctions(sqlite3 *db){
 
     { "exp",                1, 0, SQLITE_UTF8,    0, expFunc  },
     { "log",                1, 0, SQLITE_UTF8,    0, logFunc  },
+    { "log",                2, 0, SQLITE_UTF8,    0, logFunc2  },
     { "log10",              1, 0, SQLITE_UTF8,    0, log10Func  },
     { "power",              2, 0, SQLITE_UTF8,    0, powerFunc  },
     { "sign",               1, 0, SQLITE_UTF8,    0, signFunc },
@@ -1800,7 +1823,7 @@ int RegisterExtensionFunctions(sqlite3 *db){
         aFuncs[i].eTextRep, pArg, aFuncs[i].xFunc, 0, 0);
 #if 0
     if( aFuncs[i].needCollSeq ){
-      struct FuncDef *pFunc = sqlite3FindFunction(db, aFuncs[i].zName, 
+      struct FuncDef *pFunc = sqlite3FindFunction(db, aFuncs[i].zName,
           strlen(aFuncs[i].zName), aFuncs[i].nArg, aFuncs[i].eTextRep, 0);
       if( pFunc && aFuncs[i].needCollSeq ){
         pFunc->needCollSeq = 1;
@@ -1817,7 +1840,7 @@ int RegisterExtensionFunctions(sqlite3 *db){
     }
     //sqlite3CreateFunc
     /* LMH no error checking */
-    sqlite3_create_function(db, aAggs[i].zName, aAggs[i].nArg, SQLITE_UTF8, 
+    sqlite3_create_function(db, aAggs[i].zName, aAggs[i].nArg, SQLITE_UTF8,
         pArg, 0, aAggs[i].xStep, aAggs[i].xFinalize);
 #if 0
     if( aAggs[i].needCollSeq ){
@@ -1942,4 +1965,3 @@ void print_elem(void *e, long long c, void* /* p */){
   int ee = *(int*)(e);
   printf("%d => %lld\n", ee,c);
 }
-
