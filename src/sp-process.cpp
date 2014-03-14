@@ -148,6 +148,10 @@ sp_process(int argc, char* argv[])
 
         output = new std::ostringstream;
     }
+    else if (opt_outputfile == "-")
+    {
+        output = &std::cout;
+    }
     else if (opt_outputfile.size())
     {
         output = new std::ofstream(opt_outputfile.c_str());
@@ -221,7 +225,10 @@ sp_process(int argc, char* argv[])
             OUT_THROW("Mismatch to expected output file " << opt_outputfile);
     }
 
-    if (output) delete output;
+    if (output) {
+        if (output != &std::cout)
+            delete output;
+    }
 
     g_db_free();
 
