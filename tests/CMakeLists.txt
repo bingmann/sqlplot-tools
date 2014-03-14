@@ -20,10 +20,10 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-if(UPDATE_TESTS)
-  set(TEST_OPTIONS "")
-else()
-  set(TEST_OPTIONS "-C") # check output
+set(TEST_OPTIONS "-D" "sqlite")
+
+if(NOT UPDATE_TESTS)
+  set(TEST_OPTIONS ${TEST_OPTIONS} "-C") # check output
 endif()
 
 add_subdirectory(latex)
