@@ -95,7 +95,7 @@ else()
 endif()
 
 # Use Boost.Regex
-find_package(Boost 1.47.0 REQUIRED COMPONENTS regex)
+find_package(Boost 1.46.0 REQUIRED COMPONENTS regex)
 include_directories(${Boost_INCLUDE_DIRS})
 
 # descend into source
