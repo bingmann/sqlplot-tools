@@ -1,0 +1,2898 @@
+Running algorithm std::sort with size=1024 repeats=32768
+iteration=0
+time = 0.328101
+RESULT algo=std::sort size=1024 time=0.328101 repeats=32768 iteration=0 typesize=4 datasize=4096
+iteration=1
+time = 0.316489
+RESULT algo=std::sort size=1024 time=0.316489 repeats=32768 iteration=1 typesize=4 datasize=4096
+iteration=2
+time = 0.316419
+RESULT algo=std::sort size=1024 time=0.316419 repeats=32768 iteration=2 typesize=4 datasize=4096
+iteration=3
+time = 0.315962
+RESULT algo=std::sort size=1024 time=0.315962 repeats=32768 iteration=3 typesize=4 datasize=4096
+iteration=4
+time = 0.316174
+RESULT algo=std::sort size=1024 time=0.316174 repeats=32768 iteration=4 typesize=4 datasize=4096
+iteration=5
+time = 0.320512
+RESULT algo=std::sort size=1024 time=0.320512 repeats=32768 iteration=5 typesize=4 datasize=4096
+iteration=6
+time = 0.320206
+RESULT algo=std::sort size=1024 time=0.320206 repeats=32768 iteration=6 typesize=4 datasize=4096
+iteration=7
+time = 0.321784
+RESULT algo=std::sort size=1024 time=0.321784 repeats=32768 iteration=7 typesize=4 datasize=4096
+iteration=8
+time = 0.320557
+RESULT algo=std::sort size=1024 time=0.320557 repeats=32768 iteration=8 typesize=4 datasize=4096
+iteration=9
+time = 0.32097
+RESULT algo=std::sort size=1024 time=0.32097 repeats=32768 iteration=9 typesize=4 datasize=4096
+iteration=10
+time = 0.320715
+RESULT algo=std::sort size=1024 time=0.320715 repeats=32768 iteration=10 typesize=4 datasize=4096
+iteration=11
+time = 0.320057
+RESULT algo=std::sort size=1024 time=0.320057 repeats=32768 iteration=11 typesize=4 datasize=4096
+iteration=12
+time = 0.316867
+RESULT algo=std::sort size=1024 time=0.316867 repeats=32768 iteration=12 typesize=4 datasize=4096
+iteration=13
+time = 0.316016
+RESULT algo=std::sort size=1024 time=0.316016 repeats=32768 iteration=13 typesize=4 datasize=4096
+iteration=14
+time = 0.315492
+RESULT algo=std::sort size=1024 time=0.315492 repeats=32768 iteration=14 typesize=4 datasize=4096
+Running algorithm std::sort with size=2048 repeats=16384
+iteration=0
+time = 0.344891
+RESULT algo=std::sort size=2048 time=0.344891 repeats=16384 iteration=0 typesize=4 datasize=8192
+iteration=1
+time = 0.342776
+RESULT algo=std::sort size=2048 time=0.342776 repeats=16384 iteration=1 typesize=4 datasize=8192
+iteration=2
+time = 0.34478
+RESULT algo=std::sort size=2048 time=0.34478 repeats=16384 iteration=2 typesize=4 datasize=8192
+iteration=3
+time = 0.345319
+RESULT algo=std::sort size=2048 time=0.345319 repeats=16384 iteration=3 typesize=4 datasize=8192
+iteration=4
+time = 0.342679
+RESULT algo=std::sort size=2048 time=0.342679 repeats=16384 iteration=4 typesize=4 datasize=8192
+iteration=5
+time = 0.343772
+RESULT algo=std::sort size=2048 time=0.343772 repeats=16384 iteration=5 typesize=4 datasize=8192
+iteration=6
+time = 0.342954
+RESULT algo=std::sort size=2048 time=0.342954 repeats=16384 iteration=6 typesize=4 datasize=8192
+iteration=7
+time = 0.344872
+RESULT algo=std::sort size=2048 time=0.344872 repeats=16384 iteration=7 typesize=4 datasize=8192
+iteration=8
+time = 0.345045
+RESULT algo=std::sort size=2048 time=0.345045 repeats=16384 iteration=8 typesize=4 datasize=8192
+iteration=9
+time = 0.345967
+RESULT algo=std::sort size=2048 time=0.345967 repeats=16384 iteration=9 typesize=4 datasize=8192
+iteration=10
+time = 0.342594
+RESULT algo=std::sort size=2048 time=0.342594 repeats=16384 iteration=10 typesize=4 datasize=8192
+iteration=11
+time = 0.342856
+RESULT algo=std::sort size=2048 time=0.342856 repeats=16384 iteration=11 typesize=4 datasize=8192
+iteration=12
+time = 0.343197
+RESULT algo=std::sort size=2048 time=0.343197 repeats=16384 iteration=12 typesize=4 datasize=8192
+iteration=13
+time = 0.34
+RESULT algo=std::sort size=2048 time=0.34 repeats=16384 iteration=13 typesize=4 datasize=8192
+iteration=14
+time = 0.337941
+RESULT algo=std::sort size=2048 time=0.337941 repeats=16384 iteration=14 typesize=4 datasize=8192
+Running algorithm std::sort with size=4096 repeats=8192
+iteration=0
+time = 0.362619
+RESULT algo=std::sort size=4096 time=0.362619 repeats=8192 iteration=0 typesize=4 datasize=16384
+iteration=1
+time = 0.362768
+RESULT algo=std::sort size=4096 time=0.362768 repeats=8192 iteration=1 typesize=4 datasize=16384
+iteration=2
+time = 0.362576
+RESULT algo=std::sort size=4096 time=0.362576 repeats=8192 iteration=2 typesize=4 datasize=16384
+iteration=3
+time = 0.361843
+RESULT algo=std::sort size=4096 time=0.361843 repeats=8192 iteration=3 typesize=4 datasize=16384
+iteration=4
+time = 0.362474
+RESULT algo=std::sort size=4096 time=0.362474 repeats=8192 iteration=4 typesize=4 datasize=16384
+iteration=5
+time = 0.362561
+RESULT algo=std::sort size=4096 time=0.362561 repeats=8192 iteration=5 typesize=4 datasize=16384
+iteration=6
+time = 0.36233
+RESULT algo=std::sort size=4096 time=0.36233 repeats=8192 iteration=6 typesize=4 datasize=16384
+iteration=7
+time = 0.362836
+RESULT algo=std::sort size=4096 time=0.362836 repeats=8192 iteration=7 typesize=4 datasize=16384
+iteration=8
+time = 0.362545
+RESULT algo=std::sort size=4096 time=0.362545 repeats=8192 iteration=8 typesize=4 datasize=16384
+iteration=9
+time = 0.362664
+RESULT algo=std::sort size=4096 time=0.362664 repeats=8192 iteration=9 typesize=4 datasize=16384
+iteration=10
+time = 0.362953
+RESULT algo=std::sort size=4096 time=0.362953 repeats=8192 iteration=10 typesize=4 datasize=16384
+iteration=11
+time = 0.362286
+RESULT algo=std::sort size=4096 time=0.362286 repeats=8192 iteration=11 typesize=4 datasize=16384
+iteration=12
+time = 0.361231
+RESULT algo=std::sort size=4096 time=0.361231 repeats=8192 iteration=12 typesize=4 datasize=16384
+iteration=13
+time = 0.362998
+RESULT algo=std::sort size=4096 time=0.362998 repeats=8192 iteration=13 typesize=4 datasize=16384
+iteration=14
+time = 0.363336
+RESULT algo=std::sort size=4096 time=0.363336 repeats=8192 iteration=14 typesize=4 datasize=16384
+Running algorithm std::sort with size=8192 repeats=4096
+iteration=0
+time = 0.390622
+RESULT algo=std::sort size=8192 time=0.390622 repeats=4096 iteration=0 typesize=4 datasize=32768
+iteration=1
+time = 0.390934
+RESULT algo=std::sort size=8192 time=0.390934 repeats=4096 iteration=1 typesize=4 datasize=32768
+iteration=2
+time = 0.392703
+RESULT algo=std::sort size=8192 time=0.392703 repeats=4096 iteration=2 typesize=4 datasize=32768
+iteration=3
+time = 0.394661
+RESULT algo=std::sort size=8192 time=0.394661 repeats=4096 iteration=3 typesize=4 datasize=32768
+iteration=4
+time = 0.394818
+RESULT algo=std::sort size=8192 time=0.394818 repeats=4096 iteration=4 typesize=4 datasize=32768
+iteration=5
+time = 0.394595
+RESULT algo=std::sort size=8192 time=0.394595 repeats=4096 iteration=5 typesize=4 datasize=32768
+iteration=6
+time = 0.393037
+RESULT algo=std::sort size=8192 time=0.393037 repeats=4096 iteration=6 typesize=4 datasize=32768
+iteration=7
+time = 0.393595
+RESULT algo=std::sort size=8192 time=0.393595 repeats=4096 iteration=7 typesize=4 datasize=32768
+iteration=8
+time = 0.393561
+RESULT algo=std::sort size=8192 time=0.393561 repeats=4096 iteration=8 typesize=4 datasize=32768
+iteration=9
+time = 0.393885
+RESULT algo=std::sort size=8192 time=0.393885 repeats=4096 iteration=9 typesize=4 datasize=32768
+iteration=10
+time = 0.394009
+RESULT algo=std::sort size=8192 time=0.394009 repeats=4096 iteration=10 typesize=4 datasize=32768
+iteration=11
+time = 0.39434
+RESULT algo=std::sort size=8192 time=0.39434 repeats=4096 iteration=11 typesize=4 datasize=32768
+iteration=12
+time = 0.392708
+RESULT algo=std::sort size=8192 time=0.392708 repeats=4096 iteration=12 typesize=4 datasize=32768
+iteration=13
+time = 0.393606
+RESULT algo=std::sort size=8192 time=0.393606 repeats=4096 iteration=13 typesize=4 datasize=32768
+iteration=14
+time = 0.393428
+RESULT algo=std::sort size=8192 time=0.393428 repeats=4096 iteration=14 typesize=4 datasize=32768
+Running algorithm std::sort with size=16384 repeats=2048
+iteration=0
+time = 0.418555
+RESULT algo=std::sort size=16384 time=0.418555 repeats=2048 iteration=0 typesize=4 datasize=65536
+iteration=1
+time = 0.420115
+RESULT algo=std::sort size=16384 time=0.420115 repeats=2048 iteration=1 typesize=4 datasize=65536
+iteration=2
+time = 0.419725
+RESULT algo=std::sort size=16384 time=0.419725 repeats=2048 iteration=2 typesize=4 datasize=65536
+iteration=3
+time = 0.419239
+RESULT algo=std::sort size=16384 time=0.419239 repeats=2048 iteration=3 typesize=4 datasize=65536
+iteration=4
+time = 0.419811
+RESULT algo=std::sort size=16384 time=0.419811 repeats=2048 iteration=4 typesize=4 datasize=65536
+iteration=5
+time = 0.418806
+RESULT algo=std::sort size=16384 time=0.418806 repeats=2048 iteration=5 typesize=4 datasize=65536
+iteration=6
+time = 0.419585
+RESULT algo=std::sort size=16384 time=0.419585 repeats=2048 iteration=6 typesize=4 datasize=65536
+iteration=7
+time = 0.418963
+RESULT algo=std::sort size=16384 time=0.418963 repeats=2048 iteration=7 typesize=4 datasize=65536
+iteration=8
+time = 0.419663
+RESULT algo=std::sort size=16384 time=0.419663 repeats=2048 iteration=8 typesize=4 datasize=65536
+iteration=9
+time = 0.419019
+RESULT algo=std::sort size=16384 time=0.419019 repeats=2048 iteration=9 typesize=4 datasize=65536
+iteration=10
+time = 0.419687
+RESULT algo=std::sort size=16384 time=0.419687 repeats=2048 iteration=10 typesize=4 datasize=65536
+iteration=11
+time = 0.421296
+RESULT algo=std::sort size=16384 time=0.421296 repeats=2048 iteration=11 typesize=4 datasize=65536
+iteration=12
+time = 0.421403
+RESULT algo=std::sort size=16384 time=0.421403 repeats=2048 iteration=12 typesize=4 datasize=65536
+iteration=13
+time = 0.421406
+RESULT algo=std::sort size=16384 time=0.421406 repeats=2048 iteration=13 typesize=4 datasize=65536
+iteration=14
+time = 0.420585
+RESULT algo=std::sort size=16384 time=0.420585 repeats=2048 iteration=14 typesize=4 datasize=65536
+Running algorithm std::sort with size=32768 repeats=1024
+iteration=0
+time = 0.443454
+RESULT algo=std::sort size=32768 time=0.443454 repeats=1024 iteration=0 typesize=4 datasize=131072
+iteration=1
+time = 0.442966
+RESULT algo=std::sort size=32768 time=0.442966 repeats=1024 iteration=1 typesize=4 datasize=131072
+iteration=2
+time = 0.442777
+RESULT algo=std::sort size=32768 time=0.442777 repeats=1024 iteration=2 typesize=4 datasize=131072
+iteration=3
+time = 0.442205
+RESULT algo=std::sort size=32768 time=0.442205 repeats=1024 iteration=3 typesize=4 datasize=131072
+iteration=4
+time = 0.4403
+RESULT algo=std::sort size=32768 time=0.4403 repeats=1024 iteration=4 typesize=4 datasize=131072
+iteration=5
+time = 0.442325
+RESULT algo=std::sort size=32768 time=0.442325 repeats=1024 iteration=5 typesize=4 datasize=131072
+iteration=6
+time = 0.439947
+RESULT algo=std::sort size=32768 time=0.439947 repeats=1024 iteration=6 typesize=4 datasize=131072
+iteration=7
+time = 0.441627
+RESULT algo=std::sort size=32768 time=0.441627 repeats=1024 iteration=7 typesize=4 datasize=131072
+iteration=8
+time = 0.440807
+RESULT algo=std::sort size=32768 time=0.440807 repeats=1024 iteration=8 typesize=4 datasize=131072
+iteration=9
+time = 0.442187
+RESULT algo=std::sort size=32768 time=0.442187 repeats=1024 iteration=9 typesize=4 datasize=131072
+iteration=10
+time = 0.438889
+RESULT algo=std::sort size=32768 time=0.438889 repeats=1024 iteration=10 typesize=4 datasize=131072
+iteration=11
+time = 0.442156
+RESULT algo=std::sort size=32768 time=0.442156 repeats=1024 iteration=11 typesize=4 datasize=131072
+iteration=12
+time = 0.442301
+RESULT algo=std::sort size=32768 time=0.442301 repeats=1024 iteration=12 typesize=4 datasize=131072
+iteration=13
+time = 0.442141
+RESULT algo=std::sort size=32768 time=0.442141 repeats=1024 iteration=13 typesize=4 datasize=131072
+iteration=14
+time = 0.442141
+RESULT algo=std::sort size=32768 time=0.442141 repeats=1024 iteration=14 typesize=4 datasize=131072
+Running algorithm std::sort with size=65536 repeats=512
+iteration=0
+time = 0.466498
+RESULT algo=std::sort size=65536 time=0.466498 repeats=512 iteration=0 typesize=4 datasize=262144
+iteration=1
+time = 0.46629
+RESULT algo=std::sort size=65536 time=0.46629 repeats=512 iteration=1 typesize=4 datasize=262144
+iteration=2
+time = 0.467085
+RESULT algo=std::sort size=65536 time=0.467085 repeats=512 iteration=2 typesize=4 datasize=262144
+iteration=3
+time = 0.468055
+RESULT algo=std::sort size=65536 time=0.468055 repeats=512 iteration=3 typesize=4 datasize=262144
+iteration=4
+time = 0.467541
+RESULT algo=std::sort size=65536 time=0.467541 repeats=512 iteration=4 typesize=4 datasize=262144
+iteration=5
+time = 0.466708
+RESULT algo=std::sort size=65536 time=0.466708 repeats=512 iteration=5 typesize=4 datasize=262144
+iteration=6
+time = 0.466285
+RESULT algo=std::sort size=65536 time=0.466285 repeats=512 iteration=6 typesize=4 datasize=262144
+iteration=7
+time = 0.466571
+RESULT algo=std::sort size=65536 time=0.466571 repeats=512 iteration=7 typesize=4 datasize=262144
+iteration=8
+time = 0.466054
+RESULT algo=std::sort size=65536 time=0.466054 repeats=512 iteration=8 typesize=4 datasize=262144
+iteration=9
+time = 0.467778
+RESULT algo=std::sort size=65536 time=0.467778 repeats=512 iteration=9 typesize=4 datasize=262144
+iteration=10
+time = 0.467577
+RESULT algo=std::sort size=65536 time=0.467577 repeats=512 iteration=10 typesize=4 datasize=262144
+iteration=11
+time = 0.467329
+RESULT algo=std::sort size=65536 time=0.467329 repeats=512 iteration=11 typesize=4 datasize=262144
+iteration=12
+time = 0.466046
+RESULT algo=std::sort size=65536 time=0.466046 repeats=512 iteration=12 typesize=4 datasize=262144
+iteration=13
+time = 0.467508
+RESULT algo=std::sort size=65536 time=0.467508 repeats=512 iteration=13 typesize=4 datasize=262144
+iteration=14
+time = 0.467333
+RESULT algo=std::sort size=65536 time=0.467333 repeats=512 iteration=14 typesize=4 datasize=262144
+Running algorithm std::sort with size=131072 repeats=256
+iteration=0
+time = 0.494909
+RESULT algo=std::sort size=131072 time=0.494909 repeats=256 iteration=0 typesize=4 datasize=524288
+iteration=1
+time = 0.493277
+RESULT algo=std::sort size=131072 time=0.493277 repeats=256 iteration=1 typesize=4 datasize=524288
+iteration=2
+time = 0.493668
+RESULT algo=std::sort size=131072 time=0.493668 repeats=256 iteration=2 typesize=4 datasize=524288
+iteration=3
+time = 0.49319
+RESULT algo=std::sort size=131072 time=0.49319 repeats=256 iteration=3 typesize=4 datasize=524288
+iteration=4
+time = 0.494576
+RESULT algo=std::sort size=131072 time=0.494576 repeats=256 iteration=4 typesize=4 datasize=524288
+iteration=5
+time = 0.492974
+RESULT algo=std::sort size=131072 time=0.492974 repeats=256 iteration=5 typesize=4 datasize=524288
+iteration=6
+time = 0.493877
+RESULT algo=std::sort size=131072 time=0.493877 repeats=256 iteration=6 typesize=4 datasize=524288
+iteration=7
+time = 0.493836
+RESULT algo=std::sort size=131072 time=0.493836 repeats=256 iteration=7 typesize=4 datasize=524288
+iteration=8
+time = 0.494181
+RESULT algo=std::sort size=131072 time=0.494181 repeats=256 iteration=8 typesize=4 datasize=524288
+iteration=9
+time = 0.49439
+RESULT algo=std::sort size=131072 time=0.49439 repeats=256 iteration=9 typesize=4 datasize=524288
+iteration=10
+time = 0.493237
+RESULT algo=std::sort size=131072 time=0.493237 repeats=256 iteration=10 typesize=4 datasize=524288
+iteration=11
+time = 0.494402
+RESULT algo=std::sort size=131072 time=0.494402 repeats=256 iteration=11 typesize=4 datasize=524288
+iteration=12
+time = 0.494695
+RESULT algo=std::sort size=131072 time=0.494695 repeats=256 iteration=12 typesize=4 datasize=524288
+iteration=13
+time = 0.49414
+RESULT algo=std::sort size=131072 time=0.49414 repeats=256 iteration=13 typesize=4 datasize=524288
+iteration=14
+time = 0.49412
+RESULT algo=std::sort size=131072 time=0.49412 repeats=256 iteration=14 typesize=4 datasize=524288
+Running algorithm std::sort with size=262144 repeats=128
+iteration=0
+time = 0.529047
+RESULT algo=std::sort size=262144 time=0.529047 repeats=128 iteration=0 typesize=4 datasize=1048576
+iteration=1
+time = 0.528568
+RESULT algo=std::sort size=262144 time=0.528568 repeats=128 iteration=1 typesize=4 datasize=1048576
+iteration=2
+time = 0.528286
+RESULT algo=std::sort size=262144 time=0.528286 repeats=128 iteration=2 typesize=4 datasize=1048576
+iteration=3
+time = 0.528583
+RESULT algo=std::sort size=262144 time=0.528583 repeats=128 iteration=3 typesize=4 datasize=1048576
+iteration=4
+time = 0.528865
+RESULT algo=std::sort size=262144 time=0.528865 repeats=128 iteration=4 typesize=4 datasize=1048576
+iteration=5
+time = 0.528739
+RESULT algo=std::sort size=262144 time=0.528739 repeats=128 iteration=5 typesize=4 datasize=1048576
+iteration=6
+time = 0.528832
+RESULT algo=std::sort size=262144 time=0.528832 repeats=128 iteration=6 typesize=4 datasize=1048576
+iteration=7
+time = 0.528406
+RESULT algo=std::sort size=262144 time=0.528406 repeats=128 iteration=7 typesize=4 datasize=1048576
+iteration=8
+time = 0.528755
+RESULT algo=std::sort size=262144 time=0.528755 repeats=128 iteration=8 typesize=4 datasize=1048576
+iteration=9
+time = 0.52894
+RESULT algo=std::sort size=262144 time=0.52894 repeats=128 iteration=9 typesize=4 datasize=1048576
+iteration=10
+time = 0.52878
+RESULT algo=std::sort size=262144 time=0.52878 repeats=128 iteration=10 typesize=4 datasize=1048576
+iteration=11
+time = 0.529311
+RESULT algo=std::sort size=262144 time=0.529311 repeats=128 iteration=11 typesize=4 datasize=1048576
+iteration=12
+time = 0.528774
+RESULT algo=std::sort size=262144 time=0.528774 repeats=128 iteration=12 typesize=4 datasize=1048576
+iteration=13
+time = 0.528689
+RESULT algo=std::sort size=262144 time=0.528689 repeats=128 iteration=13 typesize=4 datasize=1048576
+iteration=14
+time = 0.5276
+RESULT algo=std::sort size=262144 time=0.5276 repeats=128 iteration=14 typesize=4 datasize=1048576
+Running algorithm std::sort with size=524288 repeats=64
+iteration=0
+time = 0.570008
+RESULT algo=std::sort size=524288 time=0.570008 repeats=64 iteration=0 typesize=4 datasize=2097152
+iteration=1
+time = 0.569237
+RESULT algo=std::sort size=524288 time=0.569237 repeats=64 iteration=1 typesize=4 datasize=2097152
+iteration=2
+time = 0.569536
+RESULT algo=std::sort size=524288 time=0.569536 repeats=64 iteration=2 typesize=4 datasize=2097152
+iteration=3
+time = 0.569418
+RESULT algo=std::sort size=524288 time=0.569418 repeats=64 iteration=3 typesize=4 datasize=2097152
+iteration=4
+time = 0.569504
+RESULT algo=std::sort size=524288 time=0.569504 repeats=64 iteration=4 typesize=4 datasize=2097152
+iteration=5
+time = 0.569004
+RESULT algo=std::sort size=524288 time=0.569004 repeats=64 iteration=5 typesize=4 datasize=2097152
+iteration=6
+time = 0.569428
+RESULT algo=std::sort size=524288 time=0.569428 repeats=64 iteration=6 typesize=4 datasize=2097152
+iteration=7
+time = 0.569608
+RESULT algo=std::sort size=524288 time=0.569608 repeats=64 iteration=7 typesize=4 datasize=2097152
+iteration=8
+time = 0.569715
+RESULT algo=std::sort size=524288 time=0.569715 repeats=64 iteration=8 typesize=4 datasize=2097152
+iteration=9
+time = 0.566446
+RESULT algo=std::sort size=524288 time=0.566446 repeats=64 iteration=9 typesize=4 datasize=2097152
+iteration=10
+time = 0.569152
+RESULT algo=std::sort size=524288 time=0.569152 repeats=64 iteration=10 typesize=4 datasize=2097152
+iteration=11
+time = 0.569793
+RESULT algo=std::sort size=524288 time=0.569793 repeats=64 iteration=11 typesize=4 datasize=2097152
+iteration=12
+time = 0.569775
+RESULT algo=std::sort size=524288 time=0.569775 repeats=64 iteration=12 typesize=4 datasize=2097152
+iteration=13
+time = 0.568782
+RESULT algo=std::sort size=524288 time=0.568782 repeats=64 iteration=13 typesize=4 datasize=2097152
+iteration=14
+time = 0.56966
+RESULT algo=std::sort size=524288 time=0.56966 repeats=64 iteration=14 typesize=4 datasize=2097152
+Running algorithm std::sort with size=1048576 repeats=32
+iteration=0
+time = 0.628352
+RESULT algo=std::sort size=1048576 time=0.628352 repeats=32 iteration=0 typesize=4 datasize=4194304
+iteration=1
+time = 0.62974
+RESULT algo=std::sort size=1048576 time=0.62974 repeats=32 iteration=1 typesize=4 datasize=4194304
+iteration=2
+time = 0.628107
+RESULT algo=std::sort size=1048576 time=0.628107 repeats=32 iteration=2 typesize=4 datasize=4194304
+iteration=3
+time = 0.628155
+RESULT algo=std::sort size=1048576 time=0.628155 repeats=32 iteration=3 typesize=4 datasize=4194304
+iteration=4
+time = 0.628259
+RESULT algo=std::sort size=1048576 time=0.628259 repeats=32 iteration=4 typesize=4 datasize=4194304
+iteration=5
+time = 0.628468
+RESULT algo=std::sort size=1048576 time=0.628468 repeats=32 iteration=5 typesize=4 datasize=4194304
+iteration=6
+time = 0.628368
+RESULT algo=std::sort size=1048576 time=0.628368 repeats=32 iteration=6 typesize=4 datasize=4194304
+iteration=7
+time = 0.628595
+RESULT algo=std::sort size=1048576 time=0.628595 repeats=32 iteration=7 typesize=4 datasize=4194304
+iteration=8
+time = 0.627968
+RESULT algo=std::sort size=1048576 time=0.627968 repeats=32 iteration=8 typesize=4 datasize=4194304
+iteration=9
+time = 0.628334
+RESULT algo=std::sort size=1048576 time=0.628334 repeats=32 iteration=9 typesize=4 datasize=4194304
+iteration=10
+time = 0.624977
+RESULT algo=std::sort size=1048576 time=0.624977 repeats=32 iteration=10 typesize=4 datasize=4194304
+iteration=11
+time = 0.622776
+RESULT algo=std::sort size=1048576 time=0.622776 repeats=32 iteration=11 typesize=4 datasize=4194304
+iteration=12
+time = 0.62808
+RESULT algo=std::sort size=1048576 time=0.62808 repeats=32 iteration=12 typesize=4 datasize=4194304
+iteration=13
+time = 0.627999
+RESULT algo=std::sort size=1048576 time=0.627999 repeats=32 iteration=13 typesize=4 datasize=4194304
+iteration=14
+time = 0.627961
+RESULT algo=std::sort size=1048576 time=0.627961 repeats=32 iteration=14 typesize=4 datasize=4194304
+Running algorithm std::sort with size=2097152 repeats=16
+iteration=0
+time = 0.723894
+RESULT algo=std::sort size=2097152 time=0.723894 repeats=16 iteration=0 typesize=4 datasize=8388608
+iteration=1
+time = 0.72807
+RESULT algo=std::sort size=2097152 time=0.72807 repeats=16 iteration=1 typesize=4 datasize=8388608
+iteration=2
+time = 0.730355
+RESULT algo=std::sort size=2097152 time=0.730355 repeats=16 iteration=2 typesize=4 datasize=8388608
+iteration=3
+time = 0.728794
+RESULT algo=std::sort size=2097152 time=0.728794 repeats=16 iteration=3 typesize=4 datasize=8388608
+iteration=4
+time = 0.72861
+RESULT algo=std::sort size=2097152 time=0.72861 repeats=16 iteration=4 typesize=4 datasize=8388608
+iteration=5
+time = 0.729469
+RESULT algo=std::sort size=2097152 time=0.729469 repeats=16 iteration=5 typesize=4 datasize=8388608
+iteration=6
+time = 0.728674
+RESULT algo=std::sort size=2097152 time=0.728674 repeats=16 iteration=6 typesize=4 datasize=8388608
+iteration=7
+time = 0.728661
+RESULT algo=std::sort size=2097152 time=0.728661 repeats=16 iteration=7 typesize=4 datasize=8388608
+iteration=8
+time = 0.728083
+RESULT algo=std::sort size=2097152 time=0.728083 repeats=16 iteration=8 typesize=4 datasize=8388608
+iteration=9
+time = 0.728768
+RESULT algo=std::sort size=2097152 time=0.728768 repeats=16 iteration=9 typesize=4 datasize=8388608
+iteration=10
+time = 0.731429
+RESULT algo=std::sort size=2097152 time=0.731429 repeats=16 iteration=10 typesize=4 datasize=8388608
+iteration=11
+time = 0.7297
+RESULT algo=std::sort size=2097152 time=0.7297 repeats=16 iteration=11 typesize=4 datasize=8388608
+iteration=12
+time = 0.728747
+RESULT algo=std::sort size=2097152 time=0.728747 repeats=16 iteration=12 typesize=4 datasize=8388608
+iteration=13
+time = 0.730878
+RESULT algo=std::sort size=2097152 time=0.730878 repeats=16 iteration=13 typesize=4 datasize=8388608
+iteration=14
+time = 0.729041
+RESULT algo=std::sort size=2097152 time=0.729041 repeats=16 iteration=14 typesize=4 datasize=8388608
+Running algorithm std::sort with size=4194304 repeats=8
+iteration=0
+time = 0.910211
+RESULT algo=std::sort size=4194304 time=0.910211 repeats=8 iteration=0 typesize=4 datasize=16777216
+iteration=1
+time = 0.909508
+RESULT algo=std::sort size=4194304 time=0.909508 repeats=8 iteration=1 typesize=4 datasize=16777216
+iteration=2
+time = 0.907455
+RESULT algo=std::sort size=4194304 time=0.907455 repeats=8 iteration=2 typesize=4 datasize=16777216
+iteration=3
+time = 0.90147
+RESULT algo=std::sort size=4194304 time=0.90147 repeats=8 iteration=3 typesize=4 datasize=16777216
+iteration=4
+time = 0.908112
+RESULT algo=std::sort size=4194304 time=0.908112 repeats=8 iteration=4 typesize=4 datasize=16777216
+iteration=5
+time = 0.910455
+RESULT algo=std::sort size=4194304 time=0.910455 repeats=8 iteration=5 typesize=4 datasize=16777216
+iteration=6
+time = 0.909872
+RESULT algo=std::sort size=4194304 time=0.909872 repeats=8 iteration=6 typesize=4 datasize=16777216
+iteration=7
+time = 0.908883
+RESULT algo=std::sort size=4194304 time=0.908883 repeats=8 iteration=7 typesize=4 datasize=16777216
+iteration=8
+time = 0.910098
+RESULT algo=std::sort size=4194304 time=0.910098 repeats=8 iteration=8 typesize=4 datasize=16777216
+iteration=9
+time = 0.910268
+RESULT algo=std::sort size=4194304 time=0.910268 repeats=8 iteration=9 typesize=4 datasize=16777216
+iteration=10
+time = 0.909147
+RESULT algo=std::sort size=4194304 time=0.909147 repeats=8 iteration=10 typesize=4 datasize=16777216
+iteration=11
+time = 0.910155
+RESULT algo=std::sort size=4194304 time=0.910155 repeats=8 iteration=11 typesize=4 datasize=16777216
+iteration=12
+time = 0.899958
+RESULT algo=std::sort size=4194304 time=0.899958 repeats=8 iteration=12 typesize=4 datasize=16777216
+iteration=13
+time = 0.900203
+RESULT algo=std::sort size=4194304 time=0.900203 repeats=8 iteration=13 typesize=4 datasize=16777216
+iteration=14
+time = 0.901073
+RESULT algo=std::sort size=4194304 time=0.901073 repeats=8 iteration=14 typesize=4 datasize=16777216
+Running algorithm std::sort with size=8388608 repeats=4
+iteration=0
+time = 1.24361
+RESULT algo=std::sort size=8388608 time=1.24361 repeats=4 iteration=0 typesize=4 datasize=33554432
+iteration=1
+time = 1.2579
+RESULT algo=std::sort size=8388608 time=1.2579 repeats=4 iteration=1 typesize=4 datasize=33554432
+iteration=2
+time = 1.25352
+RESULT algo=std::sort size=8388608 time=1.25352 repeats=4 iteration=2 typesize=4 datasize=33554432
+iteration=3
+time = 1.25163
+RESULT algo=std::sort size=8388608 time=1.25163 repeats=4 iteration=3 typesize=4 datasize=33554432
+iteration=4
+time = 1.25311
+RESULT algo=std::sort size=8388608 time=1.25311 repeats=4 iteration=4 typesize=4 datasize=33554432
+iteration=5
+time = 1.25353
+RESULT algo=std::sort size=8388608 time=1.25353 repeats=4 iteration=5 typesize=4 datasize=33554432
+iteration=6
+time = 1.25326
+RESULT algo=std::sort size=8388608 time=1.25326 repeats=4 iteration=6 typesize=4 datasize=33554432
+iteration=7
+time = 1.25785
+RESULT algo=std::sort size=8388608 time=1.25785 repeats=4 iteration=7 typesize=4 datasize=33554432
+iteration=8
+time = 1.25668
+RESULT algo=std::sort size=8388608 time=1.25668 repeats=4 iteration=8 typesize=4 datasize=33554432
+iteration=9
+time = 1.24314
+RESULT algo=std::sort size=8388608 time=1.24314 repeats=4 iteration=9 typesize=4 datasize=33554432
+iteration=10
+time = 1.24109
+RESULT algo=std::sort size=8388608 time=1.24109 repeats=4 iteration=10 typesize=4 datasize=33554432
+iteration=11
+time = 1.24242
+RESULT algo=std::sort size=8388608 time=1.24242 repeats=4 iteration=11 typesize=4 datasize=33554432
+iteration=12
+time = 1.25653
+RESULT algo=std::sort size=8388608 time=1.25653 repeats=4 iteration=12 typesize=4 datasize=33554432
+iteration=13
+time = 1.25508
+RESULT algo=std::sort size=8388608 time=1.25508 repeats=4 iteration=13 typesize=4 datasize=33554432
+iteration=14
+time = 1.25812
+RESULT algo=std::sort size=8388608 time=1.25812 repeats=4 iteration=14 typesize=4 datasize=33554432
+Running algorithm std::sort with size=16777216 repeats=2
+iteration=0
+time = 1.95061
+RESULT algo=std::sort size=16777216 time=1.95061 repeats=2 iteration=0 typesize=4 datasize=67108864
+iteration=1
+time = 1.94962
+RESULT algo=std::sort size=16777216 time=1.94962 repeats=2 iteration=1 typesize=4 datasize=67108864
+iteration=2
+time = 1.91209
+RESULT algo=std::sort size=16777216 time=1.91209 repeats=2 iteration=2 typesize=4 datasize=67108864
+iteration=3
+time = 1.94159
+RESULT algo=std::sort size=16777216 time=1.94159 repeats=2 iteration=3 typesize=4 datasize=67108864
+iteration=4
+time = 1.94625
+RESULT algo=std::sort size=16777216 time=1.94625 repeats=2 iteration=4 typesize=4 datasize=67108864
+iteration=5
+time = 1.94943
+RESULT algo=std::sort size=16777216 time=1.94943 repeats=2 iteration=5 typesize=4 datasize=67108864
+iteration=6
+time = 1.94884
+RESULT algo=std::sort size=16777216 time=1.94884 repeats=2 iteration=6 typesize=4 datasize=67108864
+iteration=7
+time = 1.94475
+RESULT algo=std::sort size=16777216 time=1.94475 repeats=2 iteration=7 typesize=4 datasize=67108864
+iteration=8
+time = 1.9416
+RESULT algo=std::sort size=16777216 time=1.9416 repeats=2 iteration=8 typesize=4 datasize=67108864
+iteration=9
+time = 1.94789
+RESULT algo=std::sort size=16777216 time=1.94789 repeats=2 iteration=9 typesize=4 datasize=67108864
+iteration=10
+time = 1.94484
+RESULT algo=std::sort size=16777216 time=1.94484 repeats=2 iteration=10 typesize=4 datasize=67108864
+iteration=11
+time = 1.94408
+RESULT algo=std::sort size=16777216 time=1.94408 repeats=2 iteration=11 typesize=4 datasize=67108864
+iteration=12
+time = 1.94758
+RESULT algo=std::sort size=16777216 time=1.94758 repeats=2 iteration=12 typesize=4 datasize=67108864
+iteration=13
+time = 1.94769
+RESULT algo=std::sort size=16777216 time=1.94769 repeats=2 iteration=13 typesize=4 datasize=67108864
+iteration=14
+time = 1.94453
+RESULT algo=std::sort size=16777216 time=1.94453 repeats=2 iteration=14 typesize=4 datasize=67108864
+Running algorithm std::sort with size=33554432 repeats=1
+iteration=0
+time = 3.36009
+RESULT algo=std::sort size=33554432 time=3.36009 repeats=1 iteration=0 typesize=4 datasize=134217728
+iteration=1
+time = 3.29459
+RESULT algo=std::sort size=33554432 time=3.29459 repeats=1 iteration=1 typesize=4 datasize=134217728
+iteration=2
+time = 3.35739
+RESULT algo=std::sort size=33554432 time=3.35739 repeats=1 iteration=2 typesize=4 datasize=134217728
+iteration=3
+time = 3.35322
+RESULT algo=std::sort size=33554432 time=3.35322 repeats=1 iteration=3 typesize=4 datasize=134217728
+iteration=4
+time = 3.35865
+RESULT algo=std::sort size=33554432 time=3.35865 repeats=1 iteration=4 typesize=4 datasize=134217728
+iteration=5
+time = 3.36115
+RESULT algo=std::sort size=33554432 time=3.36115 repeats=1 iteration=5 typesize=4 datasize=134217728
+iteration=6
+time = 3.35856
+RESULT algo=std::sort size=33554432 time=3.35856 repeats=1 iteration=6 typesize=4 datasize=134217728
+iteration=7
+time = 3.35276
+RESULT algo=std::sort size=33554432 time=3.35276 repeats=1 iteration=7 typesize=4 datasize=134217728
+iteration=8
+time = 3.36263
+RESULT algo=std::sort size=33554432 time=3.36263 repeats=1 iteration=8 typesize=4 datasize=134217728
+iteration=9
+time = 3.35677
+RESULT algo=std::sort size=33554432 time=3.35677 repeats=1 iteration=9 typesize=4 datasize=134217728
+iteration=10
+time = 3.31976
+RESULT algo=std::sort size=33554432 time=3.31976 repeats=1 iteration=10 typesize=4 datasize=134217728
+iteration=11
+time = 3.3533
+RESULT algo=std::sort size=33554432 time=3.3533 repeats=1 iteration=11 typesize=4 datasize=134217728
+iteration=12
+time = 3.35142
+RESULT algo=std::sort size=33554432 time=3.35142 repeats=1 iteration=12 typesize=4 datasize=134217728
+iteration=13
+time = 3.36251
+RESULT algo=std::sort size=33554432 time=3.36251 repeats=1 iteration=13 typesize=4 datasize=134217728
+iteration=14
+time = 3.30519
+RESULT algo=std::sort size=33554432 time=3.30519 repeats=1 iteration=14 typesize=4 datasize=134217728
+Running algorithm std::sort with size=67108864 repeats=1
+iteration=0
+time = 6.97287
+RESULT algo=std::sort size=67108864 time=6.97287 repeats=1 iteration=0 typesize=4 datasize=268435456
+iteration=1
+time = 6.98465
+RESULT algo=std::sort size=67108864 time=6.98465 repeats=1 iteration=1 typesize=4 datasize=268435456
+iteration=2
+time = 6.98354
+RESULT algo=std::sort size=67108864 time=6.98354 repeats=1 iteration=2 typesize=4 datasize=268435456
+iteration=3
+time = 6.9747
+RESULT algo=std::sort size=67108864 time=6.9747 repeats=1 iteration=3 typesize=4 datasize=268435456
+iteration=4
+time = 6.99464
+RESULT algo=std::sort size=67108864 time=6.99464 repeats=1 iteration=4 typesize=4 datasize=268435456
+iteration=5
+time = 6.97527
+RESULT algo=std::sort size=67108864 time=6.97527 repeats=1 iteration=5 typesize=4 datasize=268435456
+iteration=6
+time = 6.9646
+RESULT algo=std::sort size=67108864 time=6.9646 repeats=1 iteration=6 typesize=4 datasize=268435456
+iteration=7
+time = 6.96865
+RESULT algo=std::sort size=67108864 time=6.96865 repeats=1 iteration=7 typesize=4 datasize=268435456
+iteration=8
+time = 7.00132
+RESULT algo=std::sort size=67108864 time=7.00132 repeats=1 iteration=8 typesize=4 datasize=268435456
+iteration=9
+time = 6.96458
+RESULT algo=std::sort size=67108864 time=6.96458 repeats=1 iteration=9 typesize=4 datasize=268435456
+iteration=10
+time = 6.97897
+RESULT algo=std::sort size=67108864 time=6.97897 repeats=1 iteration=10 typesize=4 datasize=268435456
+iteration=11
+time = 6.97365
+RESULT algo=std::sort size=67108864 time=6.97365 repeats=1 iteration=11 typesize=4 datasize=268435456
+iteration=12
+time = 6.87944
+RESULT algo=std::sort size=67108864 time=6.87944 repeats=1 iteration=12 typesize=4 datasize=268435456
+iteration=13
+time = 6.96321
+RESULT algo=std::sort size=67108864 time=6.96321 repeats=1 iteration=13 typesize=4 datasize=268435456
+iteration=14
+time = 6.95957
+RESULT algo=std::sort size=67108864 time=6.95957 repeats=1 iteration=14 typesize=4 datasize=268435456
+Running algorithm std::sort with size=134217728 repeats=1
+iteration=0
+time = 14.4544
+RESULT algo=std::sort size=134217728 time=14.4544 repeats=1 iteration=0 typesize=4 datasize=536870912
+iteration=1
+time = 14.4637
+RESULT algo=std::sort size=134217728 time=14.4637 repeats=1 iteration=1 typesize=4 datasize=536870912
+iteration=2
+time = 14.4565
+RESULT algo=std::sort size=134217728 time=14.4565 repeats=1 iteration=2 typesize=4 datasize=536870912
+iteration=3
+time = 14.4707
+RESULT algo=std::sort size=134217728 time=14.4707 repeats=1 iteration=3 typesize=4 datasize=536870912
+iteration=4
+time = 14.2233
+RESULT algo=std::sort size=134217728 time=14.2233 repeats=1 iteration=4 typesize=4 datasize=536870912
+iteration=5
+time = 14.2483
+RESULT algo=std::sort size=134217728 time=14.2483 repeats=1 iteration=5 typesize=4 datasize=536870912
+iteration=6
+time = 14.2288
+RESULT algo=std::sort size=134217728 time=14.2288 repeats=1 iteration=6 typesize=4 datasize=536870912
+iteration=7
+time = 14.243
+RESULT algo=std::sort size=134217728 time=14.243 repeats=1 iteration=7 typesize=4 datasize=536870912
+iteration=8
+time = 14.2627
+RESULT algo=std::sort size=134217728 time=14.2627 repeats=1 iteration=8 typesize=4 datasize=536870912
+iteration=9
+time = 14.4415
+RESULT algo=std::sort size=134217728 time=14.4415 repeats=1 iteration=9 typesize=4 datasize=536870912
+iteration=10
+time = 14.2449
+RESULT algo=std::sort size=134217728 time=14.2449 repeats=1 iteration=10 typesize=4 datasize=536870912
+iteration=11
+time = 14.274
+RESULT algo=std::sort size=134217728 time=14.274 repeats=1 iteration=11 typesize=4 datasize=536870912
+iteration=12
+time = 14.3022
+RESULT algo=std::sort size=134217728 time=14.3022 repeats=1 iteration=12 typesize=4 datasize=536870912
+iteration=13
+time = 14.242
+RESULT algo=std::sort size=134217728 time=14.242 repeats=1 iteration=13 typesize=4 datasize=536870912
+iteration=14
+time = 14.2235
+RESULT algo=std::sort size=134217728 time=14.2235 repeats=1 iteration=14 typesize=4 datasize=536870912
+Running algorithm std::sort with size=268435456 repeats=1
+iteration=0
+time = 29.568
+RESULT algo=std::sort size=268435456 time=29.568 repeats=1 iteration=0 typesize=4 datasize=1073741824
+iteration=1
+time = 29.4716
+RESULT algo=std::sort size=268435456 time=29.4716 repeats=1 iteration=1 typesize=4 datasize=1073741824
+iteration=2
+time = 29.5702
+RESULT algo=std::sort size=268435456 time=29.5702 repeats=1 iteration=2 typesize=4 datasize=1073741824
+iteration=3
+time = 29.5213
+RESULT algo=std::sort size=268435456 time=29.5213 repeats=1 iteration=3 typesize=4 datasize=1073741824
+iteration=4
+time = 29.5323
+RESULT algo=std::sort size=268435456 time=29.5323 repeats=1 iteration=4 typesize=4 datasize=1073741824
+iteration=5
+time = 30.0633
+RESULT algo=std::sort size=268435456 time=30.0633 repeats=1 iteration=5 typesize=4 datasize=1073741824
+iteration=6
+time = 29.9767
+RESULT algo=std::sort size=268435456 time=29.9767 repeats=1 iteration=6 typesize=4 datasize=1073741824
+iteration=7
+time = 29.556
+RESULT algo=std::sort size=268435456 time=29.556 repeats=1 iteration=7 typesize=4 datasize=1073741824
+iteration=8
+time = 29.615
+RESULT algo=std::sort size=268435456 time=29.615 repeats=1 iteration=8 typesize=4 datasize=1073741824
+iteration=9
+time = 29.519
+RESULT algo=std::sort size=268435456 time=29.519 repeats=1 iteration=9 typesize=4 datasize=1073741824
+iteration=10
+time = 29.4618
+RESULT algo=std::sort size=268435456 time=29.4618 repeats=1 iteration=10 typesize=4 datasize=1073741824
+iteration=11
+time = 29.5864
+RESULT algo=std::sort size=268435456 time=29.5864 repeats=1 iteration=11 typesize=4 datasize=1073741824
+iteration=12
+time = 29.5211
+RESULT algo=std::sort size=268435456 time=29.5211 repeats=1 iteration=12 typesize=4 datasize=1073741824
+iteration=13
+time = 29.5088
+RESULT algo=std::sort size=268435456 time=29.5088 repeats=1 iteration=13 typesize=4 datasize=1073741824
+iteration=14
+time = 29.6024
+RESULT algo=std::sort size=268435456 time=29.6024 repeats=1 iteration=14 typesize=4 datasize=1073741824
+Running algorithm std::sort with size=536870912 repeats=1
+iteration=0
+time = 60.9469
+RESULT algo=std::sort size=536870912 time=60.9469 repeats=1 iteration=0 typesize=4 datasize=2147483648
+iteration=1
+time = 61.1461
+RESULT algo=std::sort size=536870912 time=61.1461 repeats=1 iteration=1 typesize=4 datasize=2147483648
+iteration=2
+time = 61.1374
+RESULT algo=std::sort size=536870912 time=61.1374 repeats=1 iteration=2 typesize=4 datasize=2147483648
+iteration=3
+time = 61.0999
+RESULT algo=std::sort size=536870912 time=61.0999 repeats=1 iteration=3 typesize=4 datasize=2147483648
+iteration=4
+time = 61.0714
+RESULT algo=std::sort size=536870912 time=61.0714 repeats=1 iteration=4 typesize=4 datasize=2147483648
+iteration=5
+time = 61.0391
+RESULT algo=std::sort size=536870912 time=61.0391 repeats=1 iteration=5 typesize=4 datasize=2147483648
+iteration=6
+time = 61.0418
+RESULT algo=std::sort size=536870912 time=61.0418 repeats=1 iteration=6 typesize=4 datasize=2147483648
+iteration=7
+time = 61.049
+RESULT algo=std::sort size=536870912 time=61.049 repeats=1 iteration=7 typesize=4 datasize=2147483648
+iteration=8
+time = 60.9485
+RESULT algo=std::sort size=536870912 time=60.9485 repeats=1 iteration=8 typesize=4 datasize=2147483648
+iteration=9
+time = 61.0819
+RESULT algo=std::sort size=536870912 time=61.0819 repeats=1 iteration=9 typesize=4 datasize=2147483648
+iteration=10
+time = 61.1937
+RESULT algo=std::sort size=536870912 time=61.1937 repeats=1 iteration=10 typesize=4 datasize=2147483648
+iteration=11
+time = 62.0807
+RESULT algo=std::sort size=536870912 time=62.0807 repeats=1 iteration=11 typesize=4 datasize=2147483648
+iteration=12
+time = 61.9209
+RESULT algo=std::sort size=536870912 time=61.9209 repeats=1 iteration=12 typesize=4 datasize=2147483648
+iteration=13
+time = 61.0275
+RESULT algo=std::sort size=536870912 time=61.0275 repeats=1 iteration=13 typesize=4 datasize=2147483648
+iteration=14
+time = 61.0252
+RESULT algo=std::sort size=536870912 time=61.0252 repeats=1 iteration=14 typesize=4 datasize=2147483648
+Running algorithm std::sort with size=1073741824 repeats=1
+iteration=0
+time = 126.057
+RESULT algo=std::sort size=1073741824 time=126.057 repeats=1 iteration=0 typesize=4 datasize=4294967296
+iteration=1
+time = 126.331
+RESULT algo=std::sort size=1073741824 time=126.331 repeats=1 iteration=1 typesize=4 datasize=4294967296
+iteration=2
+time = 126.132
+RESULT algo=std::sort size=1073741824 time=126.132 repeats=1 iteration=2 typesize=4 datasize=4294967296
+iteration=3
+time = 126.786
+RESULT algo=std::sort size=1073741824 time=126.786 repeats=1 iteration=3 typesize=4 datasize=4294967296
+iteration=4
+time = 126.131
+RESULT algo=std::sort size=1073741824 time=126.131 repeats=1 iteration=4 typesize=4 datasize=4294967296
+iteration=5
+time = 126.236
+RESULT algo=std::sort size=1073741824 time=126.236 repeats=1 iteration=5 typesize=4 datasize=4294967296
+iteration=6
+time = 126.095
+RESULT algo=std::sort size=1073741824 time=126.095 repeats=1 iteration=6 typesize=4 datasize=4294967296
+iteration=7
+time = 126.354
+RESULT algo=std::sort size=1073741824 time=126.354 repeats=1 iteration=7 typesize=4 datasize=4294967296
+iteration=8
+time = 126.366
+RESULT algo=std::sort size=1073741824 time=126.366 repeats=1 iteration=8 typesize=4 datasize=4294967296
+iteration=9
+time = 126.129
+RESULT algo=std::sort size=1073741824 time=126.129 repeats=1 iteration=9 typesize=4 datasize=4294967296
+iteration=10
+time = 126.113
+RESULT algo=std::sort size=1073741824 time=126.113 repeats=1 iteration=10 typesize=4 datasize=4294967296
+iteration=11
+time = 126.327
+RESULT algo=std::sort size=1073741824 time=126.327 repeats=1 iteration=11 typesize=4 datasize=4294967296
+iteration=12
+time = 125.565
+RESULT algo=std::sort size=1073741824 time=125.565 repeats=1 iteration=12 typesize=4 datasize=4294967296
+iteration=13
+time = 126.4
+RESULT algo=std::sort size=1073741824 time=126.4 repeats=1 iteration=13 typesize=4 datasize=4294967296
+iteration=14
+time = 125.982
+RESULT algo=std::sort size=1073741824 time=125.982 repeats=1 iteration=14 typesize=4 datasize=4294967296
+Running algorithm std::stable_sort with size=1024 repeats=32768
+iteration=0
+time = 0.588091
+RESULT algo=std::stable_sort size=1024 time=0.588091 repeats=32768 iteration=0 typesize=4 datasize=4096
+iteration=1
+time = 0.588556
+RESULT algo=std::stable_sort size=1024 time=0.588556 repeats=32768 iteration=1 typesize=4 datasize=4096
+iteration=2
+time = 0.588961
+RESULT algo=std::stable_sort size=1024 time=0.588961 repeats=32768 iteration=2 typesize=4 datasize=4096
+iteration=3
+time = 0.588357
+RESULT algo=std::stable_sort size=1024 time=0.588357 repeats=32768 iteration=3 typesize=4 datasize=4096
+iteration=4
+time = 0.588937
+RESULT algo=std::stable_sort size=1024 time=0.588937 repeats=32768 iteration=4 typesize=4 datasize=4096
+iteration=5
+time = 0.588471
+RESULT algo=std::stable_sort size=1024 time=0.588471 repeats=32768 iteration=5 typesize=4 datasize=4096
+iteration=6
+time = 0.588624
+RESULT algo=std::stable_sort size=1024 time=0.588624 repeats=32768 iteration=6 typesize=4 datasize=4096
+iteration=7
+time = 0.58881
+RESULT algo=std::stable_sort size=1024 time=0.58881 repeats=32768 iteration=7 typesize=4 datasize=4096
+iteration=8
+time = 0.587972
+RESULT algo=std::stable_sort size=1024 time=0.587972 repeats=32768 iteration=8 typesize=4 datasize=4096
+iteration=9
+time = 0.589072
+RESULT algo=std::stable_sort size=1024 time=0.589072 repeats=32768 iteration=9 typesize=4 datasize=4096
+iteration=10
+time = 0.588467
+RESULT algo=std::stable_sort size=1024 time=0.588467 repeats=32768 iteration=10 typesize=4 datasize=4096
+iteration=11
+time = 0.587728
+RESULT algo=std::stable_sort size=1024 time=0.587728 repeats=32768 iteration=11 typesize=4 datasize=4096
+iteration=12
+time = 0.58804
+RESULT algo=std::stable_sort size=1024 time=0.58804 repeats=32768 iteration=12 typesize=4 datasize=4096
+iteration=13
+time = 0.589458
+RESULT algo=std::stable_sort size=1024 time=0.589458 repeats=32768 iteration=13 typesize=4 datasize=4096
+iteration=14
+time = 0.589324
+RESULT algo=std::stable_sort size=1024 time=0.589324 repeats=32768 iteration=14 typesize=4 datasize=4096
+Running algorithm std::stable_sort with size=2048 repeats=16384
+iteration=0
+time = 0.637594
+RESULT algo=std::stable_sort size=2048 time=0.637594 repeats=16384 iteration=0 typesize=4 datasize=8192
+iteration=1
+time = 0.63682
+RESULT algo=std::stable_sort size=2048 time=0.63682 repeats=16384 iteration=1 typesize=4 datasize=8192
+iteration=2
+time = 0.636861
+RESULT algo=std::stable_sort size=2048 time=0.636861 repeats=16384 iteration=2 typesize=4 datasize=8192
+iteration=3
+time = 0.63668
+RESULT algo=std::stable_sort size=2048 time=0.63668 repeats=16384 iteration=3 typesize=4 datasize=8192
+iteration=4
+time = 0.636959
+RESULT algo=std::stable_sort size=2048 time=0.636959 repeats=16384 iteration=4 typesize=4 datasize=8192
+iteration=5
+time = 0.636273
+RESULT algo=std::stable_sort size=2048 time=0.636273 repeats=16384 iteration=5 typesize=4 datasize=8192
+iteration=6
+time = 0.636605
+RESULT algo=std::stable_sort size=2048 time=0.636605 repeats=16384 iteration=6 typesize=4 datasize=8192
+iteration=7
+time = 0.636179
+RESULT algo=std::stable_sort size=2048 time=0.636179 repeats=16384 iteration=7 typesize=4 datasize=8192
+iteration=8
+time = 0.6364
+RESULT algo=std::stable_sort size=2048 time=0.6364 repeats=16384 iteration=8 typesize=4 datasize=8192
+iteration=9
+time = 0.636664
+RESULT algo=std::stable_sort size=2048 time=0.636664 repeats=16384 iteration=9 typesize=4 datasize=8192
+iteration=10
+time = 0.636401
+RESULT algo=std::stable_sort size=2048 time=0.636401 repeats=16384 iteration=10 typesize=4 datasize=8192
+iteration=11
+time = 0.636713
+RESULT algo=std::stable_sort size=2048 time=0.636713 repeats=16384 iteration=11 typesize=4 datasize=8192
+iteration=12
+time = 0.636666
+RESULT algo=std::stable_sort size=2048 time=0.636666 repeats=16384 iteration=12 typesize=4 datasize=8192
+iteration=13
+time = 0.636085
+RESULT algo=std::stable_sort size=2048 time=0.636085 repeats=16384 iteration=13 typesize=4 datasize=8192
+iteration=14
+time = 0.636144
+RESULT algo=std::stable_sort size=2048 time=0.636144 repeats=16384 iteration=14 typesize=4 datasize=8192
+Running algorithm std::stable_sort with size=4096 repeats=8192
+iteration=0
+time = 0.699263
+RESULT algo=std::stable_sort size=4096 time=0.699263 repeats=8192 iteration=0 typesize=4 datasize=16384
+iteration=1
+time = 0.698681
+RESULT algo=std::stable_sort size=4096 time=0.698681 repeats=8192 iteration=1 typesize=4 datasize=16384
+iteration=2
+time = 0.698139
+RESULT algo=std::stable_sort size=4096 time=0.698139 repeats=8192 iteration=2 typesize=4 datasize=16384
+iteration=3
+time = 0.698217
+RESULT algo=std::stable_sort size=4096 time=0.698217 repeats=8192 iteration=3 typesize=4 datasize=16384
+iteration=4
+time = 0.698472
+RESULT algo=std::stable_sort size=4096 time=0.698472 repeats=8192 iteration=4 typesize=4 datasize=16384
+iteration=5
+time = 0.698671
+RESULT algo=std::stable_sort size=4096 time=0.698671 repeats=8192 iteration=5 typesize=4 datasize=16384
+iteration=6
+time = 0.698644
+RESULT algo=std::stable_sort size=4096 time=0.698644 repeats=8192 iteration=6 typesize=4 datasize=16384
+iteration=7
+time = 0.698616
+RESULT algo=std::stable_sort size=4096 time=0.698616 repeats=8192 iteration=7 typesize=4 datasize=16384
+iteration=8
+time = 0.698652
+RESULT algo=std::stable_sort size=4096 time=0.698652 repeats=8192 iteration=8 typesize=4 datasize=16384
+iteration=9
+time = 0.698917
+RESULT algo=std::stable_sort size=4096 time=0.698917 repeats=8192 iteration=9 typesize=4 datasize=16384
+iteration=10
+time = 0.698573
+RESULT algo=std::stable_sort size=4096 time=0.698573 repeats=8192 iteration=10 typesize=4 datasize=16384
+iteration=11
+time = 0.698431
+RESULT algo=std::stable_sort size=4096 time=0.698431 repeats=8192 iteration=11 typesize=4 datasize=16384
+iteration=12
+time = 0.698754
+RESULT algo=std::stable_sort size=4096 time=0.698754 repeats=8192 iteration=12 typesize=4 datasize=16384
+iteration=13
+time = 0.698687
+RESULT algo=std::stable_sort size=4096 time=0.698687 repeats=8192 iteration=13 typesize=4 datasize=16384
+iteration=14
+time = 0.698431
+RESULT algo=std::stable_sort size=4096 time=0.698431 repeats=8192 iteration=14 typesize=4 datasize=16384
+Running algorithm std::stable_sort with size=8192 repeats=4096
+iteration=0
+time = 0.759137
+RESULT algo=std::stable_sort size=8192 time=0.759137 repeats=4096 iteration=0 typesize=4 datasize=32768
+iteration=1
+time = 0.7579
+RESULT algo=std::stable_sort size=8192 time=0.7579 repeats=4096 iteration=1 typesize=4 datasize=32768
+iteration=2
+time = 0.75802
+RESULT algo=std::stable_sort size=8192 time=0.75802 repeats=4096 iteration=2 typesize=4 datasize=32768
+iteration=3
+time = 0.758024
+RESULT algo=std::stable_sort size=8192 time=0.758024 repeats=4096 iteration=3 typesize=4 datasize=32768
+iteration=4
+time = 0.758128
+RESULT algo=std::stable_sort size=8192 time=0.758128 repeats=4096 iteration=4 typesize=4 datasize=32768
+iteration=5
+time = 0.757594
+RESULT algo=std::stable_sort size=8192 time=0.757594 repeats=4096 iteration=5 typesize=4 datasize=32768
+iteration=6
+time = 0.758115
+RESULT algo=std::stable_sort size=8192 time=0.758115 repeats=4096 iteration=6 typesize=4 datasize=32768
+iteration=7
+time = 0.758297
+RESULT algo=std::stable_sort size=8192 time=0.758297 repeats=4096 iteration=7 typesize=4 datasize=32768
+iteration=8
+time = 0.756891
+RESULT algo=std::stable_sort size=8192 time=0.756891 repeats=4096 iteration=8 typesize=4 datasize=32768
+iteration=9
+time = 0.757173
+RESULT algo=std::stable_sort size=8192 time=0.757173 repeats=4096 iteration=9 typesize=4 datasize=32768
+iteration=10
+time = 0.7572
+RESULT algo=std::stable_sort size=8192 time=0.7572 repeats=4096 iteration=10 typesize=4 datasize=32768
+iteration=11
+time = 0.757862
+RESULT algo=std::stable_sort size=8192 time=0.757862 repeats=4096 iteration=11 typesize=4 datasize=32768
+iteration=12
+time = 0.75826
+RESULT algo=std::stable_sort size=8192 time=0.75826 repeats=4096 iteration=12 typesize=4 datasize=32768
+iteration=13
+time = 0.758192
+RESULT algo=std::stable_sort size=8192 time=0.758192 repeats=4096 iteration=13 typesize=4 datasize=32768
+iteration=14
+time = 0.756367
+RESULT algo=std::stable_sort size=8192 time=0.756367 repeats=4096 iteration=14 typesize=4 datasize=32768
+Running algorithm std::stable_sort with size=16384 repeats=2048
+iteration=0
+time = 0.848617
+RESULT algo=std::stable_sort size=16384 time=0.848617 repeats=2048 iteration=0 typesize=4 datasize=65536
+iteration=1
+time = 0.848526
+RESULT algo=std::stable_sort size=16384 time=0.848526 repeats=2048 iteration=1 typesize=4 datasize=65536
+iteration=2
+time = 0.848285
+RESULT algo=std::stable_sort size=16384 time=0.848285 repeats=2048 iteration=2 typesize=4 datasize=65536
+iteration=3
+time = 0.848319
+RESULT algo=std::stable_sort size=16384 time=0.848319 repeats=2048 iteration=3 typesize=4 datasize=65536
+iteration=4
+time = 0.84839
+RESULT algo=std::stable_sort size=16384 time=0.84839 repeats=2048 iteration=4 typesize=4 datasize=65536
+iteration=5
+time = 0.848754
+RESULT algo=std::stable_sort size=16384 time=0.848754 repeats=2048 iteration=5 typesize=4 datasize=65536
+iteration=6
+time = 0.848494
+RESULT algo=std::stable_sort size=16384 time=0.848494 repeats=2048 iteration=6 typesize=4 datasize=65536
+iteration=7
+time = 0.848331
+RESULT algo=std::stable_sort size=16384 time=0.848331 repeats=2048 iteration=7 typesize=4 datasize=65536
+iteration=8
+time = 0.848287
+RESULT algo=std::stable_sort size=16384 time=0.848287 repeats=2048 iteration=8 typesize=4 datasize=65536
+iteration=9
+time = 0.848379
+RESULT algo=std::stable_sort size=16384 time=0.848379 repeats=2048 iteration=9 typesize=4 datasize=65536
+iteration=10
+time = 0.849207
+RESULT algo=std::stable_sort size=16384 time=0.849207 repeats=2048 iteration=10 typesize=4 datasize=65536
+iteration=11
+time = 0.848326
+RESULT algo=std::stable_sort size=16384 time=0.848326 repeats=2048 iteration=11 typesize=4 datasize=65536
+iteration=12
+time = 0.848569
+RESULT algo=std::stable_sort size=16384 time=0.848569 repeats=2048 iteration=12 typesize=4 datasize=65536
+iteration=13
+time = 0.84844
+RESULT algo=std::stable_sort size=16384 time=0.84844 repeats=2048 iteration=13 typesize=4 datasize=65536
+iteration=14
+time = 0.848396
+RESULT algo=std::stable_sort size=16384 time=0.848396 repeats=2048 iteration=14 typesize=4 datasize=65536
+Running algorithm std::stable_sort with size=32768 repeats=1024
+iteration=0
+time = 0.913496
+RESULT algo=std::stable_sort size=32768 time=0.913496 repeats=1024 iteration=0 typesize=4 datasize=131072
+iteration=1
+time = 0.913371
+RESULT algo=std::stable_sort size=32768 time=0.913371 repeats=1024 iteration=1 typesize=4 datasize=131072
+iteration=2
+time = 0.913397
+RESULT algo=std::stable_sort size=32768 time=0.913397 repeats=1024 iteration=2 typesize=4 datasize=131072
+iteration=3
+time = 0.913269
+RESULT algo=std::stable_sort size=32768 time=0.913269 repeats=1024 iteration=3 typesize=4 datasize=131072
+iteration=4
+time = 0.913412
+RESULT algo=std::stable_sort size=32768 time=0.913412 repeats=1024 iteration=4 typesize=4 datasize=131072
+iteration=5
+time = 0.913543
+RESULT algo=std::stable_sort size=32768 time=0.913543 repeats=1024 iteration=5 typesize=4 datasize=131072
+iteration=6
+time = 0.913968
+RESULT algo=std::stable_sort size=32768 time=0.913968 repeats=1024 iteration=6 typesize=4 datasize=131072
+iteration=7
+time = 0.913477
+RESULT algo=std::stable_sort size=32768 time=0.913477 repeats=1024 iteration=7 typesize=4 datasize=131072
+iteration=8
+time = 0.913731
+RESULT algo=std::stable_sort size=32768 time=0.913731 repeats=1024 iteration=8 typesize=4 datasize=131072
+iteration=9
+time = 0.913412
+RESULT algo=std::stable_sort size=32768 time=0.913412 repeats=1024 iteration=9 typesize=4 datasize=131072
+iteration=10
+time = 0.913364
+RESULT algo=std::stable_sort size=32768 time=0.913364 repeats=1024 iteration=10 typesize=4 datasize=131072
+iteration=11
+time = 0.913319
+RESULT algo=std::stable_sort size=32768 time=0.913319 repeats=1024 iteration=11 typesize=4 datasize=131072
+iteration=12
+time = 0.91367
+RESULT algo=std::stable_sort size=32768 time=0.91367 repeats=1024 iteration=12 typesize=4 datasize=131072
+iteration=13
+time = 0.913501
+RESULT algo=std::stable_sort size=32768 time=0.913501 repeats=1024 iteration=13 typesize=4 datasize=131072
+iteration=14
+time = 0.91335
+RESULT algo=std::stable_sort size=32768 time=0.91335 repeats=1024 iteration=14 typesize=4 datasize=131072
+Running algorithm std::stable_sort with size=65536 repeats=512
+iteration=0
+time = 0.98636
+RESULT algo=std::stable_sort size=65536 time=0.98636 repeats=512 iteration=0 typesize=4 datasize=262144
+iteration=1
+time = 0.986263
+RESULT algo=std::stable_sort size=65536 time=0.986263 repeats=512 iteration=1 typesize=4 datasize=262144
+iteration=2
+time = 0.986876
+RESULT algo=std::stable_sort size=65536 time=0.986876 repeats=512 iteration=2 typesize=4 datasize=262144
+iteration=3
+time = 0.98631
+RESULT algo=std::stable_sort size=65536 time=0.98631 repeats=512 iteration=3 typesize=4 datasize=262144
+iteration=4
+time = 0.986401
+RESULT algo=std::stable_sort size=65536 time=0.986401 repeats=512 iteration=4 typesize=4 datasize=262144
+iteration=5
+time = 0.986152
+RESULT algo=std::stable_sort size=65536 time=0.986152 repeats=512 iteration=5 typesize=4 datasize=262144
+iteration=6
+time = 0.986491
+RESULT algo=std::stable_sort size=65536 time=0.986491 repeats=512 iteration=6 typesize=4 datasize=262144
+iteration=7
+time = 0.986072
+RESULT algo=std::stable_sort size=65536 time=0.986072 repeats=512 iteration=7 typesize=4 datasize=262144
+iteration=8
+time = 0.986433
+RESULT algo=std::stable_sort size=65536 time=0.986433 repeats=512 iteration=8 typesize=4 datasize=262144
+iteration=9
+time = 0.98638
+RESULT algo=std::stable_sort size=65536 time=0.98638 repeats=512 iteration=9 typesize=4 datasize=262144
+iteration=10
+time = 0.986315
+RESULT algo=std::stable_sort size=65536 time=0.986315 repeats=512 iteration=10 typesize=4 datasize=262144
+iteration=11
+time = 0.986432
+RESULT algo=std::stable_sort size=65536 time=0.986432 repeats=512 iteration=11 typesize=4 datasize=262144
+iteration=12
+time = 0.987079
+RESULT algo=std::stable_sort size=65536 time=0.987079 repeats=512 iteration=12 typesize=4 datasize=262144
+iteration=13
+time = 0.986264
+RESULT algo=std::stable_sort size=65536 time=0.986264 repeats=512 iteration=13 typesize=4 datasize=262144
+iteration=14
+time = 0.986212
+RESULT algo=std::stable_sort size=65536 time=0.986212 repeats=512 iteration=14 typesize=4 datasize=262144
+Running algorithm std::stable_sort with size=131072 repeats=256
+iteration=0
+time = 1.03901
+RESULT algo=std::stable_sort size=131072 time=1.03901 repeats=256 iteration=0 typesize=4 datasize=524288
+iteration=1
+time = 1.03935
+RESULT algo=std::stable_sort size=131072 time=1.03935 repeats=256 iteration=1 typesize=4 datasize=524288
+iteration=2
+time = 1.03915
+RESULT algo=std::stable_sort size=131072 time=1.03915 repeats=256 iteration=2 typesize=4 datasize=524288
+iteration=3
+time = 1.03943
+RESULT algo=std::stable_sort size=131072 time=1.03943 repeats=256 iteration=3 typesize=4 datasize=524288
+iteration=4
+time = 1.03909
+RESULT algo=std::stable_sort size=131072 time=1.03909 repeats=256 iteration=4 typesize=4 datasize=524288
+iteration=5
+time = 1.03909
+RESULT algo=std::stable_sort size=131072 time=1.03909 repeats=256 iteration=5 typesize=4 datasize=524288
+iteration=6
+time = 1.03894
+RESULT algo=std::stable_sort size=131072 time=1.03894 repeats=256 iteration=6 typesize=4 datasize=524288
+iteration=7
+time = 1.03985
+RESULT algo=std::stable_sort size=131072 time=1.03985 repeats=256 iteration=7 typesize=4 datasize=524288
+iteration=8
+time = 1.03919
+RESULT algo=std::stable_sort size=131072 time=1.03919 repeats=256 iteration=8 typesize=4 datasize=524288
+iteration=9
+time = 1.03904
+RESULT algo=std::stable_sort size=131072 time=1.03904 repeats=256 iteration=9 typesize=4 datasize=524288
+iteration=10
+time = 1.03946
+RESULT algo=std::stable_sort size=131072 time=1.03946 repeats=256 iteration=10 typesize=4 datasize=524288
+iteration=11
+time = 1.03911
+RESULT algo=std::stable_sort size=131072 time=1.03911 repeats=256 iteration=11 typesize=4 datasize=524288
+iteration=12
+time = 1.03934
+RESULT algo=std::stable_sort size=131072 time=1.03934 repeats=256 iteration=12 typesize=4 datasize=524288
+iteration=13
+time = 1.0391
+RESULT algo=std::stable_sort size=131072 time=1.0391 repeats=256 iteration=13 typesize=4 datasize=524288
+iteration=14
+time = 1.03893
+RESULT algo=std::stable_sort size=131072 time=1.03893 repeats=256 iteration=14 typesize=4 datasize=524288
+Running algorithm std::stable_sort with size=262144 repeats=128
+iteration=0
+time = 1.12001
+RESULT algo=std::stable_sort size=262144 time=1.12001 repeats=128 iteration=0 typesize=4 datasize=1048576
+iteration=1
+time = 1.12051
+RESULT algo=std::stable_sort size=262144 time=1.12051 repeats=128 iteration=1 typesize=4 datasize=1048576
+iteration=2
+time = 1.12042
+RESULT algo=std::stable_sort size=262144 time=1.12042 repeats=128 iteration=2 typesize=4 datasize=1048576
+iteration=3
+time = 1.12011
+RESULT algo=std::stable_sort size=262144 time=1.12011 repeats=128 iteration=3 typesize=4 datasize=1048576
+iteration=4
+time = 1.11986
+RESULT algo=std::stable_sort size=262144 time=1.11986 repeats=128 iteration=4 typesize=4 datasize=1048576
+iteration=5
+time = 1.11993
+RESULT algo=std::stable_sort size=262144 time=1.11993 repeats=128 iteration=5 typesize=4 datasize=1048576
+iteration=6
+time = 1.12004
+RESULT algo=std::stable_sort size=262144 time=1.12004 repeats=128 iteration=6 typesize=4 datasize=1048576
+iteration=7
+time = 1.11999
+RESULT algo=std::stable_sort size=262144 time=1.11999 repeats=128 iteration=7 typesize=4 datasize=1048576
+iteration=8
+time = 1.12013
+RESULT algo=std::stable_sort size=262144 time=1.12013 repeats=128 iteration=8 typesize=4 datasize=1048576
+iteration=9
+time = 1.11952
+RESULT algo=std::stable_sort size=262144 time=1.11952 repeats=128 iteration=9 typesize=4 datasize=1048576
+iteration=10
+time = 1.12078
+RESULT algo=std::stable_sort size=262144 time=1.12078 repeats=128 iteration=10 typesize=4 datasize=1048576
+iteration=11
+time = 1.12007
+RESULT algo=std::stable_sort size=262144 time=1.12007 repeats=128 iteration=11 typesize=4 datasize=1048576
+iteration=12
+time = 1.12015
+RESULT algo=std::stable_sort size=262144 time=1.12015 repeats=128 iteration=12 typesize=4 datasize=1048576
+iteration=13
+time = 1.12011
+RESULT algo=std::stable_sort size=262144 time=1.12011 repeats=128 iteration=13 typesize=4 datasize=1048576
+iteration=14
+time = 1.12023
+RESULT algo=std::stable_sort size=262144 time=1.12023 repeats=128 iteration=14 typesize=4 datasize=1048576
+Running algorithm std::stable_sort with size=524288 repeats=64
+iteration=0
+time = 1.18737
+RESULT algo=std::stable_sort size=524288 time=1.18737 repeats=64 iteration=0 typesize=4 datasize=2097152
+iteration=1
+time = 1.18655
+RESULT algo=std::stable_sort size=524288 time=1.18655 repeats=64 iteration=1 typesize=4 datasize=2097152
+iteration=2
+time = 1.18651
+RESULT algo=std::stable_sort size=524288 time=1.18651 repeats=64 iteration=2 typesize=4 datasize=2097152
+iteration=3
+time = 1.1874
+RESULT algo=std::stable_sort size=524288 time=1.1874 repeats=64 iteration=3 typesize=4 datasize=2097152
+iteration=4
+time = 1.18709
+RESULT algo=std::stable_sort size=524288 time=1.18709 repeats=64 iteration=4 typesize=4 datasize=2097152
+iteration=5
+time = 1.18713
+RESULT algo=std::stable_sort size=524288 time=1.18713 repeats=64 iteration=5 typesize=4 datasize=2097152
+iteration=6
+time = 1.18669
+RESULT algo=std::stable_sort size=524288 time=1.18669 repeats=64 iteration=6 typesize=4 datasize=2097152
+iteration=7
+time = 1.1864
+RESULT algo=std::stable_sort size=524288 time=1.1864 repeats=64 iteration=7 typesize=4 datasize=2097152
+iteration=8
+time = 1.18662
+RESULT algo=std::stable_sort size=524288 time=1.18662 repeats=64 iteration=8 typesize=4 datasize=2097152
+iteration=9
+time = 1.187
+RESULT algo=std::stable_sort size=524288 time=1.187 repeats=64 iteration=9 typesize=4 datasize=2097152
+iteration=10
+time = 1.18654
+RESULT algo=std::stable_sort size=524288 time=1.18654 repeats=64 iteration=10 typesize=4 datasize=2097152
+iteration=11
+time = 1.1866
+RESULT algo=std::stable_sort size=524288 time=1.1866 repeats=64 iteration=11 typesize=4 datasize=2097152
+iteration=12
+time = 1.18767
+RESULT algo=std::stable_sort size=524288 time=1.18767 repeats=64 iteration=12 typesize=4 datasize=2097152
+iteration=13
+time = 1.18653
+RESULT algo=std::stable_sort size=524288 time=1.18653 repeats=64 iteration=13 typesize=4 datasize=2097152
+iteration=14
+time = 1.18652
+RESULT algo=std::stable_sort size=524288 time=1.18652 repeats=64 iteration=14 typesize=4 datasize=2097152
+Running algorithm std::stable_sort with size=1048576 repeats=32
+iteration=0
+time = 1.36872
+RESULT algo=std::stable_sort size=1048576 time=1.36872 repeats=32 iteration=0 typesize=4 datasize=4194304
+iteration=1
+time = 1.36803
+RESULT algo=std::stable_sort size=1048576 time=1.36803 repeats=32 iteration=1 typesize=4 datasize=4194304
+iteration=2
+time = 1.36828
+RESULT algo=std::stable_sort size=1048576 time=1.36828 repeats=32 iteration=2 typesize=4 datasize=4194304
+iteration=3
+time = 1.3676
+RESULT algo=std::stable_sort size=1048576 time=1.3676 repeats=32 iteration=3 typesize=4 datasize=4194304
+iteration=4
+time = 1.36726
+RESULT algo=std::stable_sort size=1048576 time=1.36726 repeats=32 iteration=4 typesize=4 datasize=4194304
+iteration=5
+time = 1.36823
+RESULT algo=std::stable_sort size=1048576 time=1.36823 repeats=32 iteration=5 typesize=4 datasize=4194304
+iteration=6
+time = 1.36783
+RESULT algo=std::stable_sort size=1048576 time=1.36783 repeats=32 iteration=6 typesize=4 datasize=4194304
+iteration=7
+time = 1.36765
+RESULT algo=std::stable_sort size=1048576 time=1.36765 repeats=32 iteration=7 typesize=4 datasize=4194304
+iteration=8
+time = 1.36805
+RESULT algo=std::stable_sort size=1048576 time=1.36805 repeats=32 iteration=8 typesize=4 datasize=4194304
+iteration=9
+time = 1.36802
+RESULT algo=std::stable_sort size=1048576 time=1.36802 repeats=32 iteration=9 typesize=4 datasize=4194304
+iteration=10
+time = 1.36755
+RESULT algo=std::stable_sort size=1048576 time=1.36755 repeats=32 iteration=10 typesize=4 datasize=4194304
+iteration=11
+time = 1.36785
+RESULT algo=std::stable_sort size=1048576 time=1.36785 repeats=32 iteration=11 typesize=4 datasize=4194304
+iteration=12
+time = 1.36801
+RESULT algo=std::stable_sort size=1048576 time=1.36801 repeats=32 iteration=12 typesize=4 datasize=4194304
+iteration=13
+time = 1.3681
+RESULT algo=std::stable_sort size=1048576 time=1.3681 repeats=32 iteration=13 typesize=4 datasize=4194304
+iteration=14
+time = 1.36769
+RESULT algo=std::stable_sort size=1048576 time=1.36769 repeats=32 iteration=14 typesize=4 datasize=4194304
+Running algorithm std::stable_sort with size=2097152 repeats=16
+iteration=0
+time = 1.50149
+RESULT algo=std::stable_sort size=2097152 time=1.50149 repeats=16 iteration=0 typesize=4 datasize=8388608
+iteration=1
+time = 1.50049
+RESULT algo=std::stable_sort size=2097152 time=1.50049 repeats=16 iteration=1 typesize=4 datasize=8388608
+iteration=2
+time = 1.50046
+RESULT algo=std::stable_sort size=2097152 time=1.50046 repeats=16 iteration=2 typesize=4 datasize=8388608
+iteration=3
+time = 1.50072
+RESULT algo=std::stable_sort size=2097152 time=1.50072 repeats=16 iteration=3 typesize=4 datasize=8388608
+iteration=4
+time = 1.50008
+RESULT algo=std::stable_sort size=2097152 time=1.50008 repeats=16 iteration=4 typesize=4 datasize=8388608
+iteration=5
+time = 1.50034
+RESULT algo=std::stable_sort size=2097152 time=1.50034 repeats=16 iteration=5 typesize=4 datasize=8388608
+iteration=6
+time = 1.50032
+RESULT algo=std::stable_sort size=2097152 time=1.50032 repeats=16 iteration=6 typesize=4 datasize=8388608
+iteration=7
+time = 1.50026
+RESULT algo=std::stable_sort size=2097152 time=1.50026 repeats=16 iteration=7 typesize=4 datasize=8388608
+iteration=8
+time = 1.50038
+RESULT algo=std::stable_sort size=2097152 time=1.50038 repeats=16 iteration=8 typesize=4 datasize=8388608
+iteration=9
+time = 1.50015
+RESULT algo=std::stable_sort size=2097152 time=1.50015 repeats=16 iteration=9 typesize=4 datasize=8388608
+iteration=10
+time = 1.50053
+RESULT algo=std::stable_sort size=2097152 time=1.50053 repeats=16 iteration=10 typesize=4 datasize=8388608
+iteration=11
+time = 1.49999
+RESULT algo=std::stable_sort size=2097152 time=1.49999 repeats=16 iteration=11 typesize=4 datasize=8388608
+iteration=12
+time = 1.4999
+RESULT algo=std::stable_sort size=2097152 time=1.4999 repeats=16 iteration=12 typesize=4 datasize=8388608
+iteration=13
+time = 1.50077
+RESULT algo=std::stable_sort size=2097152 time=1.50077 repeats=16 iteration=13 typesize=4 datasize=8388608
+iteration=14
+time = 1.50053
+RESULT algo=std::stable_sort size=2097152 time=1.50053 repeats=16 iteration=14 typesize=4 datasize=8388608
+Running algorithm std::stable_sort with size=4194304 repeats=8
+iteration=0
+time = 1.67509
+RESULT algo=std::stable_sort size=4194304 time=1.67509 repeats=8 iteration=0 typesize=4 datasize=16777216
+iteration=1
+time = 1.67214
+RESULT algo=std::stable_sort size=4194304 time=1.67214 repeats=8 iteration=1 typesize=4 datasize=16777216
+iteration=2
+time = 1.66221
+RESULT algo=std::stable_sort size=4194304 time=1.66221 repeats=8 iteration=2 typesize=4 datasize=16777216
+iteration=3
+time = 1.66245
+RESULT algo=std::stable_sort size=4194304 time=1.66245 repeats=8 iteration=3 typesize=4 datasize=16777216
+iteration=4
+time = 1.65909
+RESULT algo=std::stable_sort size=4194304 time=1.65909 repeats=8 iteration=4 typesize=4 datasize=16777216
+iteration=5
+time = 1.65792
+RESULT algo=std::stable_sort size=4194304 time=1.65792 repeats=8 iteration=5 typesize=4 datasize=16777216
+iteration=6
+time = 1.65715
+RESULT algo=std::stable_sort size=4194304 time=1.65715 repeats=8 iteration=6 typesize=4 datasize=16777216
+iteration=7
+time = 1.65669
+RESULT algo=std::stable_sort size=4194304 time=1.65669 repeats=8 iteration=7 typesize=4 datasize=16777216
+iteration=8
+time = 1.65666
+RESULT algo=std::stable_sort size=4194304 time=1.65666 repeats=8 iteration=8 typesize=4 datasize=16777216
+iteration=9
+time = 1.65963
+RESULT algo=std::stable_sort size=4194304 time=1.65963 repeats=8 iteration=9 typesize=4 datasize=16777216
+iteration=10
+time = 1.65696
+RESULT algo=std::stable_sort size=4194304 time=1.65696 repeats=8 iteration=10 typesize=4 datasize=16777216
+iteration=11
+time = 1.65721
+RESULT algo=std::stable_sort size=4194304 time=1.65721 repeats=8 iteration=11 typesize=4 datasize=16777216
+iteration=12
+time = 1.65784
+RESULT algo=std::stable_sort size=4194304 time=1.65784 repeats=8 iteration=12 typesize=4 datasize=16777216
+iteration=13
+time = 1.65742
+RESULT algo=std::stable_sort size=4194304 time=1.65742 repeats=8 iteration=13 typesize=4 datasize=16777216
+iteration=14
+time = 1.65692
+RESULT algo=std::stable_sort size=4194304 time=1.65692 repeats=8 iteration=14 typesize=4 datasize=16777216
+Running algorithm std::stable_sort with size=8388608 repeats=4
+iteration=0
+time = 1.90278
+RESULT algo=std::stable_sort size=8388608 time=1.90278 repeats=4 iteration=0 typesize=4 datasize=33554432
+iteration=1
+time = 1.90088
+RESULT algo=std::stable_sort size=8388608 time=1.90088 repeats=4 iteration=1 typesize=4 datasize=33554432
+iteration=2
+time = 1.89826
+RESULT algo=std::stable_sort size=8388608 time=1.89826 repeats=4 iteration=2 typesize=4 datasize=33554432
+iteration=3
+time = 1.89862
+RESULT algo=std::stable_sort size=8388608 time=1.89862 repeats=4 iteration=3 typesize=4 datasize=33554432
+iteration=4
+time = 1.89882
+RESULT algo=std::stable_sort size=8388608 time=1.89882 repeats=4 iteration=4 typesize=4 datasize=33554432
+iteration=5
+time = 1.89825
+RESULT algo=std::stable_sort size=8388608 time=1.89825 repeats=4 iteration=5 typesize=4 datasize=33554432
+iteration=6
+time = 1.89888
+RESULT algo=std::stable_sort size=8388608 time=1.89888 repeats=4 iteration=6 typesize=4 datasize=33554432
+iteration=7
+time = 1.89849
+RESULT algo=std::stable_sort size=8388608 time=1.89849 repeats=4 iteration=7 typesize=4 datasize=33554432
+iteration=8
+time = 1.89953
+RESULT algo=std::stable_sort size=8388608 time=1.89953 repeats=4 iteration=8 typesize=4 datasize=33554432
+iteration=9
+time = 1.89811
+RESULT algo=std::stable_sort size=8388608 time=1.89811 repeats=4 iteration=9 typesize=4 datasize=33554432
+iteration=10
+time = 1.89832
+RESULT algo=std::stable_sort size=8388608 time=1.89832 repeats=4 iteration=10 typesize=4 datasize=33554432
+iteration=11
+time = 1.89793
+RESULT algo=std::stable_sort size=8388608 time=1.89793 repeats=4 iteration=11 typesize=4 datasize=33554432
+iteration=12
+time = 1.89882
+RESULT algo=std::stable_sort size=8388608 time=1.89882 repeats=4 iteration=12 typesize=4 datasize=33554432
+iteration=13
+time = 1.89856
+RESULT algo=std::stable_sort size=8388608 time=1.89856 repeats=4 iteration=13 typesize=4 datasize=33554432
+iteration=14
+time = 1.89912
+RESULT algo=std::stable_sort size=8388608 time=1.89912 repeats=4 iteration=14 typesize=4 datasize=33554432
+Running algorithm std::stable_sort with size=16777216 repeats=2
+iteration=0
+time = 2.33492
+RESULT algo=std::stable_sort size=16777216 time=2.33492 repeats=2 iteration=0 typesize=4 datasize=67108864
+iteration=1
+time = 2.33545
+RESULT algo=std::stable_sort size=16777216 time=2.33545 repeats=2 iteration=1 typesize=4 datasize=67108864
+iteration=2
+time = 2.33591
+RESULT algo=std::stable_sort size=16777216 time=2.33591 repeats=2 iteration=2 typesize=4 datasize=67108864
+iteration=3
+time = 2.33585
+RESULT algo=std::stable_sort size=16777216 time=2.33585 repeats=2 iteration=3 typesize=4 datasize=67108864
+iteration=4
+time = 2.33562
+RESULT algo=std::stable_sort size=16777216 time=2.33562 repeats=2 iteration=4 typesize=4 datasize=67108864
+iteration=5
+time = 2.33541
+RESULT algo=std::stable_sort size=16777216 time=2.33541 repeats=2 iteration=5 typesize=4 datasize=67108864
+iteration=6
+time = 2.33558
+RESULT algo=std::stable_sort size=16777216 time=2.33558 repeats=2 iteration=6 typesize=4 datasize=67108864
+iteration=7
+time = 2.33511
+RESULT algo=std::stable_sort size=16777216 time=2.33511 repeats=2 iteration=7 typesize=4 datasize=67108864
+iteration=8
+time = 2.3362
+RESULT algo=std::stable_sort size=16777216 time=2.3362 repeats=2 iteration=8 typesize=4 datasize=67108864
+iteration=9
+time = 2.33528
+RESULT algo=std::stable_sort size=16777216 time=2.33528 repeats=2 iteration=9 typesize=4 datasize=67108864
+iteration=10
+time = 2.33586
+RESULT algo=std::stable_sort size=16777216 time=2.33586 repeats=2 iteration=10 typesize=4 datasize=67108864
+iteration=11
+time = 2.33548
+RESULT algo=std::stable_sort size=16777216 time=2.33548 repeats=2 iteration=11 typesize=4 datasize=67108864
+iteration=12
+time = 2.33627
+RESULT algo=std::stable_sort size=16777216 time=2.33627 repeats=2 iteration=12 typesize=4 datasize=67108864
+iteration=13
+time = 2.33502
+RESULT algo=std::stable_sort size=16777216 time=2.33502 repeats=2 iteration=13 typesize=4 datasize=67108864
+iteration=14
+time = 2.33549
+RESULT algo=std::stable_sort size=16777216 time=2.33549 repeats=2 iteration=14 typesize=4 datasize=67108864
+Running algorithm std::stable_sort with size=33554432 repeats=1
+iteration=0
+time = 3.09748
+RESULT algo=std::stable_sort size=33554432 time=3.09748 repeats=1 iteration=0 typesize=4 datasize=134217728
+iteration=1
+time = 3.09695
+RESULT algo=std::stable_sort size=33554432 time=3.09695 repeats=1 iteration=1 typesize=4 datasize=134217728
+iteration=2
+time = 3.09761
+RESULT algo=std::stable_sort size=33554432 time=3.09761 repeats=1 iteration=2 typesize=4 datasize=134217728
+iteration=3
+time = 3.09681
+RESULT algo=std::stable_sort size=33554432 time=3.09681 repeats=1 iteration=3 typesize=4 datasize=134217728
+iteration=4
+time = 3.09756
+RESULT algo=std::stable_sort size=33554432 time=3.09756 repeats=1 iteration=4 typesize=4 datasize=134217728
+iteration=5
+time = 3.09747
+RESULT algo=std::stable_sort size=33554432 time=3.09747 repeats=1 iteration=5 typesize=4 datasize=134217728
+iteration=6
+time = 3.09778
+RESULT algo=std::stable_sort size=33554432 time=3.09778 repeats=1 iteration=6 typesize=4 datasize=134217728
+iteration=7
+time = 3.09733
+RESULT algo=std::stable_sort size=33554432 time=3.09733 repeats=1 iteration=7 typesize=4 datasize=134217728
+iteration=8
+time = 3.09711
+RESULT algo=std::stable_sort size=33554432 time=3.09711 repeats=1 iteration=8 typesize=4 datasize=134217728
+iteration=9
+time = 3.09712
+RESULT algo=std::stable_sort size=33554432 time=3.09712 repeats=1 iteration=9 typesize=4 datasize=134217728
+iteration=10
+time = 3.09714
+RESULT algo=std::stable_sort size=33554432 time=3.09714 repeats=1 iteration=10 typesize=4 datasize=134217728
+iteration=11
+time = 3.09748
+RESULT algo=std::stable_sort size=33554432 time=3.09748 repeats=1 iteration=11 typesize=4 datasize=134217728
+iteration=12
+time = 3.09738
+RESULT algo=std::stable_sort size=33554432 time=3.09738 repeats=1 iteration=12 typesize=4 datasize=134217728
+iteration=13
+time = 3.09775
+RESULT algo=std::stable_sort size=33554432 time=3.09775 repeats=1 iteration=13 typesize=4 datasize=134217728
+iteration=14
+time = 3.09601
+RESULT algo=std::stable_sort size=33554432 time=3.09601 repeats=1 iteration=14 typesize=4 datasize=134217728
+Running algorithm std::stable_sort with size=67108864 repeats=1
+iteration=0
+time = 6.466
+RESULT algo=std::stable_sort size=67108864 time=6.466 repeats=1 iteration=0 typesize=4 datasize=268435456
+iteration=1
+time = 6.46598
+RESULT algo=std::stable_sort size=67108864 time=6.46598 repeats=1 iteration=1 typesize=4 datasize=268435456
+iteration=2
+time = 6.46543
+RESULT algo=std::stable_sort size=67108864 time=6.46543 repeats=1 iteration=2 typesize=4 datasize=268435456
+iteration=3
+time = 6.46614
+RESULT algo=std::stable_sort size=67108864 time=6.46614 repeats=1 iteration=3 typesize=4 datasize=268435456
+iteration=4
+time = 6.46386
+RESULT algo=std::stable_sort size=67108864 time=6.46386 repeats=1 iteration=4 typesize=4 datasize=268435456
+iteration=5
+time = 6.46571
+RESULT algo=std::stable_sort size=67108864 time=6.46571 repeats=1 iteration=5 typesize=4 datasize=268435456
+iteration=6
+time = 6.46108
+RESULT algo=std::stable_sort size=67108864 time=6.46108 repeats=1 iteration=6 typesize=4 datasize=268435456
+iteration=7
+time = 6.46362
+RESULT algo=std::stable_sort size=67108864 time=6.46362 repeats=1 iteration=7 typesize=4 datasize=268435456
+iteration=8
+time = 6.46563
+RESULT algo=std::stable_sort size=67108864 time=6.46563 repeats=1 iteration=8 typesize=4 datasize=268435456
+iteration=9
+time = 6.46582
+RESULT algo=std::stable_sort size=67108864 time=6.46582 repeats=1 iteration=9 typesize=4 datasize=268435456
+iteration=10
+time = 6.46441
+RESULT algo=std::stable_sort size=67108864 time=6.46441 repeats=1 iteration=10 typesize=4 datasize=268435456
+iteration=11
+time = 6.46538
+RESULT algo=std::stable_sort size=67108864 time=6.46538 repeats=1 iteration=11 typesize=4 datasize=268435456
+iteration=12
+time = 6.46578
+RESULT algo=std::stable_sort size=67108864 time=6.46578 repeats=1 iteration=12 typesize=4 datasize=268435456
+iteration=13
+time = 6.464
+RESULT algo=std::stable_sort size=67108864 time=6.464 repeats=1 iteration=13 typesize=4 datasize=268435456
+iteration=14
+time = 6.46343
+RESULT algo=std::stable_sort size=67108864 time=6.46343 repeats=1 iteration=14 typesize=4 datasize=268435456
+Running algorithm std::stable_sort with size=134217728 repeats=1
+iteration=0
+time = 13.315
+RESULT algo=std::stable_sort size=134217728 time=13.315 repeats=1 iteration=0 typesize=4 datasize=536870912
+iteration=1
+time = 13.3073
+RESULT algo=std::stable_sort size=134217728 time=13.3073 repeats=1 iteration=1 typesize=4 datasize=536870912
+iteration=2
+time = 13.304
+RESULT algo=std::stable_sort size=134217728 time=13.304 repeats=1 iteration=2 typesize=4 datasize=536870912
+iteration=3
+time = 13.3155
+RESULT algo=std::stable_sort size=134217728 time=13.3155 repeats=1 iteration=3 typesize=4 datasize=536870912
+iteration=4
+time = 13.3154
+RESULT algo=std::stable_sort size=134217728 time=13.3154 repeats=1 iteration=4 typesize=4 datasize=536870912
+iteration=5
+time = 13.3157
+RESULT algo=std::stable_sort size=134217728 time=13.3157 repeats=1 iteration=5 typesize=4 datasize=536870912
+iteration=6
+time = 13.3141
+RESULT algo=std::stable_sort size=134217728 time=13.3141 repeats=1 iteration=6 typesize=4 datasize=536870912
+iteration=7
+time = 13.314
+RESULT algo=std::stable_sort size=134217728 time=13.314 repeats=1 iteration=7 typesize=4 datasize=536870912
+iteration=8
+time = 13.3153
+RESULT algo=std::stable_sort size=134217728 time=13.3153 repeats=1 iteration=8 typesize=4 datasize=536870912
+iteration=9
+time = 13.3129
+RESULT algo=std::stable_sort size=134217728 time=13.3129 repeats=1 iteration=9 typesize=4 datasize=536870912
+iteration=10
+time = 13.3159
+RESULT algo=std::stable_sort size=134217728 time=13.3159 repeats=1 iteration=10 typesize=4 datasize=536870912
+iteration=11
+time = 13.3164
+RESULT algo=std::stable_sort size=134217728 time=13.3164 repeats=1 iteration=11 typesize=4 datasize=536870912
+iteration=12
+time = 13.3142
+RESULT algo=std::stable_sort size=134217728 time=13.3142 repeats=1 iteration=12 typesize=4 datasize=536870912
+iteration=13
+time = 13.3161
+RESULT algo=std::stable_sort size=134217728 time=13.3161 repeats=1 iteration=13 typesize=4 datasize=536870912
+iteration=14
+time = 13.3177
+RESULT algo=std::stable_sort size=134217728 time=13.3177 repeats=1 iteration=14 typesize=4 datasize=536870912
+Running algorithm std::stable_sort with size=268435456 repeats=1
+iteration=0
+time = 27.7222
+RESULT algo=std::stable_sort size=268435456 time=27.7222 repeats=1 iteration=0 typesize=4 datasize=1073741824
+iteration=1
+time = 27.7031
+RESULT algo=std::stable_sort size=268435456 time=27.7031 repeats=1 iteration=1 typesize=4 datasize=1073741824
+iteration=2
+time = 27.7157
+RESULT algo=std::stable_sort size=268435456 time=27.7157 repeats=1 iteration=2 typesize=4 datasize=1073741824
+iteration=3
+time = 27.7211
+RESULT algo=std::stable_sort size=268435456 time=27.7211 repeats=1 iteration=3 typesize=4 datasize=1073741824
+iteration=4
+time = 27.7173
+RESULT algo=std::stable_sort size=268435456 time=27.7173 repeats=1 iteration=4 typesize=4 datasize=1073741824
+iteration=5
+time = 27.7123
+RESULT algo=std::stable_sort size=268435456 time=27.7123 repeats=1 iteration=5 typesize=4 datasize=1073741824
+iteration=6
+time = 27.7073
+RESULT algo=std::stable_sort size=268435456 time=27.7073 repeats=1 iteration=6 typesize=4 datasize=1073741824
+iteration=7
+time = 27.7198
+RESULT algo=std::stable_sort size=268435456 time=27.7198 repeats=1 iteration=7 typesize=4 datasize=1073741824
+iteration=8
+time = 27.7185
+RESULT algo=std::stable_sort size=268435456 time=27.7185 repeats=1 iteration=8 typesize=4 datasize=1073741824
+iteration=9
+time = 27.7203
+RESULT algo=std::stable_sort size=268435456 time=27.7203 repeats=1 iteration=9 typesize=4 datasize=1073741824
+iteration=10
+time = 27.7152
+RESULT algo=std::stable_sort size=268435456 time=27.7152 repeats=1 iteration=10 typesize=4 datasize=1073741824
+iteration=11
+time = 27.7169
+RESULT algo=std::stable_sort size=268435456 time=27.7169 repeats=1 iteration=11 typesize=4 datasize=1073741824
+iteration=12
+time = 27.7164
+RESULT algo=std::stable_sort size=268435456 time=27.7164 repeats=1 iteration=12 typesize=4 datasize=1073741824
+iteration=13
+time = 27.7197
+RESULT algo=std::stable_sort size=268435456 time=27.7197 repeats=1 iteration=13 typesize=4 datasize=1073741824
+iteration=14
+time = 27.7245
+RESULT algo=std::stable_sort size=268435456 time=27.7245 repeats=1 iteration=14 typesize=4 datasize=1073741824
+Running algorithm std::stable_sort with size=536870912 repeats=1
+iteration=0
+time = 56.9806
+RESULT algo=std::stable_sort size=536870912 time=56.9806 repeats=1 iteration=0 typesize=4 datasize=2147483648
+iteration=1
+time = 56.9849
+RESULT algo=std::stable_sort size=536870912 time=56.9849 repeats=1 iteration=1 typesize=4 datasize=2147483648
+iteration=2
+time = 56.9866
+RESULT algo=std::stable_sort size=536870912 time=56.9866 repeats=1 iteration=2 typesize=4 datasize=2147483648
+iteration=3
+time = 56.9827
+RESULT algo=std::stable_sort size=536870912 time=56.9827 repeats=1 iteration=3 typesize=4 datasize=2147483648
+iteration=4
+time = 56.9932
+RESULT algo=std::stable_sort size=536870912 time=56.9932 repeats=1 iteration=4 typesize=4 datasize=2147483648
+iteration=5
+time = 56.9878
+RESULT algo=std::stable_sort size=536870912 time=56.9878 repeats=1 iteration=5 typesize=4 datasize=2147483648
+iteration=6
+time = 56.9731
+RESULT algo=std::stable_sort size=536870912 time=56.9731 repeats=1 iteration=6 typesize=4 datasize=2147483648
+iteration=7
+time = 56.9705
+RESULT algo=std::stable_sort size=536870912 time=56.9705 repeats=1 iteration=7 typesize=4 datasize=2147483648
+iteration=8
+time = 56.9887
+RESULT algo=std::stable_sort size=536870912 time=56.9887 repeats=1 iteration=8 typesize=4 datasize=2147483648
+iteration=9
+time = 56.9919
+RESULT algo=std::stable_sort size=536870912 time=56.9919 repeats=1 iteration=9 typesize=4 datasize=2147483648
+iteration=10
+time = 56.9893
+RESULT algo=std::stable_sort size=536870912 time=56.9893 repeats=1 iteration=10 typesize=4 datasize=2147483648
+iteration=11
+time = 56.9892
+RESULT algo=std::stable_sort size=536870912 time=56.9892 repeats=1 iteration=11 typesize=4 datasize=2147483648
+iteration=12
+time = 56.9795
+RESULT algo=std::stable_sort size=536870912 time=56.9795 repeats=1 iteration=12 typesize=4 datasize=2147483648
+iteration=13
+time = 56.9907
+RESULT algo=std::stable_sort size=536870912 time=56.9907 repeats=1 iteration=13 typesize=4 datasize=2147483648
+iteration=14
+time = 56.9926
+RESULT algo=std::stable_sort size=536870912 time=56.9926 repeats=1 iteration=14 typesize=4 datasize=2147483648
+Running algorithm std::stable_sort with size=1073741824 repeats=1
+iteration=0
+time = 118.586
+RESULT algo=std::stable_sort size=1073741824 time=118.586 repeats=1 iteration=0 typesize=4 datasize=4294967296
+iteration=1
+time = 118.334
+RESULT algo=std::stable_sort size=1073741824 time=118.334 repeats=1 iteration=1 typesize=4 datasize=4294967296
+iteration=2
+time = 118.358
+RESULT algo=std::stable_sort size=1073741824 time=118.358 repeats=1 iteration=2 typesize=4 datasize=4294967296
+iteration=3
+time = 118.35
+RESULT algo=std::stable_sort size=1073741824 time=118.35 repeats=1 iteration=3 typesize=4 datasize=4294967296
+iteration=4
+time = 118.348
+RESULT algo=std::stable_sort size=1073741824 time=118.348 repeats=1 iteration=4 typesize=4 datasize=4294967296
+iteration=5
+time = 118.339
+RESULT algo=std::stable_sort size=1073741824 time=118.339 repeats=1 iteration=5 typesize=4 datasize=4294967296
+iteration=6
+time = 118.341
+RESULT algo=std::stable_sort size=1073741824 time=118.341 repeats=1 iteration=6 typesize=4 datasize=4294967296
+iteration=7
+time = 118.32
+RESULT algo=std::stable_sort size=1073741824 time=118.32 repeats=1 iteration=7 typesize=4 datasize=4294967296
+iteration=8
+time = 118.337
+RESULT algo=std::stable_sort size=1073741824 time=118.337 repeats=1 iteration=8 typesize=4 datasize=4294967296
+iteration=9
+time = 118.349
+RESULT algo=std::stable_sort size=1073741824 time=118.349 repeats=1 iteration=9 typesize=4 datasize=4294967296
+iteration=10
+time = 118.343
+RESULT algo=std::stable_sort size=1073741824 time=118.343 repeats=1 iteration=10 typesize=4 datasize=4294967296
+iteration=11
+time = 118.348
+RESULT algo=std::stable_sort size=1073741824 time=118.348 repeats=1 iteration=11 typesize=4 datasize=4294967296
+iteration=12
+time = 118.336
+RESULT algo=std::stable_sort size=1073741824 time=118.336 repeats=1 iteration=12 typesize=4 datasize=4294967296
+iteration=13
+time = 118.348
+RESULT algo=std::stable_sort size=1073741824 time=118.348 repeats=1 iteration=13 typesize=4 datasize=4294967296
+iteration=14
+time = 118.35
+RESULT algo=std::stable_sort size=1073741824 time=118.35 repeats=1 iteration=14 typesize=4 datasize=4294967296
+Running algorithm std::heap_sort with size=1024 repeats=32768
+iteration=0
+time = 1.76839
+RESULT algo=std::heap_sort size=1024 time=1.76839 repeats=32768 iteration=0 typesize=4 datasize=4096
+iteration=1
+time = 1.76517
+RESULT algo=std::heap_sort size=1024 time=1.76517 repeats=32768 iteration=1 typesize=4 datasize=4096
+iteration=2
+time = 1.76679
+RESULT algo=std::heap_sort size=1024 time=1.76679 repeats=32768 iteration=2 typesize=4 datasize=4096
+iteration=3
+time = 1.7661
+RESULT algo=std::heap_sort size=1024 time=1.7661 repeats=32768 iteration=3 typesize=4 datasize=4096
+iteration=4
+time = 1.76642
+RESULT algo=std::heap_sort size=1024 time=1.76642 repeats=32768 iteration=4 typesize=4 datasize=4096
+iteration=5
+time = 1.76764
+RESULT algo=std::heap_sort size=1024 time=1.76764 repeats=32768 iteration=5 typesize=4 datasize=4096
+iteration=6
+time = 1.76663
+RESULT algo=std::heap_sort size=1024 time=1.76663 repeats=32768 iteration=6 typesize=4 datasize=4096
+iteration=7
+time = 1.76746
+RESULT algo=std::heap_sort size=1024 time=1.76746 repeats=32768 iteration=7 typesize=4 datasize=4096
+iteration=8
+time = 1.76694
+RESULT algo=std::heap_sort size=1024 time=1.76694 repeats=32768 iteration=8 typesize=4 datasize=4096
+iteration=9
+time = 1.76606
+RESULT algo=std::heap_sort size=1024 time=1.76606 repeats=32768 iteration=9 typesize=4 datasize=4096
+iteration=10
+time = 1.76599
+RESULT algo=std::heap_sort size=1024 time=1.76599 repeats=32768 iteration=10 typesize=4 datasize=4096
+iteration=11
+time = 1.76813
+RESULT algo=std::heap_sort size=1024 time=1.76813 repeats=32768 iteration=11 typesize=4 datasize=4096
+iteration=12
+time = 1.76639
+RESULT algo=std::heap_sort size=1024 time=1.76639 repeats=32768 iteration=12 typesize=4 datasize=4096
+iteration=13
+time = 1.76678
+RESULT algo=std::heap_sort size=1024 time=1.76678 repeats=32768 iteration=13 typesize=4 datasize=4096
+iteration=14
+time = 1.76725
+RESULT algo=std::heap_sort size=1024 time=1.76725 repeats=32768 iteration=14 typesize=4 datasize=4096
+Running algorithm std::heap_sort with size=2048 repeats=16384
+iteration=0
+time = 1.82731
+RESULT algo=std::heap_sort size=2048 time=1.82731 repeats=16384 iteration=0 typesize=4 datasize=8192
+iteration=1
+time = 1.82779
+RESULT algo=std::heap_sort size=2048 time=1.82779 repeats=16384 iteration=1 typesize=4 datasize=8192
+iteration=2
+time = 1.82915
+RESULT algo=std::heap_sort size=2048 time=1.82915 repeats=16384 iteration=2 typesize=4 datasize=8192
+iteration=3
+time = 1.82723
+RESULT algo=std::heap_sort size=2048 time=1.82723 repeats=16384 iteration=3 typesize=4 datasize=8192
+iteration=4
+time = 1.8279
+RESULT algo=std::heap_sort size=2048 time=1.8279 repeats=16384 iteration=4 typesize=4 datasize=8192
+iteration=5
+time = 1.82734
+RESULT algo=std::heap_sort size=2048 time=1.82734 repeats=16384 iteration=5 typesize=4 datasize=8192
+iteration=6
+time = 1.82763
+RESULT algo=std::heap_sort size=2048 time=1.82763 repeats=16384 iteration=6 typesize=4 datasize=8192
+iteration=7
+time = 1.82939
+RESULT algo=std::heap_sort size=2048 time=1.82939 repeats=16384 iteration=7 typesize=4 datasize=8192
+iteration=8
+time = 1.82736
+RESULT algo=std::heap_sort size=2048 time=1.82736 repeats=16384 iteration=8 typesize=4 datasize=8192
+iteration=9
+time = 1.82769
+RESULT algo=std::heap_sort size=2048 time=1.82769 repeats=16384 iteration=9 typesize=4 datasize=8192
+iteration=10
+time = 1.82757
+RESULT algo=std::heap_sort size=2048 time=1.82757 repeats=16384 iteration=10 typesize=4 datasize=8192
+iteration=11
+time = 1.82775
+RESULT algo=std::heap_sort size=2048 time=1.82775 repeats=16384 iteration=11 typesize=4 datasize=8192
+iteration=12
+time = 1.82955
+RESULT algo=std::heap_sort size=2048 time=1.82955 repeats=16384 iteration=12 typesize=4 datasize=8192
+iteration=13
+time = 1.82788
+RESULT algo=std::heap_sort size=2048 time=1.82788 repeats=16384 iteration=13 typesize=4 datasize=8192
+iteration=14
+time = 1.8281
+RESULT algo=std::heap_sort size=2048 time=1.8281 repeats=16384 iteration=14 typesize=4 datasize=8192
+Running algorithm std::heap_sort with size=4096 repeats=8192
+iteration=0
+time = 1.86631
+RESULT algo=std::heap_sort size=4096 time=1.86631 repeats=8192 iteration=0 typesize=4 datasize=16384
+iteration=1
+time = 1.86614
+RESULT algo=std::heap_sort size=4096 time=1.86614 repeats=8192 iteration=1 typesize=4 datasize=16384
+iteration=2
+time = 1.86603
+RESULT algo=std::heap_sort size=4096 time=1.86603 repeats=8192 iteration=2 typesize=4 datasize=16384
+iteration=3
+time = 1.86797
+RESULT algo=std::heap_sort size=4096 time=1.86797 repeats=8192 iteration=3 typesize=4 datasize=16384
+iteration=4
+time = 1.86588
+RESULT algo=std::heap_sort size=4096 time=1.86588 repeats=8192 iteration=4 typesize=4 datasize=16384
+iteration=5
+time = 1.86597
+RESULT algo=std::heap_sort size=4096 time=1.86597 repeats=8192 iteration=5 typesize=4 datasize=16384
+iteration=6
+time = 1.86607
+RESULT algo=std::heap_sort size=4096 time=1.86607 repeats=8192 iteration=6 typesize=4 datasize=16384
+iteration=7
+time = 1.86565
+RESULT algo=std::heap_sort size=4096 time=1.86565 repeats=8192 iteration=7 typesize=4 datasize=16384
+iteration=8
+time = 1.86748
+RESULT algo=std::heap_sort size=4096 time=1.86748 repeats=8192 iteration=8 typesize=4 datasize=16384
+iteration=9
+time = 1.86574
+RESULT algo=std::heap_sort size=4096 time=1.86574 repeats=8192 iteration=9 typesize=4 datasize=16384
+iteration=10
+time = 1.8662
+RESULT algo=std::heap_sort size=4096 time=1.8662 repeats=8192 iteration=10 typesize=4 datasize=16384
+iteration=11
+time = 1.86611
+RESULT algo=std::heap_sort size=4096 time=1.86611 repeats=8192 iteration=11 typesize=4 datasize=16384
+iteration=12
+time = 1.86577
+RESULT algo=std::heap_sort size=4096 time=1.86577 repeats=8192 iteration=12 typesize=4 datasize=16384
+iteration=13
+time = 1.86566
+RESULT algo=std::heap_sort size=4096 time=1.86566 repeats=8192 iteration=13 typesize=4 datasize=16384
+iteration=14
+time = 1.86774
+RESULT algo=std::heap_sort size=4096 time=1.86774 repeats=8192 iteration=14 typesize=4 datasize=16384
+Running algorithm std::heap_sort with size=8192 repeats=4096
+iteration=0
+time = 1.92113
+RESULT algo=std::heap_sort size=8192 time=1.92113 repeats=4096 iteration=0 typesize=4 datasize=32768
+iteration=1
+time = 1.92143
+RESULT algo=std::heap_sort size=8192 time=1.92143 repeats=4096 iteration=1 typesize=4 datasize=32768
+iteration=2
+time = 1.92092
+RESULT algo=std::heap_sort size=8192 time=1.92092 repeats=4096 iteration=2 typesize=4 datasize=32768
+iteration=3
+time = 1.92105
+RESULT algo=std::heap_sort size=8192 time=1.92105 repeats=4096 iteration=3 typesize=4 datasize=32768
+iteration=4
+time = 1.92285
+RESULT algo=std::heap_sort size=8192 time=1.92285 repeats=4096 iteration=4 typesize=4 datasize=32768
+iteration=5
+time = 1.9209
+RESULT algo=std::heap_sort size=8192 time=1.9209 repeats=4096 iteration=5 typesize=4 datasize=32768
+iteration=6
+time = 1.92115
+RESULT algo=std::heap_sort size=8192 time=1.92115 repeats=4096 iteration=6 typesize=4 datasize=32768
+iteration=7
+time = 1.9209
+RESULT algo=std::heap_sort size=8192 time=1.9209 repeats=4096 iteration=7 typesize=4 datasize=32768
+iteration=8
+time = 1.92073
+RESULT algo=std::heap_sort size=8192 time=1.92073 repeats=4096 iteration=8 typesize=4 datasize=32768
+iteration=9
+time = 1.92267
+RESULT algo=std::heap_sort size=8192 time=1.92267 repeats=4096 iteration=9 typesize=4 datasize=32768
+iteration=10
+time = 1.92089
+RESULT algo=std::heap_sort size=8192 time=1.92089 repeats=4096 iteration=10 typesize=4 datasize=32768
+iteration=11
+time = 1.9212
+RESULT algo=std::heap_sort size=8192 time=1.9212 repeats=4096 iteration=11 typesize=4 datasize=32768
+iteration=12
+time = 1.92084
+RESULT algo=std::heap_sort size=8192 time=1.92084 repeats=4096 iteration=12 typesize=4 datasize=32768
+iteration=13
+time = 1.9212
+RESULT algo=std::heap_sort size=8192 time=1.9212 repeats=4096 iteration=13 typesize=4 datasize=32768
+iteration=14
+time = 1.92255
+RESULT algo=std::heap_sort size=8192 time=1.92255 repeats=4096 iteration=14 typesize=4 datasize=32768
+Running algorithm std::heap_sort with size=16384 repeats=2048
+iteration=0
+time = 2.02066
+RESULT algo=std::heap_sort size=16384 time=2.02066 repeats=2048 iteration=0 typesize=4 datasize=65536
+iteration=1
+time = 2.021
+RESULT algo=std::heap_sort size=16384 time=2.021 repeats=2048 iteration=1 typesize=4 datasize=65536
+iteration=2
+time = 2.02092
+RESULT algo=std::heap_sort size=16384 time=2.02092 repeats=2048 iteration=2 typesize=4 datasize=65536
+iteration=3
+time = 2.02076
+RESULT algo=std::heap_sort size=16384 time=2.02076 repeats=2048 iteration=3 typesize=4 datasize=65536
+iteration=4
+time = 2.02241
+RESULT algo=std::heap_sort size=16384 time=2.02241 repeats=2048 iteration=4 typesize=4 datasize=65536
+iteration=5
+time = 2.02062
+RESULT algo=std::heap_sort size=16384 time=2.02062 repeats=2048 iteration=5 typesize=4 datasize=65536
+iteration=6
+time = 2.02067
+RESULT algo=std::heap_sort size=16384 time=2.02067 repeats=2048 iteration=6 typesize=4 datasize=65536
+iteration=7
+time = 2.02037
+RESULT algo=std::heap_sort size=16384 time=2.02037 repeats=2048 iteration=7 typesize=4 datasize=65536
+iteration=8
+time = 2.02043
+RESULT algo=std::heap_sort size=16384 time=2.02043 repeats=2048 iteration=8 typesize=4 datasize=65536
+iteration=9
+time = 2.02222
+RESULT algo=std::heap_sort size=16384 time=2.02222 repeats=2048 iteration=9 typesize=4 datasize=65536
+iteration=10
+time = 2.02057
+RESULT algo=std::heap_sort size=16384 time=2.02057 repeats=2048 iteration=10 typesize=4 datasize=65536
+iteration=11
+time = 2.02078
+RESULT algo=std::heap_sort size=16384 time=2.02078 repeats=2048 iteration=11 typesize=4 datasize=65536
+iteration=12
+time = 2.02058
+RESULT algo=std::heap_sort size=16384 time=2.02058 repeats=2048 iteration=12 typesize=4 datasize=65536
+iteration=13
+time = 2.02056
+RESULT algo=std::heap_sort size=16384 time=2.02056 repeats=2048 iteration=13 typesize=4 datasize=65536
+iteration=14
+time = 2.02232
+RESULT algo=std::heap_sort size=16384 time=2.02232 repeats=2048 iteration=14 typesize=4 datasize=65536
+Running algorithm std::heap_sort with size=32768 repeats=1024
+iteration=0
+time = 2.09895
+RESULT algo=std::heap_sort size=32768 time=2.09895 repeats=1024 iteration=0 typesize=4 datasize=131072
+iteration=1
+time = 2.09925
+RESULT algo=std::heap_sort size=32768 time=2.09925 repeats=1024 iteration=1 typesize=4 datasize=131072
+iteration=2
+time = 2.09911
+RESULT algo=std::heap_sort size=32768 time=2.09911 repeats=1024 iteration=2 typesize=4 datasize=131072
+iteration=3
+time = 2.09924
+RESULT algo=std::heap_sort size=32768 time=2.09924 repeats=1024 iteration=3 typesize=4 datasize=131072
+iteration=4
+time = 2.10065
+RESULT algo=std::heap_sort size=32768 time=2.10065 repeats=1024 iteration=4 typesize=4 datasize=131072
+iteration=5
+time = 2.09905
+RESULT algo=std::heap_sort size=32768 time=2.09905 repeats=1024 iteration=5 typesize=4 datasize=131072
+iteration=6
+time = 2.09891
+RESULT algo=std::heap_sort size=32768 time=2.09891 repeats=1024 iteration=6 typesize=4 datasize=131072
+iteration=7
+time = 2.09879
+RESULT algo=std::heap_sort size=32768 time=2.09879 repeats=1024 iteration=7 typesize=4 datasize=131072
+iteration=8
+time = 2.09866
+RESULT algo=std::heap_sort size=32768 time=2.09866 repeats=1024 iteration=8 typesize=4 datasize=131072
+iteration=9
+time = 2.10048
+RESULT algo=std::heap_sort size=32768 time=2.10048 repeats=1024 iteration=9 typesize=4 datasize=131072
+iteration=10
+time = 2.09885
+RESULT algo=std::heap_sort size=32768 time=2.09885 repeats=1024 iteration=10 typesize=4 datasize=131072
+iteration=11
+time = 2.09883
+RESULT algo=std::heap_sort size=32768 time=2.09883 repeats=1024 iteration=11 typesize=4 datasize=131072
+iteration=12
+time = 2.09894
+RESULT algo=std::heap_sort size=32768 time=2.09894 repeats=1024 iteration=12 typesize=4 datasize=131072
+iteration=13
+time = 2.10052
+RESULT algo=std::heap_sort size=32768 time=2.10052 repeats=1024 iteration=13 typesize=4 datasize=131072
+iteration=14
+time = 2.09884
+RESULT algo=std::heap_sort size=32768 time=2.09884 repeats=1024 iteration=14 typesize=4 datasize=131072
+Running algorithm std::heap_sort with size=65536 repeats=512
+iteration=0
+time = 2.12709
+RESULT algo=std::heap_sort size=65536 time=2.12709 repeats=512 iteration=0 typesize=4 datasize=262144
+iteration=1
+time = 2.12694
+RESULT algo=std::heap_sort size=65536 time=2.12694 repeats=512 iteration=1 typesize=4 datasize=262144
+iteration=2
+time = 2.12698
+RESULT algo=std::heap_sort size=65536 time=2.12698 repeats=512 iteration=2 typesize=4 datasize=262144
+iteration=3
+time = 2.12848
+RESULT algo=std::heap_sort size=65536 time=2.12848 repeats=512 iteration=3 typesize=4 datasize=262144
+iteration=4
+time = 2.12685
+RESULT algo=std::heap_sort size=65536 time=2.12685 repeats=512 iteration=4 typesize=4 datasize=262144
+iteration=5
+time = 2.12572
+RESULT algo=std::heap_sort size=65536 time=2.12572 repeats=512 iteration=5 typesize=4 datasize=262144
+iteration=6
+time = 2.12671
+RESULT algo=std::heap_sort size=65536 time=2.12671 repeats=512 iteration=6 typesize=4 datasize=262144
+iteration=7
+time = 2.1269
+RESULT algo=std::heap_sort size=65536 time=2.1269 repeats=512 iteration=7 typesize=4 datasize=262144
+iteration=8
+time = 2.12835
+RESULT algo=std::heap_sort size=65536 time=2.12835 repeats=512 iteration=8 typesize=4 datasize=262144
+iteration=9
+time = 2.12673
+RESULT algo=std::heap_sort size=65536 time=2.12673 repeats=512 iteration=9 typesize=4 datasize=262144
+iteration=10
+time = 2.12705
+RESULT algo=std::heap_sort size=65536 time=2.12705 repeats=512 iteration=10 typesize=4 datasize=262144
+iteration=11
+time = 2.1238
+RESULT algo=std::heap_sort size=65536 time=2.1238 repeats=512 iteration=11 typesize=4 datasize=262144
+iteration=12
+time = 2.1266
+RESULT algo=std::heap_sort size=65536 time=2.1266 repeats=512 iteration=12 typesize=4 datasize=262144
+iteration=13
+time = 2.12867
+RESULT algo=std::heap_sort size=65536 time=2.12867 repeats=512 iteration=13 typesize=4 datasize=262144
+iteration=14
+time = 2.12667
+RESULT algo=std::heap_sort size=65536 time=2.12667 repeats=512 iteration=14 typesize=4 datasize=262144
+Running algorithm std::heap_sort with size=131072 repeats=256
+iteration=0
+time = 2.17771
+RESULT algo=std::heap_sort size=131072 time=2.17771 repeats=256 iteration=0 typesize=4 datasize=524288
+iteration=1
+time = 2.17761
+RESULT algo=std::heap_sort size=131072 time=2.17761 repeats=256 iteration=1 typesize=4 datasize=524288
+iteration=2
+time = 2.17891
+RESULT algo=std::heap_sort size=131072 time=2.17891 repeats=256 iteration=2 typesize=4 datasize=524288
+iteration=3
+time = 2.17733
+RESULT algo=std::heap_sort size=131072 time=2.17733 repeats=256 iteration=3 typesize=4 datasize=524288
+iteration=4
+time = 2.17757
+RESULT algo=std::heap_sort size=131072 time=2.17757 repeats=256 iteration=4 typesize=4 datasize=524288
+iteration=5
+time = 2.17737
+RESULT algo=std::heap_sort size=131072 time=2.17737 repeats=256 iteration=5 typesize=4 datasize=524288
+iteration=6
+time = 2.17727
+RESULT algo=std::heap_sort size=131072 time=2.17727 repeats=256 iteration=6 typesize=4 datasize=524288
+iteration=7
+time = 2.1791
+RESULT algo=std::heap_sort size=131072 time=2.1791 repeats=256 iteration=7 typesize=4 datasize=524288
+iteration=8
+time = 2.17722
+RESULT algo=std::heap_sort size=131072 time=2.17722 repeats=256 iteration=8 typesize=4 datasize=524288
+iteration=9
+time = 2.17783
+RESULT algo=std::heap_sort size=131072 time=2.17783 repeats=256 iteration=9 typesize=4 datasize=524288
+iteration=10
+time = 2.17745
+RESULT algo=std::heap_sort size=131072 time=2.17745 repeats=256 iteration=10 typesize=4 datasize=524288
+iteration=11
+time = 2.17911
+RESULT algo=std::heap_sort size=131072 time=2.17911 repeats=256 iteration=11 typesize=4 datasize=524288
+iteration=12
+time = 2.17753
+RESULT algo=std::heap_sort size=131072 time=2.17753 repeats=256 iteration=12 typesize=4 datasize=524288
+iteration=13
+time = 2.17722
+RESULT algo=std::heap_sort size=131072 time=2.17722 repeats=256 iteration=13 typesize=4 datasize=524288
+iteration=14
+time = 2.17743
+RESULT algo=std::heap_sort size=131072 time=2.17743 repeats=256 iteration=14 typesize=4 datasize=524288
+Running algorithm std::heap_sort with size=262144 repeats=128
+iteration=0
+time = 2.28303
+RESULT algo=std::heap_sort size=262144 time=2.28303 repeats=128 iteration=0 typesize=4 datasize=1048576
+iteration=1
+time = 2.28473
+RESULT algo=std::heap_sort size=262144 time=2.28473 repeats=128 iteration=1 typesize=4 datasize=1048576
+iteration=2
+time = 2.28282
+RESULT algo=std::heap_sort size=262144 time=2.28282 repeats=128 iteration=2 typesize=4 datasize=1048576
+iteration=3
+time = 2.2833
+RESULT algo=std::heap_sort size=262144 time=2.2833 repeats=128 iteration=3 typesize=4 datasize=1048576
+iteration=4
+time = 2.28279
+RESULT algo=std::heap_sort size=262144 time=2.28279 repeats=128 iteration=4 typesize=4 datasize=1048576
+iteration=5
+time = 2.28448
+RESULT algo=std::heap_sort size=262144 time=2.28448 repeats=128 iteration=5 typesize=4 datasize=1048576
+iteration=6
+time = 2.28287
+RESULT algo=std::heap_sort size=262144 time=2.28287 repeats=128 iteration=6 typesize=4 datasize=1048576
+iteration=7
+time = 2.28312
+RESULT algo=std::heap_sort size=262144 time=2.28312 repeats=128 iteration=7 typesize=4 datasize=1048576
+iteration=8
+time = 2.28308
+RESULT algo=std::heap_sort size=262144 time=2.28308 repeats=128 iteration=8 typesize=4 datasize=1048576
+iteration=9
+time = 2.28289
+RESULT algo=std::heap_sort size=262144 time=2.28289 repeats=128 iteration=9 typesize=4 datasize=1048576
+iteration=10
+time = 2.28464
+RESULT algo=std::heap_sort size=262144 time=2.28464 repeats=128 iteration=10 typesize=4 datasize=1048576
+iteration=11
+time = 2.28302
+RESULT algo=std::heap_sort size=262144 time=2.28302 repeats=128 iteration=11 typesize=4 datasize=1048576
+iteration=12
+time = 2.28307
+RESULT algo=std::heap_sort size=262144 time=2.28307 repeats=128 iteration=12 typesize=4 datasize=1048576
+iteration=13
+time = 2.28297
+RESULT algo=std::heap_sort size=262144 time=2.28297 repeats=128 iteration=13 typesize=4 datasize=1048576
+iteration=14
+time = 2.28458
+RESULT algo=std::heap_sort size=262144 time=2.28458 repeats=128 iteration=14 typesize=4 datasize=1048576
+Running algorithm std::heap_sort with size=524288 repeats=64
+iteration=0
+time = 2.39946
+RESULT algo=std::heap_sort size=524288 time=2.39946 repeats=64 iteration=0 typesize=4 datasize=2097152
+iteration=1
+time = 2.39958
+RESULT algo=std::heap_sort size=524288 time=2.39958 repeats=64 iteration=1 typesize=4 datasize=2097152
+iteration=2
+time = 2.39966
+RESULT algo=std::heap_sort size=524288 time=2.39966 repeats=64 iteration=2 typesize=4 datasize=2097152
+iteration=3
+time = 2.40106
+RESULT algo=std::heap_sort size=524288 time=2.40106 repeats=64 iteration=3 typesize=4 datasize=2097152
+iteration=4
+time = 2.39954
+RESULT algo=std::heap_sort size=524288 time=2.39954 repeats=64 iteration=4 typesize=4 datasize=2097152
+iteration=5
+time = 2.39981
+RESULT algo=std::heap_sort size=524288 time=2.39981 repeats=64 iteration=5 typesize=4 datasize=2097152
+iteration=6
+time = 2.39973
+RESULT algo=std::heap_sort size=524288 time=2.39973 repeats=64 iteration=6 typesize=4 datasize=2097152
+iteration=7
+time = 2.40123
+RESULT algo=std::heap_sort size=524288 time=2.40123 repeats=64 iteration=7 typesize=4 datasize=2097152
+iteration=8
+time = 2.39964
+RESULT algo=std::heap_sort size=524288 time=2.39964 repeats=64 iteration=8 typesize=4 datasize=2097152
+iteration=9
+time = 2.39979
+RESULT algo=std::heap_sort size=524288 time=2.39979 repeats=64 iteration=9 typesize=4 datasize=2097152
+iteration=10
+time = 2.39931
+RESULT algo=std::heap_sort size=524288 time=2.39931 repeats=64 iteration=10 typesize=4 datasize=2097152
+iteration=11
+time = 2.39903
+RESULT algo=std::heap_sort size=524288 time=2.39903 repeats=64 iteration=11 typesize=4 datasize=2097152
+iteration=12
+time = 2.40031
+RESULT algo=std::heap_sort size=524288 time=2.40031 repeats=64 iteration=12 typesize=4 datasize=2097152
+iteration=13
+time = 2.39934
+RESULT algo=std::heap_sort size=524288 time=2.39934 repeats=64 iteration=13 typesize=4 datasize=2097152
+iteration=14
+time = 2.39959
+RESULT algo=std::heap_sort size=524288 time=2.39959 repeats=64 iteration=14 typesize=4 datasize=2097152
+Running algorithm std::heap_sort with size=1048576 repeats=32
+iteration=0
+time = 2.49395
+RESULT algo=std::heap_sort size=1048576 time=2.49395 repeats=32 iteration=0 typesize=4 datasize=4194304
+iteration=1
+time = 2.49561
+RESULT algo=std::heap_sort size=1048576 time=2.49561 repeats=32 iteration=1 typesize=4 datasize=4194304
+iteration=2
+time = 2.49374
+RESULT algo=std::heap_sort size=1048576 time=2.49374 repeats=32 iteration=2 typesize=4 datasize=4194304
+iteration=3
+time = 2.49356
+RESULT algo=std::heap_sort size=1048576 time=2.49356 repeats=32 iteration=3 typesize=4 datasize=4194304
+iteration=4
+time = 2.49339
+RESULT algo=std::heap_sort size=1048576 time=2.49339 repeats=32 iteration=4 typesize=4 datasize=4194304
+iteration=5
+time = 2.49515
+RESULT algo=std::heap_sort size=1048576 time=2.49515 repeats=32 iteration=5 typesize=4 datasize=4194304
+iteration=6
+time = 2.49376
+RESULT algo=std::heap_sort size=1048576 time=2.49376 repeats=32 iteration=6 typesize=4 datasize=4194304
+iteration=7
+time = 2.49335
+RESULT algo=std::heap_sort size=1048576 time=2.49335 repeats=32 iteration=7 typesize=4 datasize=4194304
+iteration=8
+time = 2.49335
+RESULT algo=std::heap_sort size=1048576 time=2.49335 repeats=32 iteration=8 typesize=4 datasize=4194304
+iteration=9
+time = 2.49465
+RESULT algo=std::heap_sort size=1048576 time=2.49465 repeats=32 iteration=9 typesize=4 datasize=4194304
+iteration=10
+time = 2.49334
+RESULT algo=std::heap_sort size=1048576 time=2.49334 repeats=32 iteration=10 typesize=4 datasize=4194304
+iteration=11
+time = 2.4934
+RESULT algo=std::heap_sort size=1048576 time=2.4934 repeats=32 iteration=11 typesize=4 datasize=4194304
+iteration=12
+time = 2.4932
+RESULT algo=std::heap_sort size=1048576 time=2.4932 repeats=32 iteration=12 typesize=4 datasize=4194304
+iteration=13
+time = 2.49464
+RESULT algo=std::heap_sort size=1048576 time=2.49464 repeats=32 iteration=13 typesize=4 datasize=4194304
+iteration=14
+time = 2.49339
+RESULT algo=std::heap_sort size=1048576 time=2.49339 repeats=32 iteration=14 typesize=4 datasize=4194304
+Running algorithm std::heap_sort with size=2097152 repeats=16
+iteration=0
+time = 2.71775
+RESULT algo=std::heap_sort size=2097152 time=2.71775 repeats=16 iteration=0 typesize=4 datasize=8388608
+iteration=1
+time = 2.71918
+RESULT algo=std::heap_sort size=2097152 time=2.71918 repeats=16 iteration=1 typesize=4 datasize=8388608
+iteration=2
+time = 2.71781
+RESULT algo=std::heap_sort size=2097152 time=2.71781 repeats=16 iteration=2 typesize=4 datasize=8388608
+iteration=3
+time = 2.71502
+RESULT algo=std::heap_sort size=2097152 time=2.71502 repeats=16 iteration=3 typesize=4 datasize=8388608
+iteration=4
+time = 2.71789
+RESULT algo=std::heap_sort size=2097152 time=2.71789 repeats=16 iteration=4 typesize=4 datasize=8388608
+iteration=5
+time = 2.71922
+RESULT algo=std::heap_sort size=2097152 time=2.71922 repeats=16 iteration=5 typesize=4 datasize=8388608
+iteration=6
+time = 2.7179
+RESULT algo=std::heap_sort size=2097152 time=2.7179 repeats=16 iteration=6 typesize=4 datasize=8388608
+iteration=7
+time = 2.7175
+RESULT algo=std::heap_sort size=2097152 time=2.7175 repeats=16 iteration=7 typesize=4 datasize=8388608
+iteration=8
+time = 2.7194
+RESULT algo=std::heap_sort size=2097152 time=2.7194 repeats=16 iteration=8 typesize=4 datasize=8388608
+iteration=9
+time = 2.71746
+RESULT algo=std::heap_sort size=2097152 time=2.71746 repeats=16 iteration=9 typesize=4 datasize=8388608
+iteration=10
+time = 2.71787
+RESULT algo=std::heap_sort size=2097152 time=2.71787 repeats=16 iteration=10 typesize=4 datasize=8388608
+iteration=11
+time = 2.71767
+RESULT algo=std::heap_sort size=2097152 time=2.71767 repeats=16 iteration=11 typesize=4 datasize=8388608
+iteration=12
+time = 2.71939
+RESULT algo=std::heap_sort size=2097152 time=2.71939 repeats=16 iteration=12 typesize=4 datasize=8388608
+iteration=13
+time = 2.71768
+RESULT algo=std::heap_sort size=2097152 time=2.71768 repeats=16 iteration=13 typesize=4 datasize=8388608
+iteration=14
+time = 2.71839
+RESULT algo=std::heap_sort size=2097152 time=2.71839 repeats=16 iteration=14 typesize=4 datasize=8388608
+Running algorithm std::heap_sort with size=4194304 repeats=8
+iteration=0
+time = 3.18305
+RESULT algo=std::heap_sort size=4194304 time=3.18305 repeats=8 iteration=0 typesize=4 datasize=16777216
+iteration=1
+time = 3.1437
+RESULT algo=std::heap_sort size=4194304 time=3.1437 repeats=8 iteration=1 typesize=4 datasize=16777216
+iteration=2
+time = 3.10635
+RESULT algo=std::heap_sort size=4194304 time=3.10635 repeats=8 iteration=2 typesize=4 datasize=16777216
+iteration=3
+time = 3.12595
+RESULT algo=std::heap_sort size=4194304 time=3.12595 repeats=8 iteration=3 typesize=4 datasize=16777216
+iteration=4
+time = 3.11637
+RESULT algo=std::heap_sort size=4194304 time=3.11637 repeats=8 iteration=4 typesize=4 datasize=16777216
+iteration=5
+time = 3.11843
+RESULT algo=std::heap_sort size=4194304 time=3.11843 repeats=8 iteration=5 typesize=4 datasize=16777216
+iteration=6
+time = 3.1096
+RESULT algo=std::heap_sort size=4194304 time=3.1096 repeats=8 iteration=6 typesize=4 datasize=16777216
+iteration=7
+time = 3.11887
+RESULT algo=std::heap_sort size=4194304 time=3.11887 repeats=8 iteration=7 typesize=4 datasize=16777216
+iteration=8
+time = 3.11581
+RESULT algo=std::heap_sort size=4194304 time=3.11581 repeats=8 iteration=8 typesize=4 datasize=16777216
+iteration=9
+time = 3.11832
+RESULT algo=std::heap_sort size=4194304 time=3.11832 repeats=8 iteration=9 typesize=4 datasize=16777216
+iteration=10
+time = 3.1107
+RESULT algo=std::heap_sort size=4194304 time=3.1107 repeats=8 iteration=10 typesize=4 datasize=16777216
+iteration=11
+time = 3.11896
+RESULT algo=std::heap_sort size=4194304 time=3.11896 repeats=8 iteration=11 typesize=4 datasize=16777216
+iteration=12
+time = 3.11645
+RESULT algo=std::heap_sort size=4194304 time=3.11645 repeats=8 iteration=12 typesize=4 datasize=16777216
+iteration=13
+time = 3.11958
+RESULT algo=std::heap_sort size=4194304 time=3.11958 repeats=8 iteration=13 typesize=4 datasize=16777216
+iteration=14
+time = 3.10955
+RESULT algo=std::heap_sort size=4194304 time=3.10955 repeats=8 iteration=14 typesize=4 datasize=16777216
+Running algorithm std::heap_sort with size=8388608 repeats=4
+iteration=0
+time = 4.00565
+RESULT algo=std::heap_sort size=8388608 time=4.00565 repeats=4 iteration=0 typesize=4 datasize=33554432
+iteration=1
+time = 3.97722
+RESULT algo=std::heap_sort size=8388608 time=3.97722 repeats=4 iteration=1 typesize=4 datasize=33554432
+iteration=2
+time = 4.00229
+RESULT algo=std::heap_sort size=8388608 time=4.00229 repeats=4 iteration=2 typesize=4 datasize=33554432
+iteration=3
+time = 3.98483
+RESULT algo=std::heap_sort size=8388608 time=3.98483 repeats=4 iteration=3 typesize=4 datasize=33554432
+iteration=4
+time = 3.99817
+RESULT algo=std::heap_sort size=8388608 time=3.99817 repeats=4 iteration=4 typesize=4 datasize=33554432
+iteration=5
+time = 3.98235
+RESULT algo=std::heap_sort size=8388608 time=3.98235 repeats=4 iteration=5 typesize=4 datasize=33554432
+iteration=6
+time = 3.99558
+RESULT algo=std::heap_sort size=8388608 time=3.99558 repeats=4 iteration=6 typesize=4 datasize=33554432
+iteration=7
+time = 3.9665
+RESULT algo=std::heap_sort size=8388608 time=3.9665 repeats=4 iteration=7 typesize=4 datasize=33554432
+iteration=8
+time = 3.99786
+RESULT algo=std::heap_sort size=8388608 time=3.99786 repeats=4 iteration=8 typesize=4 datasize=33554432
+iteration=9
+time = 3.97991
+RESULT algo=std::heap_sort size=8388608 time=3.97991 repeats=4 iteration=9 typesize=4 datasize=33554432
+iteration=10
+time = 3.99794
+RESULT algo=std::heap_sort size=8388608 time=3.99794 repeats=4 iteration=10 typesize=4 datasize=33554432
+iteration=11
+time = 3.97239
+RESULT algo=std::heap_sort size=8388608 time=3.97239 repeats=4 iteration=11 typesize=4 datasize=33554432
+iteration=12
+time = 4.00265
+RESULT algo=std::heap_sort size=8388608 time=4.00265 repeats=4 iteration=12 typesize=4 datasize=33554432
+iteration=13
+time = 3.99985
+RESULT algo=std::heap_sort size=8388608 time=3.99985 repeats=4 iteration=13 typesize=4 datasize=33554432
+iteration=14
+time = 4.00667
+RESULT algo=std::heap_sort size=8388608 time=4.00667 repeats=4 iteration=14 typesize=4 datasize=33554432
+Running algorithm std::heap_sort with size=16777216 repeats=2
+iteration=0
+time = 5.97328
+RESULT algo=std::heap_sort size=16777216 time=5.97328 repeats=2 iteration=0 typesize=4 datasize=67108864
+iteration=1
+time = 5.93471
+RESULT algo=std::heap_sort size=16777216 time=5.93471 repeats=2 iteration=1 typesize=4 datasize=67108864
+iteration=2
+time = 5.95646
+RESULT algo=std::heap_sort size=16777216 time=5.95646 repeats=2 iteration=2 typesize=4 datasize=67108864
+iteration=3
+time = 5.96352
+RESULT algo=std::heap_sort size=16777216 time=5.96352 repeats=2 iteration=3 typesize=4 datasize=67108864
+iteration=4
+time = 5.93156
+RESULT algo=std::heap_sort size=16777216 time=5.93156 repeats=2 iteration=4 typesize=4 datasize=67108864
+iteration=5
+time = 5.97604
+RESULT algo=std::heap_sort size=16777216 time=5.97604 repeats=2 iteration=5 typesize=4 datasize=67108864
+iteration=6
+time = 5.95406
+RESULT algo=std::heap_sort size=16777216 time=5.95406 repeats=2 iteration=6 typesize=4 datasize=67108864
+iteration=7
+time = 5.95482
+RESULT algo=std::heap_sort size=16777216 time=5.95482 repeats=2 iteration=7 typesize=4 datasize=67108864
+iteration=8
+time = 5.94478
+RESULT algo=std::heap_sort size=16777216 time=5.94478 repeats=2 iteration=8 typesize=4 datasize=67108864
+iteration=9
+time = 5.95183
+RESULT algo=std::heap_sort size=16777216 time=5.95183 repeats=2 iteration=9 typesize=4 datasize=67108864
+iteration=10
+time = 5.95507
+RESULT algo=std::heap_sort size=16777216 time=5.95507 repeats=2 iteration=10 typesize=4 datasize=67108864
+iteration=11
+time = 5.95366
+RESULT algo=std::heap_sort size=16777216 time=5.95366 repeats=2 iteration=11 typesize=4 datasize=67108864
+iteration=12
+time = 5.96099
+RESULT algo=std::heap_sort size=16777216 time=5.96099 repeats=2 iteration=12 typesize=4 datasize=67108864
+iteration=13
+time = 5.9569
+RESULT algo=std::heap_sort size=16777216 time=5.9569 repeats=2 iteration=13 typesize=4 datasize=67108864
+iteration=14
+time = 5.95705
+RESULT algo=std::heap_sort size=16777216 time=5.95705 repeats=2 iteration=14 typesize=4 datasize=67108864
+Running algorithm std::heap_sort with size=33554432 repeats=1
+iteration=0
+time = 10.4005
+RESULT algo=std::heap_sort size=33554432 time=10.4005 repeats=1 iteration=0 typesize=4 datasize=134217728
+iteration=1
+time = 10.4354
+RESULT algo=std::heap_sort size=33554432 time=10.4354 repeats=1 iteration=1 typesize=4 datasize=134217728
+iteration=2
+time = 10.3889
+RESULT algo=std::heap_sort size=33554432 time=10.3889 repeats=1 iteration=2 typesize=4 datasize=134217728
+iteration=3
+time = 10.4473
+RESULT algo=std::heap_sort size=33554432 time=10.4473 repeats=1 iteration=3 typesize=4 datasize=134217728
+iteration=4
+time = 10.455
+RESULT algo=std::heap_sort size=33554432 time=10.455 repeats=1 iteration=4 typesize=4 datasize=134217728
+iteration=5
+time = 10.4181
+RESULT algo=std::heap_sort size=33554432 time=10.4181 repeats=1 iteration=5 typesize=4 datasize=134217728
+iteration=6
+time = 10.4131
+RESULT algo=std::heap_sort size=33554432 time=10.4131 repeats=1 iteration=6 typesize=4 datasize=134217728
+iteration=7
+time = 10.4426
+RESULT algo=std::heap_sort size=33554432 time=10.4426 repeats=1 iteration=7 typesize=4 datasize=134217728
+iteration=8
+time = 10.4487
+RESULT algo=std::heap_sort size=33554432 time=10.4487 repeats=1 iteration=8 typesize=4 datasize=134217728
+iteration=9
+time = 10.48
+RESULT algo=std::heap_sort size=33554432 time=10.48 repeats=1 iteration=9 typesize=4 datasize=134217728
+iteration=10
+time = 10.3958
+RESULT algo=std::heap_sort size=33554432 time=10.3958 repeats=1 iteration=10 typesize=4 datasize=134217728
+iteration=11
+time = 10.4924
+RESULT algo=std::heap_sort size=33554432 time=10.4924 repeats=1 iteration=11 typesize=4 datasize=134217728
+iteration=12
+time = 10.4424
+RESULT algo=std::heap_sort size=33554432 time=10.4424 repeats=1 iteration=12 typesize=4 datasize=134217728
+iteration=13
+time = 10.4019
+RESULT algo=std::heap_sort size=33554432 time=10.4019 repeats=1 iteration=13 typesize=4 datasize=134217728
+iteration=14
+time = 10.3748
+RESULT algo=std::heap_sort size=33554432 time=10.3748 repeats=1 iteration=14 typesize=4 datasize=134217728
+Running algorithm std::heap_sort with size=67108864 repeats=1
+iteration=0
+time = 23.6443
+RESULT algo=std::heap_sort size=67108864 time=23.6443 repeats=1 iteration=0 typesize=4 datasize=268435456
+iteration=1
+time = 23.6751
+RESULT algo=std::heap_sort size=67108864 time=23.6751 repeats=1 iteration=1 typesize=4 datasize=268435456
+iteration=2
+time = 23.3927
+RESULT algo=std::heap_sort size=67108864 time=23.3927 repeats=1 iteration=2 typesize=4 datasize=268435456
+iteration=3
+time = 23.4444
+RESULT algo=std::heap_sort size=67108864 time=23.4444 repeats=1 iteration=3 typesize=4 datasize=268435456
+iteration=4
+time = 23.4303
+RESULT algo=std::heap_sort size=67108864 time=23.4303 repeats=1 iteration=4 typesize=4 datasize=268435456
+iteration=5
+time = 23.371
+RESULT algo=std::heap_sort size=67108864 time=23.371 repeats=1 iteration=5 typesize=4 datasize=268435456
+iteration=6
+time = 23.4076
+RESULT algo=std::heap_sort size=67108864 time=23.4076 repeats=1 iteration=6 typesize=4 datasize=268435456
+iteration=7
+time = 23.3853
+RESULT algo=std::heap_sort size=67108864 time=23.3853 repeats=1 iteration=7 typesize=4 datasize=268435456
+iteration=8
+time = 23.3677
+RESULT algo=std::heap_sort size=67108864 time=23.3677 repeats=1 iteration=8 typesize=4 datasize=268435456
+iteration=9
+time = 23.423
+RESULT algo=std::heap_sort size=67108864 time=23.423 repeats=1 iteration=9 typesize=4 datasize=268435456
+iteration=10
+time = 23.3691
+RESULT algo=std::heap_sort size=67108864 time=23.3691 repeats=1 iteration=10 typesize=4 datasize=268435456
+iteration=11
+time = 23.363
+RESULT algo=std::heap_sort size=67108864 time=23.363 repeats=1 iteration=11 typesize=4 datasize=268435456
+iteration=12
+time = 23.4368
+RESULT algo=std::heap_sort size=67108864 time=23.4368 repeats=1 iteration=12 typesize=4 datasize=268435456
+iteration=13
+time = 23.3597
+RESULT algo=std::heap_sort size=67108864 time=23.3597 repeats=1 iteration=13 typesize=4 datasize=268435456
+iteration=14
+time = 23.4028
+RESULT algo=std::heap_sort size=67108864 time=23.4028 repeats=1 iteration=14 typesize=4 datasize=268435456
+Running algorithm std::heap_sort with size=134217728 repeats=1
+iteration=0
+time = 53.082
+RESULT algo=std::heap_sort size=134217728 time=53.082 repeats=1 iteration=0 typesize=4 datasize=536870912
+iteration=1
+time = 52.9002
+RESULT algo=std::heap_sort size=134217728 time=52.9002 repeats=1 iteration=1 typesize=4 datasize=536870912
+iteration=2
+time = 52.9137
+RESULT algo=std::heap_sort size=134217728 time=52.9137 repeats=1 iteration=2 typesize=4 datasize=536870912
+iteration=3
+time = 53.4177
+RESULT algo=std::heap_sort size=134217728 time=53.4177 repeats=1 iteration=3 typesize=4 datasize=536870912
+iteration=4
+time = 52.9574
+RESULT algo=std::heap_sort size=134217728 time=52.9574 repeats=1 iteration=4 typesize=4 datasize=536870912
+iteration=5
+time = 53.5983
+RESULT algo=std::heap_sort size=134217728 time=53.5983 repeats=1 iteration=5 typesize=4 datasize=536870912
+iteration=6
+time = 53.0352
+RESULT algo=std::heap_sort size=134217728 time=53.0352 repeats=1 iteration=6 typesize=4 datasize=536870912
+iteration=7
+time = 53.0729
+RESULT algo=std::heap_sort size=134217728 time=53.0729 repeats=1 iteration=7 typesize=4 datasize=536870912
+iteration=8
+time = 53.8363
+RESULT algo=std::heap_sort size=134217728 time=53.8363 repeats=1 iteration=8 typesize=4 datasize=536870912
+iteration=9
+time = 53.1357
+RESULT algo=std::heap_sort size=134217728 time=53.1357 repeats=1 iteration=9 typesize=4 datasize=536870912
+iteration=10
+time = 53.0784
+RESULT algo=std::heap_sort size=134217728 time=53.0784 repeats=1 iteration=10 typesize=4 datasize=536870912
+iteration=11
+time = 53.7758
+RESULT algo=std::heap_sort size=134217728 time=53.7758 repeats=1 iteration=11 typesize=4 datasize=536870912
+iteration=12
+time = 52.9089
+RESULT algo=std::heap_sort size=134217728 time=52.9089 repeats=1 iteration=12 typesize=4 datasize=536870912
+iteration=13
+time = 52.9818
+RESULT algo=std::heap_sort size=134217728 time=52.9818 repeats=1 iteration=13 typesize=4 datasize=536870912
+iteration=14
+time = 53.6115
+RESULT algo=std::heap_sort size=134217728 time=53.6115 repeats=1 iteration=14 typesize=4 datasize=536870912
+Running algorithm std::heap_sort with size=268435456 repeats=1
+iteration=0
+time = 120.59
+RESULT algo=std::heap_sort size=268435456 time=120.59 repeats=1 iteration=0 typesize=4 datasize=1073741824
+iteration=1
+time = 120.315
+RESULT algo=std::heap_sort size=268435456 time=120.315 repeats=1 iteration=1 typesize=4 datasize=1073741824
+iteration=2
+time = 120.167
+RESULT algo=std::heap_sort size=268435456 time=120.167 repeats=1 iteration=2 typesize=4 datasize=1073741824
+iteration=3
+time = 120.194
+RESULT algo=std::heap_sort size=268435456 time=120.194 repeats=1 iteration=3 typesize=4 datasize=1073741824
+iteration=4
+time = 121.003
+RESULT algo=std::heap_sort size=268435456 time=121.003 repeats=1 iteration=4 typesize=4 datasize=1073741824
+iteration=5
+time = 120.295
+RESULT algo=std::heap_sort size=268435456 time=120.295 repeats=1 iteration=5 typesize=4 datasize=1073741824
+iteration=6
+time = 121.003
+RESULT algo=std::heap_sort size=268435456 time=121.003 repeats=1 iteration=6 typesize=4 datasize=1073741824
+iteration=7
+time = 120.311
+RESULT algo=std::heap_sort size=268435456 time=120.311 repeats=1 iteration=7 typesize=4 datasize=1073741824
+iteration=8
+time = 120.221
+RESULT algo=std::heap_sort size=268435456 time=120.221 repeats=1 iteration=8 typesize=4 datasize=1073741824
+iteration=9
+time = 120.509
+RESULT algo=std::heap_sort size=268435456 time=120.509 repeats=1 iteration=9 typesize=4 datasize=1073741824
+iteration=10
+time = 120.339
+RESULT algo=std::heap_sort size=268435456 time=120.339 repeats=1 iteration=10 typesize=4 datasize=1073741824
+iteration=11
+time = 120.413
+RESULT algo=std::heap_sort size=268435456 time=120.413 repeats=1 iteration=11 typesize=4 datasize=1073741824
+iteration=12
+time = 120.036
+RESULT algo=std::heap_sort size=268435456 time=120.036 repeats=1 iteration=12 typesize=4 datasize=1073741824
+iteration=13
+time = 120.25
+RESULT algo=std::heap_sort size=268435456 time=120.25 repeats=1 iteration=13 typesize=4 datasize=1073741824
+iteration=14
+time = 120.217
+RESULT algo=std::heap_sort size=268435456 time=120.217 repeats=1 iteration=14 typesize=4 datasize=1073741824
+Running algorithm std::heap_sort with size=536870912 repeats=1
+iteration=0
+time = 273.171
+RESULT algo=std::heap_sort size=536870912 time=273.171 repeats=1 iteration=0 typesize=4 datasize=2147483648
+iteration=1
+time = 273.141
+RESULT algo=std::heap_sort size=536870912 time=273.141 repeats=1 iteration=1 typesize=4 datasize=2147483648
+iteration=2
+time = 273.351
+RESULT algo=std::heap_sort size=536870912 time=273.351 repeats=1 iteration=2 typesize=4 datasize=2147483648
+iteration=3
+time = 273.923
+RESULT algo=std::heap_sort size=536870912 time=273.923 repeats=1 iteration=3 typesize=4 datasize=2147483648
+iteration=4
+time = 273.683
+RESULT algo=std::heap_sort size=536870912 time=273.683 repeats=1 iteration=4 typesize=4 datasize=2147483648
+iteration=5
+time = 273.863
+RESULT algo=std::heap_sort size=536870912 time=273.863 repeats=1 iteration=5 typesize=4 datasize=2147483648
+iteration=6
+time = 273.379
+RESULT algo=std::heap_sort size=536870912 time=273.379 repeats=1 iteration=6 typesize=4 datasize=2147483648
+iteration=7
+time = 273.905
+RESULT algo=std::heap_sort size=536870912 time=273.905 repeats=1 iteration=7 typesize=4 datasize=2147483648
+iteration=8
+time = 274.109
+RESULT algo=std::heap_sort size=536870912 time=274.109 repeats=1 iteration=8 typesize=4 datasize=2147483648
+iteration=9
+time = 273.224
+RESULT algo=std::heap_sort size=536870912 time=273.224 repeats=1 iteration=9 typesize=4 datasize=2147483648
+iteration=10
+time = 273.387
+RESULT algo=std::heap_sort size=536870912 time=273.387 repeats=1 iteration=10 typesize=4 datasize=2147483648
+iteration=11
+time = 273.389
+RESULT algo=std::heap_sort size=536870912 time=273.389 repeats=1 iteration=11 typesize=4 datasize=2147483648
+iteration=12
+time = 273.716
+RESULT algo=std::heap_sort size=536870912 time=273.716 repeats=1 iteration=12 typesize=4 datasize=2147483648
+iteration=13
+time = 273.101
+RESULT algo=std::heap_sort size=536870912 time=273.101 repeats=1 iteration=13 typesize=4 datasize=2147483648
+iteration=14
+time = 274.1
+RESULT algo=std::heap_sort size=536870912 time=274.1 repeats=1 iteration=14 typesize=4 datasize=2147483648
+Running algorithm std::heap_sort with size=1073741824 repeats=1
+iteration=0
+time = 618.796
+RESULT algo=std::heap_sort size=1073741824 time=618.796 repeats=1 iteration=0 typesize=4 datasize=4294967296
+iteration=1
+time = 618.771
+RESULT algo=std::heap_sort size=1073741824 time=618.771 repeats=1 iteration=1 typesize=4 datasize=4294967296
+iteration=2
+time = 620.402
+RESULT algo=std::heap_sort size=1073741824 time=620.402 repeats=1 iteration=2 typesize=4 datasize=4294967296
+iteration=3
+time = 619.109
+RESULT algo=std::heap_sort size=1073741824 time=619.109 repeats=1 iteration=3 typesize=4 datasize=4294967296
+iteration=4
+time = 619.378
+RESULT algo=std::heap_sort size=1073741824 time=619.378 repeats=1 iteration=4 typesize=4 datasize=4294967296
+iteration=5
+time = 618.433
+RESULT algo=std::heap_sort size=1073741824 time=618.433 repeats=1 iteration=5 typesize=4 datasize=4294967296
+iteration=6
+time = 618.572
+RESULT algo=std::heap_sort size=1073741824 time=618.572 repeats=1 iteration=6 typesize=4 datasize=4294967296
+iteration=7
+time = 618.338
+RESULT algo=std::heap_sort size=1073741824 time=618.338 repeats=1 iteration=7 typesize=4 datasize=4294967296
+iteration=8
+time = 619.777
+RESULT algo=std::heap_sort size=1073741824 time=619.777 repeats=1 iteration=8 typesize=4 datasize=4294967296
+iteration=9
+time = 619.16
+RESULT algo=std::heap_sort size=1073741824 time=619.16 repeats=1 iteration=9 typesize=4 datasize=4294967296
+iteration=10
+time = 618.747
+RESULT algo=std::heap_sort size=1073741824 time=618.747 repeats=1 iteration=10 typesize=4 datasize=4294967296
+iteration=11
+time = 619.058
+RESULT algo=std::heap_sort size=1073741824 time=619.058 repeats=1 iteration=11 typesize=4 datasize=4294967296
+iteration=12
+time = 618.19
+RESULT algo=std::heap_sort size=1073741824 time=618.19 repeats=1 iteration=12 typesize=4 datasize=4294967296
+iteration=13
+time = 618.044
+RESULT algo=std::heap_sort size=1073741824 time=618.044 repeats=1 iteration=13 typesize=4 datasize=4294967296
+iteration=14
+time = 618.978
+RESULT algo=std::heap_sort size=1073741824 time=618.978 repeats=1 iteration=14 typesize=4 datasize=4294967296
