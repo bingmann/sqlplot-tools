@@ -45,6 +45,8 @@ bool Reformat::parse_keyword(std::string::const_iterator& curr,
     while (curr != end && isalnum(*curr)) ++curr;
 
     key = std::string(ckey, curr);
+
+    return true;
 }
 
 //! read additional argument of key
