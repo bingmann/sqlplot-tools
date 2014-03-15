@@ -1,10 +1,10 @@
 line1
 % IMPORT-DATA test test.data
 line2
-% TABULAR SELECT testsize AS x, bandwidth, rate * 1e12, areasize FROM test ORDER BY x, bandwidth LIMIT 10
+% TABULAR SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), areasize FROM test ORDER BY x, bandwidth LIMIT 10
 line3
 indentation start
-  % TABULAR SELECT testsize AS x, bandwidth, rate * 1e12, areasize FROM test ORDER BY x, bandwidth
+  % TABULAR SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), areasize FROM test ORDER BY x, bandwidth
   10.1699250014423124 & 21256634665.4957 &  3.7635308344391e-10 & 1024 \\ line1
   10.1699250014423124 & 20004857425.2276 &   3.999028750843e-10 & 1024 \\[40pt]
   11.0874628412503394 & 20059162540.3994 & 3.98820239074683e-10 & 2048 \\[1pt]
