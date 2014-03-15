@@ -38,6 +38,10 @@ endif()
 # option to update all tests with new output
 option(UPDATE_TESTS "Update test output with program output" OFF)
 
+# option to change the database system to run tests on
+set(TEST_DATABASE "Sqlite"
+  CACHE STRING "Select the database system to run tests on.")
+
 # enable warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
 

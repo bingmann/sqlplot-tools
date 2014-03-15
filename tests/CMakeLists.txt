@@ -20,7 +20,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-set(TEST_OPTIONS "-D" "sqlite")
+set(TEST_OPTIONS "-D" "${TEST_DATABASE}")
 
 if(NOT UPDATE_TESTS)
   set(TEST_OPTIONS ${TEST_OPTIONS} "-C") # check output
