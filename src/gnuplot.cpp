@@ -490,9 +490,15 @@ SpGnuplot::SpGnuplot(const std::string& filename, TextLines& lines)
         std::ostringstream* oss = (std::ostringstream*)m_datafile;
 
         if (checkdata != oss->str())
+        {
+            OUT("Mismatch to expected output data file:");
+            simple_diff(oss->str(), checkdata);
             OUT_THROW("Mismatch to expected output data file " << m_datafilename);
+        }
         else
+        {
             OUT("Good match to expected output data file " << m_datafilename);
+        }
     }
 
     delete m_datafile;

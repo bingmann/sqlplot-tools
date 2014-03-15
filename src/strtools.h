@@ -329,4 +329,26 @@ static inline std::string read_stream(std::istream& is)
     return out;
 }
 
+//! simple diff of lines to compare two texts
+static inline void
+simple_diff(const std::string& strA, const std::string& strB,
+            std::ostream& os = std::cout)
+{
+    std::istringstream isA(strA), isB(strB);
+    std::string a, b;
+    size_t n = 0;
+
+    while ( std::getline(isA, a).good() | std::getline(isB, b).good() )
+    {
+        if (a != b)
+        {
+            os << 'A' << '#' << n << '#' << a << std::endl;
+            os << 'B' << '#' << n << '#' << b << std::endl;
+        }
+
+        a = b = "";
+        ++n;
+    }
+}
+
 #endif // STRTOOLS_HEADER
