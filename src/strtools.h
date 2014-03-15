@@ -24,7 +24,7 @@
 #define STRTOOLS_HEADER
 
 #include <string>
-#include <ostream>
+#include <iostream>
 #include <iomanip>
 #include <vector>
 #include <algorithm>
