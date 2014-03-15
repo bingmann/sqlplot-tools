@@ -135,10 +135,13 @@ SQLITE_EXTENSION_INIT1
 #include <errno.h>		/* LMH 2007-03-25 */
 
 #include <stdlib.h>
-#include <assert.h>
 
 #ifndef _MAP_H_
 #define _MAP_H_
+
+// *** an always-on ASSERT
+
+#define ASSERT(expr)  do { if (!(expr)) { fprintf(stderr, "%s:%u %s: Assertion '%s' failed!\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, #expr); abort(); } } while(0)
 
 #include <stdint.h>
 
@@ -313,7 +316,7 @@ static int sqlite3Utf8CharLen(const char *z, int nByte){
   }else{
     zTerm = (const char *)(-1);
   }
-  assert( z<=zTerm );
+  ASSERT( z<=zTerm );
   while( *z!=0 && z<zTerm ){
     SKIP_UTF8(z);
     r++;
@@ -347,7 +350,7 @@ static int sqlite3Utf8CharLen(const char *z, int nByte){
 #define GEN_MATH_WRAP_DOUBLE_1(name, function) \
 static void name(sqlite3_context *context, int argc, sqlite3_value **argv){\
   double rVal = 0.0, val;\
-  assert( argc==1 );\
+  ASSERT( argc==1 );\
   switch( sqlite3_value_type(argv[0]) ){\
     case SQLITE_NULL: {\
       sqlite3_result_null(context);\
@@ -478,7 +481,7 @@ static void logFunc2(sqlite3_context *context, int argc, sqlite3_value **argv){
   double r2 = 0.0;
   double val;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -533,7 +536,7 @@ static void piFunc(sqlite3_context *context, int /* argc */, sqlite3_value ** /*
 static void squareFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   i64 iVal = 0;
   double rVal = 0.0;
-  assert( argc==1 );
+  ASSERT( argc==1 );
   switch( sqlite3_value_type(argv[0]) ){
     case SQLITE_INTEGER: {
       iVal = sqlite3_value_int64(argv[0]);
@@ -565,7 +568,7 @@ static void powerFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   double r2 = 0.0;
   double val;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -589,7 +592,7 @@ static void atn2Func(sqlite3_context *context, int argc, sqlite3_value **argv){
   double r1 = 0.0;
   double r2 = 0.0;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -609,7 +612,7 @@ static void atn2Func(sqlite3_context *context, int argc, sqlite3_value **argv){
 static void signFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   double rVal=0.0;
   i64 iVal=0;
-  assert( argc==1 );
+  ASSERT( argc==1 );
   switch( sqlite3_value_type(argv[0]) ){
     case SQLITE_INTEGER: {
       iVal = sqlite3_value_int64(argv[0]);
@@ -638,7 +641,7 @@ static void signFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
 */
 static void ceilFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   double rVal=0.0;
-  assert( argc==1 );
+  ASSERT( argc==1 );
   switch( sqlite3_value_type(argv[0]) ){
     case SQLITE_INTEGER: {
       i64 iVal = sqlite3_value_int64(argv[0]);
@@ -662,7 +665,7 @@ static void ceilFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
 */
 static void floorFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   double rVal=0.0;
-  assert( argc==1 );
+  ASSERT( argc==1 );
   switch( sqlite3_value_type(argv[0]) ){
     case SQLITE_INTEGER: {
       i64 iVal = sqlite3_value_int64(argv[0]);
@@ -741,7 +744,7 @@ static void properFunc(sqlite3_context *context, int argc, sqlite3_value **argv)
   char r;
   int c=1;
 
-  assert( argc==1);
+  ASSERT( argc==1);
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) ){
     sqlite3_result_null(context);
     return;
@@ -788,7 +791,7 @@ static void padlFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *zo;          /* output string */
   char *zt;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -842,7 +845,7 @@ static void padrFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *zo;          /* output string */
   char *zt;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -897,7 +900,7 @@ static void padcFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *zo;           /* output string */
   char *zt;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -956,7 +959,7 @@ static void strfilterFunc(sqlite3_context *context, int argc, sqlite3_value **ar
   int c1 = 0;
   int c2 = 0;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0]) == SQLITE_NULL || sqlite3_value_type(argv[1]) == SQLITE_NULL ){
     sqlite3_result_null(context);
@@ -1055,7 +1058,7 @@ static void charindexFunc(sqlite3_context *context, int argc, sqlite3_value **ar
   int s=0;
   int rVal=0;
 
-  assert( argc==3 ||argc==2);
+  ASSERT( argc==3 ||argc==2);
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) || SQLITE_NULL==sqlite3_value_type(argv[1])){
     sqlite3_result_null(context);
@@ -1090,7 +1093,7 @@ static void leftFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   const unsigned char *zt;
   unsigned char *rz;            /* output string */
 
-  assert( argc==2);
+  ASSERT( argc==2);
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) || SQLITE_NULL==sqlite3_value_type(argv[1])){
     sqlite3_result_null(context);
@@ -1130,7 +1133,7 @@ static void rightFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   const char *ze;
   char *rz;
 
-  assert( argc==2);
+  ASSERT( argc==2);
 
   if( SQLITE_NULL == sqlite3_value_type(argv[0]) || SQLITE_NULL == sqlite3_value_type(argv[1])){
     sqlite3_result_null(context);
@@ -1194,7 +1197,7 @@ void rtrim(char* s){
 static void ltrimFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   const char *z;
 
-  assert( argc==1);
+  ASSERT( argc==1);
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) ){
     sqlite3_result_null(context);
@@ -1212,7 +1215,7 @@ static void rtrimFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *rz;
   /* try not to change data in argv */
 
-  assert( argc==1);
+  ASSERT( argc==1);
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) ){
     sqlite3_result_null(context);
@@ -1233,7 +1236,7 @@ static void trimFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
   char *rz;
   /* try not to change data in argv */
 
-  assert( argc==1);
+  ASSERT( argc==1);
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) ){
     sqlite3_result_null(context);
@@ -1277,7 +1280,7 @@ static void replaceFunc(sqlite3_context *context, int argc, sqlite3_value **argv
   const char *zt1;
   const char *zt2;
 
-  assert( 3==argc );
+  ASSERT( 3==argc );
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) ){
     sqlite3_result_null(context);
@@ -1340,7 +1343,7 @@ static void reverseFunc(sqlite3_context *context, int argc, sqlite3_value **argv
   int l = 0;
   int i = 0;
 
-  assert( 1==argc );
+  ASSERT( 1==argc );
 
   if( SQLITE_NULL==sqlite3_value_type(argv[0]) ){
     sqlite3_result_null(context);
@@ -1412,7 +1415,7 @@ static void varianceStep(sqlite3_context *context, int argc, sqlite3_value **arg
   double delta;
   double x;
 
-  assert( argc==1 );
+  ASSERT( argc==1 );
   p = (StdevCtx*)sqlite3_aggregate_context(context, sizeof(*p));
   /* only consider non-null values */
   if( SQLITE_NULL != sqlite3_value_numeric_type(argv[0]) ){
@@ -1435,7 +1438,7 @@ static void modeStep(sqlite3_context *context, int argc, sqlite3_value **argv){
   double *dptr;
   int type;
 
-  assert( argc==1 );
+  ASSERT( argc==1 );
   type = sqlite3_value_numeric_type(argv[0]);
 
   if( type == SQLITE_NULL)
@@ -1697,7 +1700,7 @@ static void differenceFunc(sqlite3_context *context, int argc, sqlite3_value **a
   const u8 *zIn1;
   const u8 *zIn2;
 
-  assert( argc==2 );
+  ASSERT( argc==2 );
 
   if( sqlite3_value_type(argv[0])==SQLITE_NULL || sqlite3_value_type(argv[1])==SQLITE_NULL ){
     sqlite3_result_null(context);
