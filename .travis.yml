@@ -5,6 +5,8 @@ branches:
     - master
 
 env:
+  global:
+    - CMAKE_ARGS_ALL="-DBUILD_EXAMPLES=ON -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/share/postgresql/"
   matrix:
     # gcc builds
     - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"   DB="sqlite"
@@ -26,8 +28,8 @@ install:
   - if [ "$DB" == "postgresql" ]; then sudo apt-get install libpq-dev; fi
 
 before_script:
-  - mkdir build && cd build && cmake -DCMAKE_C_COMPILER=$CMAKE_CC -DCMAKE_CXX_COMPILER=$CMAKE_CXX $CMAKE_ARGS -DTEST_DATABASE=$DB -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/share/postgresql/ ..
-  - if [ "$DB" == "postgresql" ]; then psql -c "create database $USER;" -U postgres; fi
+  - mkdir build && cd build && cmake -DCMAKE_C_COMPILER=$CMAKE_CC -DCMAKE_CXX_COMPILER=$CMAKE_CXX $CMAKE_ARGS $CMAKE_ARGS_ALL -DTEST_DATABASE=$DB  ..
+  - if [ "$DB" == "postgresql" ]; then psql -c "CREATE DATABASE $USER;" -U postgres; fi
 
 script:
   - make -j4 && ctest -V
