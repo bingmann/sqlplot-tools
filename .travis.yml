@@ -7,18 +7,27 @@ branches:
 env:
   matrix:
     # gcc builds
-    - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"
-    - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release"
+    - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"   DB="sqlite"
+    - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release" DB="sqlite"
     # clang builds
-    - CMAKE_CC="clang" CMAKE_CXX="clang++"   CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"
-    - CMAKE_CC="clang" CMAKE_CXX="clang++"   CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release"
+    - CMAKE_CC="clang" CMAKE_CXX="clang++"   CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"   DB="sqlite"
+    - CMAKE_CC="clang" CMAKE_CXX="clang++"   CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release" DB="sqlite"
+
+    # gcc builds
+    - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"   DB="postgresql"
+    - CMAKE_CC="gcc" CMAKE_CXX="g++"         CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release" DB="postgresql"
+    # clang builds
+    - CMAKE_CC="clang" CMAKE_CXX="clang++"   CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Debug"   DB="postgresql"
+    - CMAKE_CC="clang" CMAKE_CXX="clang++"   CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release" DB="postgresql"
 
 install:
   - sudo apt-get -qq update
   - sudo apt-get install libboost-all-dev
+  - if [ "$DB" == "postgresql" ]; then sudo apt-get install libpq-dev; fi
 
 before_script:
-  - mkdir build && cd build && cmake -DCMAKE_C_COMPILER=$CMAKE_CC -DCMAKE_CXX_COMPILER=$CMAKE_CXX $CMAKE_ARGS ..
+  - mkdir build && cd build && cmake -DCMAKE_C_COMPILER=$CMAKE_CC -DCMAKE_CXX_COMPILER=$CMAKE_CXX $CMAKE_ARGS -DTEST_DATABASE=$DB -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/share/postgresql/ ..
+  - if [ "$DB" == "postgresql" ]; then psql -c "create database $USER;" -U postgres; fi
 
 script:
   - make -j4 && ctest -V

@@ -52,6 +52,9 @@ enable_testing()
 set(SQL_LIBRARIES "")
 
 # Find PostgreSQL client library
+
+set(PostgreSQL_ADDITIONAL_VERSIONS "9.3" "9.2")
+
 find_package(PostgreSQL)
 
 if(PostgreSQL_FOUND)
