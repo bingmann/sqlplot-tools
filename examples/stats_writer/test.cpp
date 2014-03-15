@@ -30,7 +30,9 @@ int main(int argc, char *argv[])
 
     sw >> "keyA" << "value " << 5
        >> "keyB" << 42
-       >> "keyC" << 101.5;
+       >> "keyC" << 101.5
+       >> "argc" << argc
+       >> "argv[0]" << argv[0];
 
     std::cout << sw;
     

@@ -38,6 +38,9 @@ endif()
 # option to update all tests with new output
 option(UPDATE_TESTS "Update test output with program output" OFF)
 
+# option to build examples
+option(BUILD_EXAMPLES "Build example programs (for build testing)" OFF)
+
 # option to change the database system to run tests on
 set(TEST_DATABASE "Sqlite"
   CACHE STRING "Select the database system to run tests on.")
@@ -110,3 +113,9 @@ add_subdirectory(src)
 
 # descend into testsuite
 add_subdirectory(tests)
+
+# build examples (for testing)
+if(BUILD_EXAMPLES)
+  add_subdirectory(examples/sorting-speed)
+  add_subdirectory(examples/stats_writer)
+endif()
