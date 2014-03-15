@@ -103,6 +103,27 @@ sp_process_usage(const std::string& progname)
     return EXIT_FAILURE;
 }
 
+//! simple diff of lines to check output
+static inline void
+simple_diff(const std::string& strA, const std::string& strB)
+{
+    std::istringstream isA(strA), isB(strB);
+    std::string a, b;
+    size_t n = 0;
+
+    while ( std::getline(isA, a).good() | std::getline(isB, b).good() )
+    {
+        if (a != b)
+        {
+            OUT('A' << '#' << n << '#' << a);
+            OUT('B' << '#' << n << '#' << b);
+        }
+
+        a = b = "";
+        ++n;
+    }
+}
+
 //! process LaTeX or Gnuplot, main function
 static inline int
 sp_process(int argc, char* argv[])
@@ -222,7 +243,11 @@ sp_process(int argc, char* argv[])
         std::ostringstream* oss = (std::ostringstream*)output;
 
         if (checkdata != oss->str())
+        {
+            OUT("Mismatch to expected output file:");
+            simple_diff(oss->str(), checkdata);
             OUT_THROW("Mismatch to expected output file " << opt_outputfile);
+        }
     }
 
     if (output) {
