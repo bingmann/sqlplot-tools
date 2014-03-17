@@ -47,6 +47,10 @@ extern bool g_db_initialize();
 //! free global SQL database connection
 extern void g_db_free();
 
+#ifdef OUT
+#undef OUT
+#endif
+
 //! conditional debug output
 #define OUTC(dbg,X)   do { if (dbg) { std::cerr << X; } } while(0)
 

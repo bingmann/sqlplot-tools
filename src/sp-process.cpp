@@ -24,8 +24,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <getopt.h>
 
+#include "simpleopt.h"
 #include "common.h"
 #include "strtools.h"
 #include "pgsql.h"
@@ -86,6 +86,22 @@ sp_process_stream(const std::string& filename, std::istream& is)
     return lines;
 }
 
+//! define identifiers for command line arguments
+enum { OPT_HELP, OPT_VERBOSE, OPT_FILETYPE,
+       OPT_OUTPUT, OPT_CHECK_OUTPUT, OPT_DATABASE };
+
+//! define command line arguments
+static CSimpleOpt::SOption sopt_list[] = {
+    { OPT_HELP,         "-?", SO_NONE },
+    { OPT_HELP,         "-h", SO_NONE },
+    { OPT_VERBOSE,      "-v", SO_NONE },
+    { OPT_FILETYPE,     "-f", SO_REQ_SEP },
+    { OPT_OUTPUT,       "-o", SO_REQ_SEP },
+    { OPT_CHECK_OUTPUT, "-C", SO_NONE },
+    { OPT_DATABASE,     "-D", SO_REQ_SEP },
+    SO_END_OF_OPTIONS
+};
+
 //! print command line usage
 static inline int
 sp_process_usage(const std::string& progname)
@@ -107,31 +123,43 @@ sp_process_usage(const std::string& progname)
 static inline int
 sp_process(int argc, char* argv[])
 {
-    // parse command line parameters
-    int opt;
-
     //! output file name
     std::string opt_outputfile;
 
-    while ((opt = getopt(argc, argv, "vo:Cf:D:")) != -1) {
-        switch (opt) {
-        case 'v':
+    //! parse command line parameters using SimpleOpt
+    CSimpleOpt args(argc, argv, sopt_list);
+
+    while (args.Next())
+    {
+        if (args.LastError() != SO_SUCCESS) {
+            OUT(argv[0] << ": invalid command line argument '" << args.OptionText() << "'");
+            return EXIT_FAILURE;
+        }
+
+        switch (args.OptionId())
+        {
+        case OPT_HELP: default:
+            return sp_process_usage(argv[0]);
+
+        case OPT_VERBOSE:
             gopt_verbose++;
             break;
-        case 'o':
-            opt_outputfile = optarg;
+
+        case OPT_FILETYPE:
+            sopt_filetype = args.OptionArg();
             break;
-        case 'f':
-            sopt_filetype = optarg;
+
+        case OPT_OUTPUT:
+            opt_outputfile = args.OptionArg();
             break;
-        case 'C':
+
+        case OPT_CHECK_OUTPUT:
             gopt_check_output = true;
             break;
-        case 'D':
-            gopt_db_connection = optarg;
+
+        case OPT_DATABASE:
+            gopt_db_connection = args.OptionArg();
             break;
-        case 'h': default:
-            return sp_process_usage(argv[0]);
         }
     }
 
@@ -161,11 +189,11 @@ sp_process(int argc, char* argv[])
     }
 
     // process file commandline arguments
-    if (optind < argc)
+    if (args.FileCount())
     {
-        while (optind < argc)
+        for (int fi = 0; fi < args.FileCount(); ++fi)
         {
-            const char* filename = argv[optind];
+            const char* filename = args.File(fi);
 
             std::ifstream in(filename);
             if (!in.good()) {
@@ -190,7 +218,6 @@ sp_process(int argc, char* argv[])
                         OUT_THROW("Error writing " << filename << ": " << strerror(errno));
                 }
             }
-            ++optind;
         }
     }
     else // no file arguments -> process stdin

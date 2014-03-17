@@ -99,7 +99,7 @@ public:
     int print_usage(const std::string& progname);
 
     //! process command line arguments and data
-    int main(int argc, char* const argv[]);
+    int main(int argc, char* argv[]);
 };
 
 #endif // IMPORTDATA_HEADER

@@ -23,11 +23,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <getopt.h>
 #include <errno.h>
 #include <string.h>
 #include <assert.h>
-#include <glob.h>
 
 #include <iostream>
 #include <fstream>
@@ -35,6 +33,8 @@
 #include <vector>
 #include <set>
 
+#include "simpleopt.h"
+#include "simpleglob.h"
 #include "importdata.h"
 #include "common.h"
 
@@ -330,6 +330,29 @@ ImportData::ImportData(bool temporary_table)
 {
 }
 
+//! define identifiers for command line arguments
+enum { OPT_HELP, OPT_VERBOSE,
+       OPT_FIRSTLINE, OPT_ALL_LINES, OPT_NO_DUPLICATE,
+       OPT_COLUMN_NUMBERS, OPT_EMPTY_OKAY,
+       OPT_TEMPORARY_TABLE, OPT_PERMANENT_TABLE,
+       OPT_DATABASE };
+
+//! define command line arguments
+static CSimpleOpt::SOption sopt_list[] = {
+    { OPT_HELP,            "-?", SO_NONE },
+    { OPT_HELP,            "-h", SO_NONE },
+    { OPT_VERBOSE,         "-v", SO_NONE },
+    { OPT_FIRSTLINE,       "-1", SO_NONE },
+    { OPT_ALL_LINES,       "-a", SO_NONE },
+    { OPT_NO_DUPLICATE,    "-d", SO_NONE },
+    { OPT_COLUMN_NUMBERS,  "-C", SO_NONE },
+    { OPT_EMPTY_OKAY,      "-E", SO_NONE },
+    { OPT_TEMPORARY_TABLE, "-T", SO_NONE },
+    { OPT_PERMANENT_TABLE, "-P", SO_NONE },
+    { OPT_DATABASE,        "-D", SO_REQ_SEP },
+    SO_END_OF_OPTIONS
+};
+
 //! print command line usage
 int ImportData::print_usage(const std::string& progname)
 {
@@ -349,55 +372,68 @@ int ImportData::print_usage(const std::string& progname)
 }
 
 //! process command line arguments and data
-int ImportData::main(int argc, char* const argv[])
+int ImportData::main(int argc, char* argv[])
 {
     FieldSet::check_detect();
 
-    int save_optind = 1;
-    std::swap(optind, save_optind);
+    //! parse command line parameters using SimpleOpt
+    CSimpleOpt args(argc, argv, sopt_list);
 
-    /* parse command line parameters */
-    int opt;
+    while (args.Next())
+    {
+        if (args.LastError() != SO_SUCCESS) {
+            OUT(argv[0] << ": invalid command line argument '" << args.OptionText() << "'");
+            return EXIT_FAILURE;
+        }
 
-    while ((opt = getopt(argc, argv, "h1avdCETPD:")) != -1) {
-        switch (opt) {
-        case '1':
+        switch (args.OptionId())
+        {
+        case OPT_HELP: default:
+            return print_usage(argv[0]);
+
+        case OPT_FIRSTLINE:
             mopt_firstline = true;
             break;
-        case 'a':
+
+        case OPT_ALL_LINES:
             mopt_all_lines = true;
             break;
-        case 'v':
+
+        case OPT_VERBOSE:
             mopt_verbose++;
             break;
-        case 'd':
+
+        case OPT_NO_DUPLICATE:
             mopt_noduplicates = true;
             break;
-        case 'C':
+
+        case OPT_COLUMN_NUMBERS:
             mopt_colnums = true;
             break;
-        case 'E':
+
+        case OPT_EMPTY_OKAY:
             mopt_empty_okay = true;
             break;
-        case 'T':
+
+        case OPT_TEMPORARY_TABLE:
             mopt_temporary_table = true;
             break;
-        case 'P':
+
+        case OPT_PERMANENT_TABLE:
             mopt_temporary_table = false;
             break;
-        case 'D':
-            gopt_db_connection = optarg;
+
+        case OPT_DATABASE:
+            gopt_db_connection = args.OptionArg();
             break;
-        case 'h': default:
-            return print_usage(argv[0]);
         }
     }
 
     // no table name given
-    if (optind == argc)
+    if (args.FileCount() == 0)
         print_usage(argv[0]);
 
-    m_tablename = argv[optind++];
+    m_tablename = args.File(0);
 
     // maybe connect to database
     bool opt_dbconnect = false;
@@ -412,47 +448,41 @@ int ImportData::main(int argc, char* const argv[])
     g_db->execute("BEGIN");
 
     // process file commandline arguments
-    if (optind < argc)
+    if (args.FileCount())
     {
-        while (optind < argc)
+        // glob to expand wild cards in arguments
+
+        int gflags = SG_GLOB_TILDE | SG_GLOB_ONLYFILE;
+        if (mopt_empty_okay) gflags |= SG_GLOB_NOCHECK;
+
+        CSimpleGlob glob(SG_GLOB_NODOT | SG_GLOB_NOCHECK);
+        if (SG_SUCCESS != glob.Add(args.FileCount() - 1, args.Files() + 1)) {
+            OUT_THROW("Error while globbing files");
+            return EXIT_FAILURE;
+        }
+
+        for (int fi = 0; fi < glob.FileCount(); ++fi)
         {
-            // glob() for matching file names
-            glob_t globbuf;
+            const char* fname = glob.File(fi);
 
-            int gflags = GLOB_TILDE | GLOB_BRACE;
-            if (mopt_empty_okay) gflags |= GLOB_NOCHECK;
-
-            int gr = glob(argv[optind], gflags, NULL, &globbuf);
-            if (gr != 0) {
-                OUT_THROW("Error globing " << argv[optind] << ": " << strerror(errno));
+            m_count = 0;
+            std::ifstream in(fname);
+            if (!in.good()) {
+                if (mopt_empty_okay)
+                    OUT("Error reading " << fname << ": " << strerror(errno));
+                else
+                    OUT_THROW("Error reading " << fname << ": " << strerror(errno));
             }
+            else {
+                process_stream(in);
 
-            for (size_t gi = 0; gi < globbuf.gl_pathc; ++gi)
-            {
-                const char* fname = globbuf.gl_pathv[gi];
-
-                m_count = 0;
-                std::ifstream in(fname);
-                if (!in.good()) {
-                    if (mopt_empty_okay)
-                        OUT("Error reading " << fname << ": " << strerror(errno));
-                    else
-                        OUT_THROW("Error reading " << fname << ": " << strerror(errno));
+                if (mopt_firstline) {
+                    OUT("Imported " << m_count << " rows of data from " << fname);
                 }
                 else {
-                    process_stream(in);
-
-                    if (mopt_firstline) {
-                        OUT("Imported " << m_count << " rows of data from " << fname);
-                    }
-                    else {
-                        OUT("Cached " << m_count << " rows of data from " << fname);
-                    }
+                    OUT("Cached " << m_count << " rows of data from " << fname);
                 }
             }
-
-            globfree(&globbuf);
-            ++optind;
         }
     }
     else // no file arguments -> process stdin
@@ -461,8 +491,6 @@ int ImportData::main(int argc, char* const argv[])
 
         process_stream(std::cin);
     }
-
-    std::swap(optind, save_optind);
 
     // process cached data lines
     if (!mopt_firstline)
