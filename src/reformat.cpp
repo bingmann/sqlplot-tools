@@ -353,8 +353,8 @@ void Reformat::Cell::apply(const Cell& c)
         m_grouping = c.m_grouping;
 }
 
-//! Test if we need to read the column data
-bool Reformat::Column::readdata() const
+//! Test if we need to read the row/column data
+bool Reformat::Line::readdata() const
 {
     if (m_min_format == MF_BOLD || m_min_format == MF_EMPH)
         return true;
@@ -366,20 +366,20 @@ bool Reformat::Column::readdata() const
 }
 
 //! Check for valid min/max format
-Reformat::Column::minmax_format_type
-Reformat::Column::parse_minmax(const std::string& key, const std::string& value)
+Reformat::Line::minmax_format_type
+Reformat::Line::parse_minmax(const std::string& key, const std::string& value)
 {
     if (value == "") return MF_NONE;
     if (value == "bold" || value == "bf") return MF_BOLD;
     if (value == "emph" || value == "em") return MF_EMPH;
 
-    OUT_THROW("Invalid formatting for column key " << key << ": " << value);
+    OUT_THROW("Invalid formatting for row/column key " << key << ": " << value);
 }
 
-//! Parse column-level key=value format
-bool Reformat::Column::parse_keyformat(const std::string& key,
-                                       std::string::const_iterator& curr,
-                                       const std::string::const_iterator& end)
+//! Parse row/column-level key=value format
+bool Reformat::Line::parse_keyformat(const std::string& key,
+                                     std::string::const_iterator& curr,
+                                     const std::string::const_iterator& end)
 {
     if (key == "min" || key == "minimum")
     {
@@ -399,21 +399,21 @@ bool Reformat::Column::parse_keyformat(const std::string& key,
     }
     else
     {
-        OUT_THROW("Invalid column-level format key: " << key);
+        OUT_THROW("Invalid row/column-level format key: " << key);
     }
 
     return true;
 }
 
-//! Parse column-level formating arguments
-bool Reformat::Column::parse_format(const std::string& format)
+//! Parse row/column-level formating arguments
+bool Reformat::Line::parse_format(const std::string& format)
 {
     std::string::const_iterator curr = format.begin();
     std::string key;
 
     while (parse_keyword(curr, format.end(), key))
     {
-        DBG("column-level format key: " << key << "-");
+        DBG("row/column-level format key: " << key << "-");
 
         parse_keyformat(key, curr, format.end());
     }
@@ -421,8 +421,8 @@ bool Reformat::Column::parse_format(const std::string& format)
     return true;
 }
 
-//! Apply formats of other column-level object
-void Reformat::Column::apply(const Column& c)
+//! Apply formats of other row/column-level object
+void Reformat::Line::apply(const Line& c)
 {
     if (c.m_min_format != MF_UNDEF)
     {
@@ -494,13 +494,30 @@ bool Reformat::parse_format(const std::string& format)
 
             std::set<unsigned> cols = parse_numbers(arg);
 
-            Column cformat;
-            cformat.parse_format(parse_keyvalue(curr, format.end()));
+            Line colfmt;
+            colfmt.parse_format(parse_keyvalue(curr, format.end()));
 
             for (std::set<unsigned>::iterator c = cols.begin();
                  c != cols.end(); ++c)
             {
-                m_colfmt[*c].apply(cformat);
+                m_colfmt[*c].apply(colfmt);
+            }
+        }
+        else if (key == "row" || key == "rows")
+        {
+            std::string arg = parse_keyargument(curr, format.end());
+
+            DBG("top-level format key: " << key << " arg: " << arg << "-");
+
+            std::set<unsigned> rows = parse_numbers(arg);
+
+            Line rowfmt;
+            rowfmt.parse_format(parse_keyvalue(curr, format.end()));
+
+            for (std::set<unsigned>::iterator r = rows.begin();
+                 r != rows.end(); ++r)
+            {
+                m_rowfmt[*r].apply(rowfmt);
             }
         }
         else if (m_fmt.parse_keyformat(key, curr, format.end()))
@@ -523,7 +540,8 @@ void Reformat::prepare(const SqlQuery& sql)
     {
         for (unsigned j = 0; j < sql->num_cols(); ++j)
         {
-            if (!m_colfmt[j].readdata() && !m_fmt.readdata())
+            if (!m_rowfmt[i].readdata() && !m_colfmt[j].readdata() &&
+                !m_fmt.readdata())
                 continue;
 
             std::string text = sql->text(i,j);
@@ -532,6 +550,18 @@ void Reformat::prepare(const SqlQuery& sql)
             double v;
             if (from_str(text, v))
             {
+                if (v < m_rowfmt[i].m_min_value)
+                {
+                    m_rowfmt[i].m_min_value = v;
+                    m_rowfmt[i].m_min_text = text;
+                }
+
+                if (v > m_rowfmt[i].m_max_value)
+                {
+                    m_rowfmt[i].m_max_value = v;
+                    m_rowfmt[i].m_max_text = text;
+                }
+
                 if (v < m_colfmt[j].m_min_value)
                 {
                     m_colfmt[j].m_min_value = v;
@@ -573,11 +603,17 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
     double v;
     if (from_str(text, v))
     {
-        Column fmt = m_fmt;
+        Line fmt = m_fmt;
 
-        colfmt_type::const_iterator colfmt = m_colfmt.find(col);
-        if (colfmt != m_colfmt.end())
-            fmt.apply(colfmt->second);
+        {
+            linefmt_type::const_iterator rowfmt = m_rowfmt.find(row);
+            if (rowfmt != m_rowfmt.end())
+                fmt.apply(rowfmt->second);
+
+            linefmt_type::const_iterator colfmt = m_colfmt.find(col);
+            if (colfmt != m_colfmt.end())
+                fmt.apply(colfmt->second);
+        }
 
         // *** Round Double Number ***
 
@@ -655,22 +691,22 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
 
         text = replace_all(text, ",", fmt.m_grouping);
 
-        // *** check for column minimum or maximum formatting ***
+        // *** check for row/column minimum or maximum formatting ***
 
         DBG("fmt: " << in_text << " - " << fmt.m_min_text);
 
         if (in_text == fmt.m_min_text)
         {
-            if (fmt.m_min_format == Column::MF_BOLD)
+            if (fmt.m_min_format == Line::MF_BOLD)
                 text = "\\bf " + text;
-            else if (fmt.m_min_format == Column::MF_EMPH)
+            else if (fmt.m_min_format == Line::MF_EMPH)
                 text = "\\em " + text;
         }
         else if (in_text == fmt.m_max_text)
         {
-            if (fmt.m_max_format == Column::MF_BOLD)
+            if (fmt.m_max_format == Line::MF_BOLD)
                 text = "\\bf " + text;
-            else if (fmt.m_max_format == Column::MF_EMPH)
+            else if (fmt.m_max_format == Line::MF_EMPH)
                 text = "\\em " + text;
         }
     }

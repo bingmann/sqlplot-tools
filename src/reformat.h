@@ -124,8 +124,8 @@ protected:
         void apply(const Cell& c);
     };
 
-    //! Specifications for column-level formats
-    struct Column : public Cell
+    //! Specifications for row- or column-level formats
+    struct Line : public Cell
     {
         //! Enum to specify formatting of min/max in column
         enum minmax_format_type { MF_UNDEF, MF_NONE, MF_BOLD, MF_EMPH };
@@ -133,14 +133,14 @@ protected:
         //! Formatting of minimum or maximum
         minmax_format_type m_min_format, m_max_format;
 
-        //! Minimum and maximum values in column.
+        //! Minimum and maximum values in row/column.
         double m_min_value, m_max_value;
 
-        //! Minimum and maximum values in column, as text for matching.
+        //! Minimum and maximum values in row/column, as text for matching.
         std::string m_min_text, m_max_text;
 
-        //! Initialize column min/max with sentinels
-        Column()
+        //! Initialize row/column min/max with sentinels
+        Line()
             : m_min_format(MF_UNDEF),
               m_max_format(MF_UNDEF),
               m_min_value( std::numeric_limits<double>::max() ),
@@ -148,33 +148,36 @@ protected:
         {
         }
 
-        //! Test if we need to read the column data
+        //! Test if we need to read the row/column data
         bool readdata() const;
 
         //! Check for valid min/max format
         static minmax_format_type parse_minmax(const std::string& key,
                                                const std::string& value);
 
-        //! Parse column-level key=value format
+        //! Parse row/column-level key=value format
         bool parse_keyformat(const std::string& key,
                              std::string::const_iterator& curr,
                              const std::string::const_iterator& end);
 
-        //! Parse column-level formating arguments
+        //! Parse row/column-level formating arguments
         bool parse_format(const std::string& format);
 
-        //! Apply formats of other column-level object
-        void apply(const Column& c);
+        //! Apply formats of other row/column-level object
+        void apply(const Line& c);
     };
 
-    //! Typedef of column format container
-    typedef std::map<unsigned, Column> colfmt_type;
+    //! Typedef of row/column format container
+    typedef std::map<unsigned, Line> linefmt_type;
 
-    //! Set of column-level formats
-    colfmt_type m_colfmt;
+    //! Set of row-specific formats
+    linefmt_type m_rowfmt;
 
-    //! Default column-level and cell-level formats
-    Column m_fmt;
+    //! Set of column-specific formats
+    linefmt_type m_colfmt;
+
+    //! Default row/column-level and cell-level formats
+    Line m_fmt;
 
 public:
 
