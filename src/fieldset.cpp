@@ -85,6 +85,22 @@ FieldSet::fieldtype FieldSet::detect(const std::string& str)
             }
         }
     }
+    // skip double exponent and iterate over digits
+    else if (it != str.end() && (*it == 'e' || *it == 'E'))
+    {
+        ++it;
+
+        // skip sign
+        if (it != str.end() && (*it == '+' || *it == '-')) ++it;
+
+        // iterate over digits
+        while (it != str.end() && isdigit(*it)) ++it;
+
+        if (it == str.end() && it != str.begin()) {
+            return T_DOUBLE;
+        }
+
+    }
 
     return T_VARCHAR;
 }
@@ -95,6 +111,7 @@ void FieldSet::check_detect()
     assert( detect("1234") == T_INTEGER );
     assert( detect("1234.3") == T_DOUBLE );
     assert( detect(".3e-3") == T_DOUBLE );
+    assert( detect("5e-05") == T_DOUBLE );
     assert( detect("1234,3") == T_VARCHAR );
     assert( detect("sdfdf") == T_VARCHAR );
 }
