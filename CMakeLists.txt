@@ -24,6 +24,9 @@ cmake_minimum_required(VERSION 2.8)
 
 project(sqlplot-tools)
 
+# custom cmake scripts
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # prohibit in-source builds
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
   message(SEND_ERROR "In-source builds are not allowed.")
@@ -34,6 +37,10 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message("Defaulting CMAKE_BUILD_TYPE to Debug")
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
+
+# options to build with various database libraries
+option(WITH_POSTGRESQL "Build SqlPlotTools with PostgreSQL interface" ON)
+option(WITH_MYSQL "Build SqlPlotTools with MySQL interface" ON)
 
 # option to update all tests with new output
 option(UPDATE_TESTS "Update test output with program output" OFF)
@@ -56,33 +63,42 @@ set(SQL_LIBRARIES "")
 
 # Find PostgreSQL client library
 
-set(PostgreSQL_ADDITIONAL_VERSIONS "9.3" "9.2")
+if(WITH_POSTGRESQL)
 
-find_package(PostgreSQL)
+  set(PostgreSQL_ADDITIONAL_VERSIONS "9.3" "9.2")
 
-if(PostgreSQL_FOUND)
-  set(SQL_LIBRARIES ${SQL_LIBRARIES} ${PostgreSQL_LIBRARIES})
-  add_definitions(-DHAVE_POSTGRESQL=1)
-  message(STATUS "Found PostgreSQL: ${PostgreSQL_LIBRARIES}")
-  include_directories(${PostgreSQL_INCLUDE_DIRS})
+  find_package(PostgreSQL)
+
+  if(PostgreSQL_FOUND)
+    set(SQL_LIBRARIES ${SQL_LIBRARIES} ${PostgreSQL_LIBRARIES})
+    add_definitions(-DHAVE_POSTGRESQL=1)
+    message(STATUS "Found PostgreSQL: ${PostgreSQL_LIBRARIES}")
+    include_directories(${PostgreSQL_INCLUDE_DIRS})
+  endif()
+
 endif()
 
 # Find MySQL client library
-find_path(MYSQL_INCLUDE_DIRS mysql.h
-  PATHS /usr/include/mysql /usr/local/include/mysql)
 
-find_library(MYSQL_LIBRARIES NAMES mysqlclient
-  PATHS /usr/lib/mysql /usr/local/lib/mysql)
+if(WITH_MYSQL)
 
-if(MYSQL_INCLUDE_DIRS AND MYSQL_LIBRARIES)
-  set(MYSQL_FOUND TRUE)
-  add_definitions(-DHAVE_MYSQL=1)
-  message(STATUS "Found MySQL: ${MYSQL_LIBRARIES}")
-  include_directories(${MYSQL_INCLUDE_DIRS})
-  set(SQL_LIBRARIES ${SQL_LIBRARIES} ${MYSQL_LIBRARIES})
-else()
-  set(MYSQL_FOUND FALSE)
-  message(STATUS "Could NOT find MySQL library")
+  find_path(MYSQL_INCLUDE_DIRS mysql.h
+    PATHS /usr/include/mysql /usr/local/include/mysql)
+
+  find_library(MYSQL_LIBRARIES NAMES mysqlclient
+    PATHS /usr/lib/mysql /usr/local/lib/mysql)
+
+  if(MYSQL_INCLUDE_DIRS AND MYSQL_LIBRARIES)
+    set(MYSQL_FOUND TRUE)
+    add_definitions(-DHAVE_MYSQL=1)
+    message(STATUS "Found MySQL: ${MYSQL_LIBRARIES}")
+    include_directories(${MYSQL_INCLUDE_DIRS})
+    set(SQL_LIBRARIES ${SQL_LIBRARIES} ${MYSQL_LIBRARIES})
+  else()
+    set(MYSQL_FOUND FALSE)
+    message(STATUS "Could NOT find MySQL library")
+  endif()
+
 endif()
 
 # Find Sqlite3 library
