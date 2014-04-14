@@ -430,8 +430,10 @@ int ImportData::main(int argc, char* argv[])
     }
 
     // no table name given
-    if (args.FileCount() == 0)
+    if (args.FileCount() == 0) {
         print_usage(argv[0]);
+	return EXIT_FAILURE;
+    }
 
     m_tablename = args.File(0);
 
