@@ -67,7 +67,7 @@ public:
     void sql(size_t ln, size_t indent, const std::string& cmdline);
 
     //! Process # IMPORT-DATA commands
-    void importdata(size_t ln, size_t indent, const std::string& cmdline);
+    int importdata(size_t ln, size_t indent, const std::string& cmdline);
 
     //! Struct to rewrite Gnuplot "plot" directives with new datafile/index pairs
     struct Dataset
@@ -91,7 +91,7 @@ public:
     void macro(size_t ln, size_t indent, const std::string& cmdline);
 
     //! Process TextLines
-    void process();
+    int process();
 
     //! Process Textlines
     SpGnuplot(const std::string& filename, TextLines& lines);
@@ -105,7 +105,7 @@ void SpGnuplot::sql(size_t /* ln */, size_t /* indent */, const std::string& cmd
 }
 
 //! Process # IMPORT-DATA commands
-void SpGnuplot::importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+int SpGnuplot::importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     // split argument at whitespaces
     std::vector<std::string> args = split_ws(cmdline);
@@ -118,7 +118,7 @@ void SpGnuplot::importdata(size_t /* ln */, size_t /* indent */, const std::stri
 
     argv[args.size()] = NULL;
 
-    ImportData(true).main(args.size(), argv);
+    return ImportData(true).main(args.size(), argv);
 }
 
 //! Helper to rewrite Gnuplot "plot" directives with new datafile/index pairs
@@ -396,7 +396,7 @@ void SpGnuplot::macro(size_t ln, size_t indent, const std::string& cmdline)
 }
 
 //! process line-based file in place
-void SpGnuplot::process()
+int SpGnuplot::process()
 {
     // iterate over all lines
     for (size_t ln = 0; ln < m_lines.size();)
@@ -421,7 +421,8 @@ void SpGnuplot::process()
         else if (first_word == "IMPORT-DATA")
         {
             OUT(ln << "# " << cmd);
-            importdata(ln, indent, cmd);
+	    if(importdata(ln, indent, cmd) != EXIT_SUCCESS)
+	      return EXIT_FAILURE;
         }
         else if (first_word == "PLOT")
         {
@@ -444,6 +445,7 @@ void SpGnuplot::process()
                 OUT("? maybe unknown keyword " << first_word);
         }
     }
+    return EXIT_SUCCESS;
 }
 
 //! process a stream
@@ -490,7 +492,8 @@ SpGnuplot::SpGnuplot(const std::string& filename, TextLines& lines)
     }
 
     // process lines in place
-    process();
+    if(process() != EXIT_SUCCESS)
+      exit(EXIT_FAILURE);
 
     // verify processed output against file
     if (gopt_check_output)
