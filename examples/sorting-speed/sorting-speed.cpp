@@ -85,38 +85,66 @@ void run_test(const std::string& algoname)
         for (size_t iter = 0; iter < iterations; ++iter)
         {
             std::cout << "iteration=" << iter << "\n";
-                
+
             item_type* array = new item_type[size];
 
             for (size_t i = 0; i < size; ++i)
-                array[i] = i;
+                array[i] = i / 4;
 
             std::random_shuffle(array, array + size);
 
-            item_type* arraycopy = new item_type[size];
+            double ts1, ts2;
 
-            double ts1 = timestamp();
-
-            for (size_t r = 0; r < repeats; ++r)
+            if (repeats == 1)
             {
-                // copy in new version of random permutation
-                std::copy(array, array + size, arraycopy);
+                ts1 = timestamp();
 
                 test(array, size);
+
+                ts2 = timestamp();
+            }
+            else
+            {
+                item_type* arraycopy = new item_type[size];
+                std::copy(array, array + size, arraycopy);
+
+                ts1 = timestamp();
+
+                for (size_t r = 0; r < repeats; ++r)
+                {
+                    // copy in new version of random permutation
+                    std::copy(arraycopy, arraycopy + size, array);
+
+                    test(array, size);
+                }
+
+                ts2 = timestamp();
+
+                // measure time of copying data
+                for (size_t r = 0; r < repeats; ++r)
+                {
+                    size_t rx = r % size;
+                    std::copy(arraycopy, arraycopy + size - rx, array + rx);
+                }
+
+                double ts3 = timestamp();
+
+                ts2 -= ts3 - ts2;
+
+                volatile item_type x = array[size-1]; // anti-optimization
+                x = x + 1;
+
+                delete [] arraycopy;
             }
 
-            double ts2 = timestamp();
+            std::cout << "time = " << ts2 - ts1 << std::endl;
 
-            std::cout << "time = " << ts2-ts1 << std::endl;
-
-            delete [] arraycopy;
             delete [] array;
 
             std::cout << "RESULT"
                       << " algo=" << algoname
                       << " size=" << size
-                      << " size_log2=" << log(size) / log(2)
-                      << " time=" << ts2-ts1
+                      << " time=" << ts2 - ts1
                       << " repeats=" << repeats
                       << " iteration=" << iter
                       << " typesize=" << sizeof(item_type)
