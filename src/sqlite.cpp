@@ -215,6 +215,7 @@ bool SQLiteDatabase::initialize(const std::string& params)
     {
         OUT("Connection to SQLite3 failed: " << sqlite3_errmsg(m_db));
         sqlite3_close(m_db);
+        m_db = NULL;
         return false;
     }
 
@@ -227,7 +228,9 @@ bool SQLiteDatabase::initialize(const std::string& params)
 //! destructor to free connection
 SQLiteDatabase::~SQLiteDatabase()
 {
-    sqlite3_close(m_db);
+    if (m_db) {
+        sqlite3_close(m_db);
+    }
 }
 
 //! return type of SQL database

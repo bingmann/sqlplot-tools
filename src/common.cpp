@@ -29,9 +29,6 @@ int gopt_verbose = 0;
 //! check processed output matches the output file
 bool gopt_check_output = false;
 
-//! globally selected SQL database type and file
-std::string gopt_db_connection;
-
 //! global SQL datbase connection handle
 SqlDatabase* g_db = NULL;
 
@@ -40,11 +37,11 @@ SqlDatabase* g_db = NULL;
 #include "sqlite.h"
 
 //! initialize global SQL database connection
-bool g_db_initialize()
+bool g_db_connect(const std::string& db_conninfo)
 {
     g_db_free();
 
-    if (gopt_db_connection.size() == 0)
+    if (db_conninfo.size() == 0)
     {
 #if HAVE_POSTGRESQL
         //! first try to connect to a PostgreSQL database
@@ -73,7 +70,7 @@ bool g_db_initialize()
     }
     else
     {
-        std::string sqlname = gopt_db_connection;
+        std::string sqlname = db_conninfo;
         std::string dbname;
 
         std::string::size_type colonpos = sqlname.find(':');

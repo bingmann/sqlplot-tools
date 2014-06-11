@@ -69,6 +69,9 @@ public:
     //! Process # IMPORT-DATA commands
     int importdata(size_t ln, size_t indent, const std::string& cmdline);
 
+    //! Process # CONNECT commands
+    bool connect(size_t ln, size_t indent, const std::string& cmdline);
+
     //! Struct to rewrite Gnuplot "plot" directives with new datafile/index pairs
     struct Dataset
     {
@@ -119,6 +122,12 @@ int SpGnuplot::importdata(size_t /* ln */, size_t /* indent */, const std::strin
     argv[args.size()] = NULL;
 
     return ImportData(true).main(args.size(), argv);
+}
+
+//! Process # CONNECT commands
+bool SpGnuplot::connect(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+{
+    return g_db_connect(cmdline);
 }
 
 //! Helper to rewrite Gnuplot "plot" directives with new datafile/index pairs
@@ -421,7 +430,13 @@ int SpGnuplot::process()
         else if (first_word == "IMPORT-DATA")
         {
             OUT(ln << "# " << cmd);
-	    if(importdata(ln, indent, cmd) != EXIT_SUCCESS)
+	    if (importdata(ln, indent, cmd) != EXIT_SUCCESS)
+	      return EXIT_FAILURE;
+        }
+        else if (first_word == "CONNECT")
+        {
+            OUT(ln << "# " << cmd);
+	    if (!connect(ln, indent, cmd.substr(space_pos+1)))
 	      return EXIT_FAILURE;
         }
         else if (first_word == "PLOT")
@@ -492,8 +507,8 @@ SpGnuplot::SpGnuplot(const std::string& filename, TextLines& lines)
     }
 
     // process lines in place
-    if(process() != EXIT_SUCCESS)
-      exit(EXIT_FAILURE);
+    if (process() != EXIT_SUCCESS)
+        exit(EXIT_FAILURE);
 
     // verify processed output against file
     if (gopt_check_output)

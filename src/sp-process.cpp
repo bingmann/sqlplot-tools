@@ -123,8 +123,11 @@ sp_process_usage(const std::string& progname)
 static inline int
 sp_process(int argc, char* argv[])
 {
-    //! output file name
+    // output file name
     std::string opt_outputfile;
+
+    // database connection to establish
+    std::string opt_db_conninfo;
 
     //! parse command line parameters using SimpleOpt
     CSimpleOpt args(argc, argv, sopt_list);
@@ -158,13 +161,13 @@ sp_process(int argc, char* argv[])
             break;
 
         case OPT_DATABASE:
-            gopt_db_connection = args.OptionArg();
+            opt_db_conninfo = args.OptionArg();
             break;
         }
     }
 
     // make connection to the database
-    if (!g_db_initialize())
+    if (!g_db_connect(opt_db_conninfo))
         OUT_THROW("Fatal: could not connect to a SQL database");
 
     // open output file or string stream

@@ -376,6 +376,9 @@ int ImportData::main(int argc, char* argv[])
 {
     FieldSet::check_detect();
 
+    // database connection to establish
+    std::string opt_db_conninfo;
+
     //! parse command line parameters using SimpleOpt
     CSimpleOpt args(argc, argv, sopt_list);
 
@@ -424,7 +427,7 @@ int ImportData::main(int argc, char* argv[])
             break;
 
         case OPT_DATABASE:
-            gopt_db_connection = args.OptionArg();
+            opt_db_conninfo = args.OptionArg();
             break;
         }
     }
@@ -441,7 +444,7 @@ int ImportData::main(int argc, char* argv[])
     bool opt_dbconnect = false;
     if (!g_db)
     {
-        if (!g_db_initialize())
+        if (!g_db_connect(opt_db_conninfo))
             OUT_THROW("Fatal: could not connect to a SQL database");
         opt_dbconnect = true;
     }

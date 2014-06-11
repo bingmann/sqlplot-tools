@@ -74,7 +74,10 @@ public:
     void sql(size_t ln, size_t indent, const std::string& cmdline);
 
     //! Process % IMPORT-DATA commands
-    void importdata(size_t ln, size_t indent, const std::string& cmdline);
+    int importdata(size_t ln, size_t indent, const std::string& cmdline);
+
+    //! Process % CONNECT command
+    bool connect(size_t ln, size_t indent, const std::string& cmdline);
 
     //! Process % TEXTTABLE commands
     void texttable(size_t ln, size_t indent, const std::string& cmdline);
@@ -117,7 +120,7 @@ void SpLatex::sql(size_t /* ln */, size_t /* indent */, const std::string& cmdli
 }
 
 //! Process % IMPORT-DATA commands
-void SpLatex::importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+int SpLatex::importdata(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
 {
     // split argument at whitespaces
     std::vector<std::string> args = split_ws(cmdline);
@@ -130,7 +133,13 @@ void SpLatex::importdata(size_t /* ln */, size_t /* indent */, const std::string
 
     argv[args.size()] = NULL;
 
-    ImportData(true).main(args.size(), argv);
+    return ImportData(true).main(args.size(), argv);
+}
+
+//! Process % CONNECT command
+bool SpLatex::connect(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
+{
+    return g_db_connect(cmdline);
 }
 
 //! Process % TEXTTABLE commands
@@ -479,6 +488,12 @@ SpLatex::SpLatex(TextLines& lines)
         {
             OUT(ln << " % " << cmd);
             importdata(ln, indent, cmd);
+        }
+        else if (first_word == "CONNECT")
+        {
+            OUT(ln << " % " << cmd);
+            if (!connect(ln, indent, cmd.substr(space_pos+1)))
+                OUT_THROW("Database connection lost.");
         }
         else if (first_word == "TEXTTABLE")
         {
