@@ -321,6 +321,7 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     // collect coordinates groups
     {
         std::vector<std::string> lastgroup;
+        size_t rows = 0;
 
         while (sql->step())
         {
@@ -356,7 +357,12 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             // group fields match with last row -> append coordinates.
             df << sql->text(colx) << '\t'
                << sql->text(coly) << std::endl;
+
+            ++rows;
         }
+
+        if (rows == 0)
+            df << "- # (no data rows)" << std::endl;
 
         // finish last plot
         df << std::endl << std::endl;
