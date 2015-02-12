@@ -91,6 +91,9 @@ public:
     //! Process % TABULAR commands
     void tabular(size_t ln, size_t indent, const std::string& cmdline);
 
+    //! Process % DEFMACRO commands
+    void defmacro(size_t ln, size_t indent, const std::string& cmdline);
+
     //! Process Textlines
     SpLatex(TextLines& lines);
 };
@@ -460,6 +463,55 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
     }
 }
 
+//! Process % DEFMACRO commands
+void SpLatex::defmacro(size_t ln, size_t indent, const std::string& cmdline)
+{
+    std::string query = cmdline;
+
+    // find REFORMAT, parse format and remove clause from query
+    Reformat reformat;
+    reformat.parse_query(query);
+
+    // execute query
+    SqlQuery sql = g_db->query(query);
+
+    sql->read_complete();
+
+    // prepare reformatting
+    reformat.prepare(sql);
+
+    std::ostringstream oss;
+    unsigned int count = sql->num_cols();
+    while (sql->step())
+    {
+        for (unsigned int col = 0; col < count; ++col) {
+            if (col != 0) oss << std::endl;
+            oss << "\\def \\"
+                << str_reduce(sql->col_name(col))
+                << " {"
+                << reformat.format(0, col, sql->text(0, col))
+                << "}";
+        }
+    }
+
+    std::string output = oss.str();
+
+    // check whether line contains an \addplot command
+    static const boost::regex
+        re_defmacro("[[:blank:]]*(\\\\def \\\\[^}]+ \\{)[^}]+(\\}.*)");
+    boost::smatch rm;
+
+    if (ln + count < m_lines.size() &&
+        boost::regex_match(m_lines[ln], rm, re_defmacro))
+    {
+        m_lines.replace(ln, ln+count, indent, output, "DEFMACRO");
+    }
+    else
+    {
+        m_lines.replace(ln, ln, indent, output, "DEFMACRO");
+    }
+}
+
 //! process line-based file in place
 SpLatex::SpLatex(TextLines& lines)
     : m_lines(lines)
@@ -514,6 +566,11 @@ SpLatex::SpLatex(TextLines& lines)
         {
             OUT(ln << " % " << cmd);
             tabular(ln, indent, cmd.substr(space_pos+1));
+        }
+        else if (first_word == "DEFMACRO")
+        {
+            OUT(ln << " % " << cmd);
+            defmacro(ln, indent, cmd.substr(space_pos+1));
         }
         else
         {
