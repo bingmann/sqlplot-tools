@@ -1,0 +1,15 @@
+line
+%% DEFMACRO
+%% SELECT 42.005 AS a, 42.05 AS mc, 42.5 AS ABCD, 'hello' AS c
+\def\a{42.005}
+\def\mc{42.05}
+\def\ABCD{42.5}
+\def\c{hello}
+line
+%% DEFMACRO REFORMAT(round=0)
+%% SELECT 42.005 AS a, 42.05 AS mc, 42.5 AS ABCD, 'hello' AS c
+\def\a{42}
+\def\mc{42}
+\def\ABCD{43}
+\def\c{hello}
+line

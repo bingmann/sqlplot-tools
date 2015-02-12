@@ -486,9 +486,9 @@ void SpLatex::defmacro(size_t ln, size_t indent, const std::string& cmdline)
     {
         for (unsigned int col = 0; col < count; ++col) {
             if (col != 0) oss << std::endl;
-            oss << "\\def \\"
+            oss << "\\def\\"
                 << str_reduce(sql->col_name(col))
-                << " {"
+                << "{"
                 << reformat.format(0, col, sql->text(0, col))
                 << "}";
         }
@@ -496,20 +496,19 @@ void SpLatex::defmacro(size_t ln, size_t indent, const std::string& cmdline)
 
     std::string output = oss.str();
 
-    // check whether line contains an \addplot command
+    // scan lines forward and gobble all lines containing \def commands
     static const boost::regex
-        re_defmacro("[[:blank:]]*(\\\\def \\\\[^}]+ \\{)[^}]+(\\}.*)");
+        re_defmacro("[[:blank:]]*\\\\def\\\\[^{]+\\{[^}]+\\}.*");
     boost::smatch rm;
 
-    if (ln + count < m_lines.size() &&
-        boost::regex_match(m_lines[ln], rm, re_defmacro))
+    size_t eln = ln;
+    while (eln < m_lines.size() &&
+           boost::regex_match(m_lines[eln], rm, re_defmacro))
     {
-        m_lines.replace(ln, ln+count, indent, output, "DEFMACRO");
+        ++eln;
     }
-    else
-    {
-        m_lines.replace(ln, ln, indent, output, "DEFMACRO");
-    }
+
+    m_lines.replace(ln, eln, indent, output, "DEFMACRO");
 }
 
 //! process line-based file in place
