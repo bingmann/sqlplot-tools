@@ -481,10 +481,10 @@ void SpLatex::defmacro(size_t ln, size_t indent, const std::string& cmdline)
     reformat.prepare(sql);
 
     std::ostringstream oss;
-    unsigned int count = sql->num_cols();
-    while (sql->step())
+    for (unsigned int row = 0; row < sql->num_rows(); ++row)
     {
-        for (unsigned int col = 0; col < count; ++col) {
+        for (unsigned int col = 0; col < sql->num_cols(); ++col)
+        {
             if (col != 0) oss << std::endl;
             oss << "\\def\\"
                 << str_reduce(sql->col_name(col))
