@@ -12,4 +12,5 @@ line
 \def\mc{42}
 \def\ABCD{43}
 \def\c{hello}
-line
+
+this is the end
