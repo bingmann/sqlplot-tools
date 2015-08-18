@@ -444,7 +444,7 @@ void SpLatex::tabular(
     while (eln < m_lines.size() && is_comment_line(eln) < 0)
         ++eln;
 
-    static const boost::regex
+    const boost::regex
         re_endtabular("[[:blank:]]*% END " + op_name + " .*");
 
     if (eln < m_lines.size() &&
