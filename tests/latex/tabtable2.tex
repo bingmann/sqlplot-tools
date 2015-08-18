@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{fullpage}
+\usepackage{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{Sorting Speed Example}
+\author{Michael Axtmann}
+\maketitle
+
+% IMPORT-DATA test test.data
+%% TABULAR
+%% SELECT nthreads
+%% FROM test
+%% GROUP BY nthreads
+1 \\
+% END TABULAR SELECT nthreads FROM test GROUP BY nthreads
+
+
+line2
+%% TABTABLE SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), areasize
+%% FROM test ORDER BY x, bandwidth LIMIT 10
+1152	20004857425	399	1024
+1152	21256634665	376	1024
+2176	20059162540	398	2048
+2176	21206797610	377	2048
+3200	20101648154	397	3072
+3200	21256759869	376	3072
+4224	20078735758	398	4096
+4224	21256469275	376	4096
+6272	20103335011	397	6144
+6272	21254940419	376	6144
+% END TABTABLE SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), ar...
+
+\end{document}
