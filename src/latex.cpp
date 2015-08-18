@@ -93,7 +93,7 @@ public:
     void tabular(size_t ln,
                  size_t indent,
                  const std::string& cmdline,
-                 const std::string & op_name,
+                 const std::string& op_name,
                  const std::string& separator,
                  const std::string& endline);
 
