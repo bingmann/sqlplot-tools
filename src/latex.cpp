@@ -42,6 +42,7 @@
 #include "importdata.h"
 #include "reformat.h"
 
+
 class SpLatex
 {
 public:
@@ -89,7 +90,12 @@ public:
     void multiplot(size_t ln, size_t indent, const std::string& cmdline);
 
     //! Process % TABULAR commands
-    void tabular(size_t ln, size_t indent, const std::string& cmdline);
+    void tabular(size_t ln,
+                 size_t indent,
+                 const std::string& cmdline,
+                 const std::string & op_name,
+                 const std::string& separator,
+                 const std::string& endline);
 
     //! Process % tab separated (TABSEP) commands
     void tabsep(size_t ln, size_t indent, const std::string& cmdline);
@@ -384,7 +390,13 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 }
 
 //! Process % TABULAR commands
-void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
+void SpLatex::tabular(
+    size_t ln,
+    size_t indent,
+    const std::string& cmdline,
+    const std::string& op_name,
+    const std::string& separator,
+    const std::string& endline)
 {
     std::string query = cmdline;
 
@@ -421,11 +433,11 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
         std::ostringstream out;
         for (unsigned j = 0; j < sql->num_cols(); ++j)
         {
-            if (j != 0) out << " & ";
+            if (j != 0) out << separator;
             out << std::setw(cwidth[j])
                 << reformat.format(i, j, sql->text(i,j));
         }
-        out << " \\\\";
+        out << endline;
         tlines.push_back(out.str());
     }
 
@@ -435,7 +447,7 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
         ++eln;
 
     static const boost::regex
-        re_endtabular("[[:blank:]]*% END TABULAR .*");
+        re_endtabular("[[:blank:]]*% END " + op_name + " .*");
 
     if (eln < m_lines.size() &&
         boost::regex_match(m_lines[eln], re_endtabular))
@@ -455,14 +467,14 @@ void SpLatex::tabular(size_t ln, size_t indent, const std::string& cmdline)
             ++rln;
         }
 
-        tlines.push_back(shorten("% END TABULAR " + query));
-        m_lines.replace(ln, eln+1, indent, tlines, "TABULAR");
+        tlines.push_back(shorten("% END " + op_name + " " + query));
+        m_lines.replace(ln, eln+1, indent, tlines, op_name);
     }
     else
     {
         // could not find END TABULAR: insert whole table.
-        tlines.push_back(shorten("% END TABULAR " + query));
-        m_lines.replace(ln, ln, indent, tlines, "TABULAR");
+        tlines.push_back(shorten("% END " + op_name + " " + query));
+        m_lines.replace(ln, ln, indent, tlines, op_name);
     }
 }
 
@@ -649,7 +661,12 @@ SpLatex::SpLatex(TextLines& lines)
         else if (first_word == "TABULAR")
         {
             OUT(ln << " % " << cmd);
-            tabular(ln, indent, cmd.substr(space_pos+1));
+            tabular(ln, indent, cmd.substr(space_pos+1), "TABULAR", " & ", " \\\\");
+        }
+        else if (first_word == "TABTABLE")
+        {
+            OUT(ln << " % " << cmd);
+            tabular(ln, indent, cmd.substr(space_pos+1), "TABTABLE", "\t", "");
         }
         else if (first_word == "TABSEP")
         {
