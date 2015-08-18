@@ -94,7 +94,8 @@ public:
                  const std::string& cmdline,
                  const std::string& op_name,
                  const std::string& separator,
-                 const std::string& endline);
+                 const std::string& endline,
+                 const std::string& gobble_regex);
 
     //! Process % DEFMACRO commands
     void defmacro(size_t ln, size_t indent, const std::string& cmdline);
@@ -392,7 +393,8 @@ void SpLatex::tabular(
     const std::string& cmdline,
     const std::string& op_name,
     const std::string& separator,
-    const std::string& endline)
+    const std::string& endline,
+    const std::string& gobble_regex)
 {
     std::string query = cmdline;
 
@@ -452,7 +454,7 @@ void SpLatex::tabular(
         size_t rln = ln;
         size_t entry = 0;
 
-        static const boost::regex re_tabular(".*?\\\\\\\\(.*)");
+        const boost::regex re_tabular(gobble_regex);
         boost::smatch rm;
 
         // iterate over tabular lines, copy styles to replacement
@@ -575,12 +577,14 @@ SpLatex::SpLatex(TextLines& lines)
         else if (first_word == "TABULAR")
         {
             OUT(ln << " % " << cmd);
-            tabular(ln, indent, cmd.substr(space_pos+1), "TABULAR", " & ", " \\\\");
+            tabular(ln, indent, cmd.substr(space_pos+1),
+                    "TABULAR", " & ", " \\\\", ".*?\\\\\\\\(.*)");
         }
         else if (first_word == "TABTABLE")
         {
             OUT(ln << " % " << cmd);
-            tabular(ln, indent, cmd.substr(space_pos+1), "TABTABLE", "\t", "");
+            tabular(ln, indent, cmd.substr(space_pos+1),
+                    "TABTABLE", "\t", "", ".*\\t.*()");
         }
         else if (first_word == "DEFMACRO")
         {
