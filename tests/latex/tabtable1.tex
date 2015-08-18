@@ -1,0 +1,31 @@
+line1
+% IMPORT-DATA test test.data
+line2
+%% TABTABLE SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), areasize
+%% FROM test ORDER BY x, bandwidth LIMIT 10
+line3
+indentation start
+  %% TABTABLE SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), areasize
+  %% FROM test ORDER BY x, bandwidth
+         1152	20004857425	 399	       1024
+         1152	21256634665	 376	       1024
+         2176	20059162540	 398	       2048
+         2176	21206797610	 377	       2048
+         3200	20101648154	 397	       3072
+         3200	21256759869	 376	       3072
+         4224	20078735758	 398	       4096
+  % END TABTABLE SELECT testsize AS x, bandwidth, rate, areasize FROM test ORDER BY x
+
+  %% TABTABLE SELECT testsize AS x, FLOOR(bandwidth), FLOOR(rate * 1e12), areasize
+  %% FROM test ORDER BY x, bandwidth LIMIT 20
+         1152	20004857425	 399	       1024
+         1152	21256634665	 376	       1024
+         2176	20059162540	 398	       2048
+         2176	21206797610	 377	       2048
+         3200	20101648154	 397	       3072
+         3200	21256759869	 376	       3072
+         4224	20078735758	 398	       4096
+  % END TABTABLE SELECT testsize AS x, bandwidth, rate, areasize FROM test ORDER BY x
+
+indentation end
+this is the end
