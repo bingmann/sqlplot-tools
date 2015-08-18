@@ -42,7 +42,6 @@
 #include "importdata.h"
 #include "reformat.h"
 
-
 class SpLatex
 {
 public:

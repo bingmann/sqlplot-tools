@@ -12,7 +12,7 @@ There are many advantages of this approach:
 
 * The **plotted values are embedded** in the LaTeX or Gnuplot code, thus after processing by SqlPlotTools the full data is available and can be made public.
 
-* Furthermore, the **SQL statement completely specifies** how to results are generated from the input. Thus even when complex expressions are needed to generate the plots, they are still available inside the LaTeX file as a comment and can be verified by other authors.
+* Furthermore, the **SQL statement completely specifies** how the results are generated from the input. Thus even when complex expressions are needed to generate the plots, they are still available inside the LaTeX file as a comment and can be verified by other authors.
 
 * The declarative power of SQL is available for generating plots. One can use subqueries, JOINs between datasets and more to generate data series.
 
