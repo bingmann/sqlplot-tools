@@ -97,9 +97,6 @@ public:
                  const std::string& separator,
                  const std::string& endline);
 
-    //! Process % tab separated (TABSEP) commands
-    void tabsep(size_t ln, size_t indent, const std::string& cmdline);
-
     //! Process % DEFMACRO commands
     void defmacro(size_t ln, size_t indent, const std::string& cmdline);
 
@@ -478,136 +475,6 @@ void SpLatex::tabular(
     }
 }
 
-//! Process % TABSEP commands
-void SpLatex::tabsep(size_t ln, size_t indent, const std::string& cmdline)
-{
-    std::string query = cmdline;
-
-    // find REFORMAT, parse format and remove clause from query
-    Reformat reformat;
-    reformat.parse_query(query);
-
-    // execute query
-    SqlQuery sql = g_db->query(query);
-
-    sql->read_complete();
-
-    // prepare reformatting
-    reformat.prepare(sql);
-
-    // calculate width of columns data
-    std::vector<size_t> cwidth(sql->num_cols(), 0);
-
-    for (unsigned int i = 0; i < sql->num_rows(); ++i)
-    {
-        for (unsigned int j = 0; j < sql->num_cols(); ++j)
-        {
-            cwidth[j] = std::max(
-                cwidth[j],
-                reformat.format(i,j, sql->text(i,j)).size()
-                );
-        }
-    }
-
-    // generate output
-    std::vector<std::string> tlines;
-    for (unsigned int i = 0; i < sql->num_rows(); ++i)
-    {
-        std::ostringstream out;
-        for (unsigned j = 0; j < sql->num_cols(); ++j)
-        {
-            if (j != 0) out << "\t";
-            out << std::setw(cwidth[j])
-                << reformat.format(i, j, sql->text(i,j));
-        }
-        tlines.push_back(out.str());
-    }
-
-    // scan lines forward till next comment directive
-    size_t eln = ln;
-    while (eln < m_lines.size() && is_comment_line(eln) < 0)
-        ++eln;
-
-    static const boost::regex
-        re_endtabsep("[[:blank:]]*% END TABSEP .*");
-
-    if (eln < m_lines.size() &&
-        boost::regex_match(m_lines[eln], re_endtabsep))
-    {
-        // found END TABSEP
-        size_t rln = ln;
-        size_t entry = 0;
-
-        static const boost::regex re_tabsep(".*?\\\\\\\\(.*)");
-        boost::smatch rm;
-
-        // iterate over tabsep lines, copy styles to replacement
-        while (entry < tlines.size() && rln < eln &&
-               boost::regex_match(m_lines[rln], rm, re_tabsep))
-        {
-            tlines[entry++] += rm[1];
-            ++rln;
-        }
-
-        tlines.push_back(shorten("% END TABSEP " + query));
-        m_lines.replace(ln, eln+1, indent, tlines, "TABSEP");
-    }
-    else
-    {
-        // could not find END TABSEP: insert whole table.
-        tlines.push_back(shorten("% END TABSEP " + query));
-        m_lines.replace(ln, ln, indent, tlines, "TABSEP");
-    }
-}
-
-//! Process % DEFMACRO commands
-void SpLatex::defmacro(size_t ln, size_t indent, const std::string& cmdline)
-{
-    std::string query = cmdline;
-
-    // find REFORMAT, parse format and remove clause from query
-    Reformat reformat;
-    reformat.parse_query(query);
-
-    // execute query
-    SqlQuery sql = g_db->query(query);
-
-    sql->read_complete();
-
-    // prepare reformatting
-    reformat.prepare(sql);
-
-    std::ostringstream oss;
-    for (unsigned int row = 0; row < sql->num_rows(); ++row)
-    {
-        for (unsigned int col = 0; col < sql->num_cols(); ++col)
-        {
-            if (col != 0) oss << std::endl;
-            oss << "\\def\\"
-                << str_reduce(sql->col_name(col))
-                << "{"
-                << reformat.format(0, col, sql->text(0, col))
-                << "}";
-        }
-    }
-
-    std::string output = oss.str();
-
-    // scan lines forward and gobble all lines containing \def commands
-    static const boost::regex
-        re_defmacro("[[:blank:]]*\\\\def\\\\[^{]+\\{[^}]+\\}.*");
-    boost::smatch rm;
-
-    size_t eln = ln;
-    while (eln < m_lines.size() &&
-           boost::regex_match(m_lines[eln], rm, re_defmacro))
-    {
-        ++eln;
-    }
-
-    m_lines.replace(ln, eln, indent, output, "DEFMACRO");
-}
-
 //! process line-based file in place
 SpLatex::SpLatex(TextLines& lines)
     : m_lines(lines)
@@ -667,11 +534,6 @@ SpLatex::SpLatex(TextLines& lines)
         {
             OUT(ln << " % " << cmd);
             tabular(ln, indent, cmd.substr(space_pos+1), "TABTABLE", "\t", "");
-        }
-        else if (first_word == "TABSEP")
-        {
-            OUT(ln << " % " << cmd);
-            tabsep(ln, indent, cmd.substr(space_pos+1));
         }
         else if (first_word == "DEFMACRO")
         {
