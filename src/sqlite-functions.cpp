@@ -1407,6 +1407,25 @@ struct ModeCtx {
 };
 
 /*
+** Like ModeCtx, but with an additional integer or double argument.
+** Used for computing arbitrary quantiles as aggregates with quantile()
+ */
+typedef struct ModeArgCtx ModeArgCtx;
+struct ModeArgCtx {
+  i64 riM;            /* integer value found so far */
+  double rdM;         /* double value found so far */
+  i64 cnt;            /* number of elements so far */
+  double pcnt;        /* number of elements smaller than a percentile */
+  i64 mcnt;           /* maximum number of occurrences (for mode) */
+  i64 mn;             /* number of occurrences (for mode and percentiles) */
+  i64 is_double;      /* whether the computation is being done for doubles (>0) or integers (=0) */
+  map* m;             /* map structure used for the computation */
+  i64 argi;           /* integer argument */
+  double argd;        /* double argument */
+  int done;           /* whether the answer has been found */
+};
+
+/*
 ** called for each value received during a calculation of stdev or variance
 */
 static void varianceStep(sqlite3_context *context, int argc, sqlite3_value **argv){
@@ -1456,6 +1475,63 @@ static void modeStep(sqlite3_context *context, int argc, sqlite3_value **argv){
       p->is_double = 1;
       /* map will be used for doubles */
       *(p->m) = map_make(double_cmp);
+    }
+  }
+
+  ++(p->cnt);
+
+  if( 0==p->is_double ){
+    xi = sqlite3_value_int64(argv[0]);
+    iptr = (i64*)calloc(1,sizeof(i64));
+    *iptr = xi;
+    map_insert(p->m, iptr);
+  }else{
+    xd = sqlite3_value_double(argv[0]);
+    dptr = (double*)calloc(1,sizeof(double));
+    *dptr = xd;
+    map_insert(p->m, dptr);
+  }
+}
+
+
+/*
+** called for each value received during a calculation of mode of median
+*/
+static void modeStepArg(sqlite3_context *context, int argc, sqlite3_value **argv){
+  ModeArgCtx *p;
+  i64 xi=0;
+  double xd=0.0;
+  i64 *iptr;
+  double *dptr;
+  int type1, type2;
+
+  ASSERT( argc==2 );
+  type1 = sqlite3_value_numeric_type(argv[0]);
+  type2 = sqlite3_value_numeric_type(argv[1]);
+
+  if( type1 == SQLITE_NULL || type2 == SQLITE_NULL)
+    return;
+
+  p = (ModeArgCtx*)sqlite3_aggregate_context(context, sizeof(*p));
+
+  if( 0==(p->m) ){
+    p->m = (map*)calloc(1, sizeof(map));
+    if( type1==SQLITE_INTEGER ){
+      /* map will be used for integers */
+      *(p->m) = map_make(int_cmp);
+      p->is_double = 0;
+    }else{
+      p->is_double = 1;
+      /* map will be used for doubles */
+      *(p->m) = map_make(double_cmp);
+    }
+    /* parse the argument */
+    if( type2==SQLITE_INTEGER ){
+        /* integer argument */
+        p->argi = sqlite3_value_int64(argv[0]);
+    }else{
+        /* double argument */
+        p->argd = sqlite3_value_double(argv[1]);
     }
   }
 
@@ -1621,6 +1697,20 @@ static void upper_quartileFinalize(sqlite3_context *context){
     p->pcnt = (p->cnt)*3/4.0;
     _medianFinalize(context);
   }
+}
+
+/*
+** Returns an arbitrary quantile
+** The quantile was passed to the step function
+*/
+static void quantileFinalize(sqlite3_context *context){
+    ModeArgCtx *p;
+    p = (ModeArgCtx*) sqlite3_aggregate_context(context, 0);
+    if( p!=0 ){
+        /* quantile is stored in p->arg */
+        p->pcnt = (p->cnt)*(p->argd);
+        _medianFinalize(context);
+    }
 }
 
 /*
@@ -1812,6 +1902,7 @@ int RegisterExtensionFunctions(sqlite3 *db){
     { "median",           1, 0, 0, modeStep,     medianFinalize  },
     { "lower_quartile",   1, 0, 0, modeStep,     lower_quartileFinalize  },
     { "upper_quartile",   1, 0, 0, modeStep,     upper_quartileFinalize  },
+    { "quantile",         2, 0, 0, modeStepArg,  quantileFinalize  },
   };
   unsigned int i;
 
