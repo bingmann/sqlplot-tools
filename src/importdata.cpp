@@ -373,7 +373,7 @@ int ImportData::print_usage(const std::string& progname)
         "  -d       Eliminate duplicate RESULT lines." << std::endl <<
         "  -T       Import into TEMPORARY table (for in-file processing)." << std::endl <<
         "  -P       Import into non-TEMPORARY table (reverts the default -T)." << std::endl <<
-        "  -A       Append columns if the table already exists" << std::endl <<
+        "  -A       Append rows if the table already exists (schema must match)." << std::endl <<
         "  -v       Increase verbosity." << std::endl);
 
     return EXIT_FAILURE;
