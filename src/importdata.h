@@ -55,6 +55,9 @@ protected:
     //! allow empty tables and globs matching no files
     bool mopt_empty_okay;
 
+    //! append rows to table instead of clearing all data
+    bool mopt_append_data;
+
     //! table imported
     std::string m_tablename;
 

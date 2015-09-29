@@ -144,6 +144,11 @@ bool ImportData::create_table() const
 {
     if (g_db->exist_table(m_tablename))
     {
+        if (mopt_append_data)
+        {
+            OUT("Table \"" << m_tablename << "\" exists. Appending data.");
+            return true;
+        }
         OUT("Table \"" << m_tablename << "\" exists. Replacing data.");
 
         std::ostringstream cmd;
@@ -326,6 +331,7 @@ ImportData::ImportData(bool temporary_table)
       mopt_colnums(false),
       mopt_temporary_table(temporary_table),
       mopt_empty_okay(false),
+      mopt_append_data(false),
       m_total_count(0)
 {
 }
@@ -335,7 +341,7 @@ enum { OPT_HELP, OPT_VERBOSE,
        OPT_FIRSTLINE, OPT_ALL_LINES, OPT_NO_DUPLICATE,
        OPT_COLUMN_NUMBERS, OPT_EMPTY_OKAY,
        OPT_TEMPORARY_TABLE, OPT_PERMANENT_TABLE,
-       OPT_DATABASE };
+       OPT_DATABASE, OPT_APPEND_DATA };
 
 //! define command line arguments
 static CSimpleOpt::SOption sopt_list[] = {
@@ -350,6 +356,7 @@ static CSimpleOpt::SOption sopt_list[] = {
     { OPT_TEMPORARY_TABLE, "-T", SO_NONE },
     { OPT_PERMANENT_TABLE, "-P", SO_NONE },
     { OPT_DATABASE,        "-D", SO_REQ_SEP },
+    { OPT_APPEND_DATA,     "-A", SO_NONE },
     SO_END_OF_OPTIONS
 };
 
@@ -366,6 +373,7 @@ int ImportData::print_usage(const std::string& progname)
         "  -d       Eliminate duplicate RESULT lines." << std::endl <<
         "  -T       Import into TEMPORARY table (for in-file processing)." << std::endl <<
         "  -P       Import into non-TEMPORARY table (reverts the default -T)." << std::endl <<
+        "  -A       Append rows if the table already exists (schema must match)." << std::endl <<
         "  -v       Increase verbosity." << std::endl);
 
     return EXIT_FAILURE;
@@ -428,6 +436,10 @@ int ImportData::main(int argc, char* argv[])
 
         case OPT_DATABASE:
             opt_db_conninfo = args.OptionArg();
+            break;
+
+        case OPT_APPEND_DATA:
+            mopt_append_data = true;
             break;
         }
     }
