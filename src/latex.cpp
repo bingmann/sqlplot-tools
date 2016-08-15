@@ -212,7 +212,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 {
     // extract MULTIPLOT columns
     static const boost::regex
-        re_multiplot("MULTIPLOT\\(([^)]+)\\) (SELECT .+)");
+        re_multiplot("MULTIPLOT\\(([^)]+)\\) (.+)");
     boost::smatch rm_multiplot;
 
     if (!boost::regex_match(cmdline, rm_multiplot, re_multiplot))
