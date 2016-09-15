@@ -4,7 +4,7 @@
  * Process embedded SQL plot instructions in LaTeX files.
  *
  ******************************************************************************
- * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2016 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -528,6 +528,8 @@ void SpLatex::defmacro(size_t ln, size_t indent, const std::string& cmdline)
 SpLatex::SpLatex(TextLines& lines)
     : m_lines(lines)
 {
+    bool active_range = gopt_ranges.size() ? false : true;
+
     // iterate over all lines
     for (size_t ln = 0; ln < m_lines.size();)
     {
@@ -543,7 +545,51 @@ SpLatex::SpLatex(TextLines& lines)
             cmd.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ-_");
         std::string first_word = cmd.substr(0, space_pos);
 
-        if (first_word == "SQL")
+        if (first_word == "RANGE")
+        {
+            // extract second word
+            std::string::size_type non_space_pos =
+                cmd.find_first_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ-_", space_pos);
+
+            std::string::size_type space2_pos =
+                cmd.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ-_", non_space_pos);
+
+            std::string::size_type non_space2_pos =
+                cmd.find_first_not_of(" ", space2_pos);
+
+            std::string second_word = cmd.substr(
+                non_space_pos, space2_pos - non_space_pos);
+
+            std::string rest_word = cmd.substr(non_space2_pos);
+
+            if (second_word == "BEGIN")
+            {
+                if (std::find(gopt_ranges.begin(), gopt_ranges.end(),
+                              rest_word) != gopt_ranges.end())
+                {
+                    OUT(ln << " % " << cmd);
+                    active_range = true;
+                }
+            }
+            else if (second_word == "END")
+            {
+                if (std::find(gopt_ranges.begin(), gopt_ranges.end(),
+                              rest_word) != gopt_ranges.end())
+                {
+                    OUT(ln << " % " << cmd);
+                    active_range = false;
+                }
+            }
+            else
+            {
+                OUT("? maybe unknown keywords " << first_word << " " << second_word);
+            }
+        }
+        else if (!active_range)
+        {
+            // skip keywords in non-active ranges
+        }
+        else if (first_word == "SQL")
         {
             OUT(ln << " % " << cmd);
             sql(ln, indent, cmd.substr(space_pos+1));

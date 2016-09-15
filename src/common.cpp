@@ -4,7 +4,7 @@
  * Common global variables across all programs.
  *
  ******************************************************************************
- * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2016 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -28,6 +28,9 @@ int gopt_verbose = 0;
 
 //! check processed output matches the output file
 bool gopt_check_output = false;
+
+//! global command line parameter: named RANGEs to process
+std::vector<std::string> gopt_ranges;
 
 //! global SQL datbase connection handle
 SqlDatabase* g_db = NULL;

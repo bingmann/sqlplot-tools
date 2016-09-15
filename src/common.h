@@ -4,7 +4,7 @@
  * Common global variables across all programs.
  *
  ******************************************************************************
- * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2016 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -26,6 +26,8 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 #include "sql.h"
 
@@ -34,6 +36,9 @@ extern int gopt_verbose;
 
 //! check processed output matches the output file
 extern bool gopt_check_output;
+
+//! global command line parameter: named RANGEs to process
+extern std::vector<std::string> gopt_ranges;
 
 //! global SQL database connection handle
 extern SqlDatabase* g_db;

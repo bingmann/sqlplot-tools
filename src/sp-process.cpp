@@ -4,7 +4,7 @@
  * Process embedded SQL plot instructions in LaTeX or Gnuplot files.
  *
  ******************************************************************************
- * Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
+ * Copyright (C) 2013-2016 Timo Bingmann <tb@panthema.net>
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -88,7 +88,7 @@ sp_process_stream(const std::string& filename, std::istream& is)
 
 //! define identifiers for command line arguments
 enum { OPT_HELP, OPT_VERBOSE, OPT_FILETYPE,
-       OPT_OUTPUT, OPT_CHECK_OUTPUT, OPT_DATABASE };
+       OPT_OUTPUT, OPT_CHECK_OUTPUT, OPT_DATABASE, OPT_RANGE };
 
 //! define command line arguments
 static CSimpleOpt::SOption sopt_list[] = {
@@ -99,6 +99,7 @@ static CSimpleOpt::SOption sopt_list[] = {
     { OPT_OUTPUT,       "-o", SO_REQ_SEP },
     { OPT_CHECK_OUTPUT, "-C", SO_NONE },
     { OPT_DATABASE,     "-D", SO_REQ_SEP },
+    { OPT_RANGE,        "-R", SO_REQ_SEP },
     SO_END_OF_OPTIONS
 };
 
@@ -114,7 +115,8 @@ sp_process_usage(const std::string& progname)
         "  -f <type>  Force input file type = latex or gnuplot." << std::endl <<
         "  -o <file>  Output all processed files to this stream." << std::endl <<
         "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
-        "  -D <type>  Select SQL database type and file or database." << std::endl);
+        "  -D <type>  Select SQL database type and file or database." << std::endl <<
+        "  -R <name>  Process only named RANGE in files." << std::endl);
 
     return EXIT_FAILURE;
 }
@@ -162,6 +164,10 @@ sp_process(int argc, char* argv[])
 
         case OPT_DATABASE:
             opt_db_conninfo = args.OptionArg();
+            break;
+
+        case OPT_RANGE:
+            gopt_ranges.push_back(args.OptionArg());
             break;
         }
     }
