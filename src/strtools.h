@@ -148,14 +148,48 @@ static inline bool is_suffix(const std::string& str, const std::string& match)
 }
 
 /**
- * Shorten a string to width charaters, adding "..." at the end.
+ * Shorten a string to width charaters, adding "..." at the end. Due to latex
+ * parsing problems, balance parenthesis and brackets while shortening.
  */
 static inline std::string shorten(const std::string& str, size_t width = 80)
 {
-    if (str.size() > width)
-        return str.substr(0, width - 3) + "...";
-    else
+    if (str.size() <= width)
         return str;
+
+    std::string out, suffix;
+    std::string::const_iterator i = str.begin();
+    while (i != str.end() && out.size() + suffix.size() + 3 < width) {
+        if (*i == '(')
+            out += *i, suffix += ')';
+        else if (*i == '[')
+            out += *i, suffix += ']';
+        else if (*i == '{')
+            out += *i, suffix += '}';
+        else if (*i == ')') {
+            out += *i;
+            if (suffix.size() && *suffix.rbegin() == ')')
+                suffix.resize(suffix.size() - 1);
+        }
+        else if (*i == ']') {
+            out += *i;
+            if (suffix.size() && *suffix.rbegin() == ']')
+                suffix.resize(suffix.size() - 1);
+        }
+        else if (*i == '}') {
+            out += *i;
+            if (suffix.size() && *suffix.rbegin() == '}')
+                suffix.resize(suffix.size() - 1);
+        }
+        else
+            out += *i;
+
+        ++i;
+    }
+
+    // reverse order of closing brackets
+    std::reverse(suffix.begin(), suffix.end());
+
+    return out + "..." + suffix;
 }
 
 /**
