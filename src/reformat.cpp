@@ -698,16 +698,16 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
         if (in_text == fmt.m_min_text)
         {
             if (fmt.m_min_format == Line::MF_BOLD)
-                text = "\\bf " + text;
+                text = "\\textbf{" + text + "}";
             else if (fmt.m_min_format == Line::MF_EMPH)
-                text = "\\em " + text;
+                text = "\\emph{" + text + "}";
         }
         else if (in_text == fmt.m_max_text)
         {
             if (fmt.m_max_format == Line::MF_BOLD)
-                text = "\\bf " + text;
+                text = "\\textbf{" + text + "}";
             else if (fmt.m_max_format == Line::MF_EMPH)
-                text = "\\em " + text;
+                text = "\\emph{" + text + "}";
         }
     }
 
