@@ -654,21 +654,53 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
 
             if (fmt.m_reformat_digits >= 0)
             {
-                if (fmt.m_reformat_digits != 3)
-                    OUT_THROW("Error, currently only digits=3 is implemented.");
-
-                if (v < 1) {
-                    // not 3: need leading 0.
-                    oss << std::fixed << std::setprecision(3);
+                if (fmt.m_reformat_digits == 2) {
+                    if (v < 1) {
+                        // not 2: need leading 0.
+                        oss << std::fixed << std::setprecision(2);
+                    }
+                    else if (v < 10) {
+                        oss << std::fixed << std::setprecision(1);
+                    }
+                    else {
+                        oss << std::fixed << std::setprecision(0);
+                    }
                 }
-                else if (v < 10) {
-                    oss << std::fixed << std::setprecision(2);
+                else if (fmt.m_reformat_digits == 3) {
+                    if (v < 1) {
+                        // not 3: need leading 0.
+                        oss << std::fixed << std::setprecision(3);
+                    }
+                    else if (v < 10) {
+                        oss << std::fixed << std::setprecision(2);
+                    }
+                    else if (v < 100) {
+                        oss << std::fixed << std::setprecision(1);
+                    }
+                    else {
+                        oss << std::fixed << std::setprecision(0);
+                    }
                 }
-                else if (v < 100) {
-                    oss << std::fixed << std::setprecision(1);
+                else if (fmt.m_reformat_digits == 4) {
+                    if (v < 1) {
+                        // not 4: need leading 0.
+                        oss << std::fixed << std::setprecision(4);
+                    }
+                    else if (v < 10) {
+                        oss << std::fixed << std::setprecision(3);
+                    }
+                    else if (v < 100) {
+                        oss << std::fixed << std::setprecision(2);
+                    }
+                    else if (v < 1000) {
+                        oss << std::fixed << std::setprecision(1);
+                    }
+                    else {
+                        oss << std::fixed << std::setprecision(0);
+                    }
                 }
                 else {
-                    oss << std::fixed << std::setprecision(0);
+                    OUT_THROW("Error, currently only digits={2,3,4} is implemented.");
                 }
             }
             else
