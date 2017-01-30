@@ -51,12 +51,12 @@ line
 line
 %% TABULAR REFORMAT(col 2=(max=bold) col 3-4=(min=emph))
 %% SELECT 0.001, 0.01, 0.1, 1, 10.04, 100.05, 1000.05
-0.001 & 0.01 & \bf 0.1 & \em 1 & \em 10.04 & 100.05 & 1000.05 \\
+0.001 & 0.01 & \textbf{0.1} & \emph{1} & \emph{10.04} & 100.05 & 1000.05 \\
 % END TABULAR SELECT 0.001, 0.01, 0.1, 1, 10.04, 100.05, 1000.05
 line
 %% TABULAR REFORMAT(row 0=(max=bold))
 %% SELECT 0.001, 0.01, 0.1, 1, 1000.05, 10.04, 100.05
-0.001 & 0.01 & 0.1 & 1 & \bf 1000.05 & 10.04 & 100.05 \\
+0.001 & 0.01 & 0.1 & 1 & \textbf{1000.05} & 10.04 & 100.05 \\
 % END TABULAR SELECT 0.001, 0.01, 0.1, 1, 1000.05, 10.04, 100.05
 line
 %% TABULAR REFORMAT(row 1=(max=bold))
