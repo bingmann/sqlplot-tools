@@ -34,6 +34,7 @@
  * Reformatting styles for text or double value cells.
  *
  * cell-level formats:
+ *  - escape (escape special LaTeX characters)
  *  - round=# (# = 'floor', 'ceil' or number of decimal digits)
  *  - precision=# (# = show decimal digits)
  *  - width=# (# = set width of output)
@@ -87,6 +88,9 @@ protected:
     //! Specifications for cell-level formats
     struct Cell
     {
+        //! escape special LaTeX characters
+        bool m_escape;
+
         //! round double numbers, options: floor, ceil, round, precision
         enum { RD_UNDEF, RD_FLOOR, RD_CEIL, RD_ROUND, RD_DIGITS } m_round;
 
@@ -107,7 +111,8 @@ protected:
 
         //! Initialize with sentinels
         Cell()
-            : m_round(RD_UNDEF),
+            : m_escape(false),
+              m_round(RD_UNDEF),
               m_round_digits(-1),
               m_reformat_precision(-1),
               m_reformat_width(-1),

@@ -66,10 +66,6 @@ public:
         return m_lines.scan_for_comment<comment_char>(ln, cprefix);
     }
 
-    //! escape special latex characters
-    static inline std::string
-    escape(const std::string& str);
-
     //! Process % SQL commands
     void sql(size_t ln, size_t indent, const std::string& cmdline);
 
@@ -103,23 +99,6 @@ public:
     //! Process Textlines
     SpLatex(TextLines& lines);
 };
-
-//! escape special latex characters
-inline std::string SpLatex::escape(const std::string& str)
-{
-    std::string out;
-    out.reserve(str.size());
-    for (std::string::const_iterator s = str.begin(); s != str.end(); ++s)
-    {
-        if (*s == '#' || *s == '$' || *s == '%' || *s == '^' || *s == '&' ||
-            *s == '{' || *s == '}' || *s == '_' || *s == '~' || *s == '\\')
-        {
-            out += '\\';
-        }
-        out += *s;
-    }
-    return out;
-}
 
 //! Process % SQL commands
 void SpLatex::sql(size_t /* ln */, size_t /* indent */, const std::string& cmdline)
@@ -295,7 +274,8 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                 std::ostringstream os;
                 for (size_t i = 0; i < groupcols.size(); ++i) {
                     if (i != 0) os << ',';
-                    os << escape(groupfields[i]) << '=' << escape(rowgroup[i]);
+                    os << escape_latex(groupfields[i])
+                       << '=' << escape_latex(rowgroup[i]);
                 }
                 legendlist.push_back(os.str());
             }

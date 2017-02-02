@@ -256,7 +256,12 @@ bool Reformat::Cell::parse_keyformat(const std::string& key,
                                      std::string::const_iterator& curr,
                                      const std::string::const_iterator& end)
 {
-    if (key == "floor")
+    if (key == "escape")
+    {
+        m_escape = true;
+        return true;
+    }
+    else if (key == "floor")
     {
         m_round = RD_FLOOR;
         return true;
@@ -740,6 +745,26 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
                 text = "\\textbf{" + text + "}";
             else if (fmt.m_max_format == Line::MF_EMPH)
                 text = "\\emph{" + text + "}";
+        }
+    }
+    else
+    {
+        Line fmt = m_fmt;
+
+        {
+            linefmt_type::const_iterator rowfmt = m_rowfmt.find(row);
+            if (rowfmt != m_rowfmt.end())
+                fmt.apply(rowfmt->second);
+
+            linefmt_type::const_iterator colfmt = m_colfmt.find(col);
+            if (colfmt != m_colfmt.end())
+                fmt.apply(colfmt->second);
+        }
+
+        if (fmt.m_escape)
+        {
+            // escape special LaTeX characters
+            text = escape_latex(text);
         }
     }
 

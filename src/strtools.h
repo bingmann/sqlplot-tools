@@ -385,4 +385,22 @@ simple_diff(const std::string& strA, const std::string& strB,
     }
 }
 
+//! escape special latex characters
+static inline std::string
+escape_latex(const std::string& str)
+{
+    std::string out;
+    out.reserve(str.size());
+    for (std::string::const_iterator s = str.begin(); s != str.end(); ++s)
+    {
+        if (*s == '#' || *s == '$' || *s == '%' || *s == '^' || *s == '&' ||
+            *s == '{' || *s == '}' || *s == '_' || *s == '~' || *s == '\\')
+        {
+            out += '\\';
+        }
+        out += *s;
+    }
+    return out;
+}
+
 #endif // STRTOOLS_HEADER
