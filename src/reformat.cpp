@@ -328,6 +328,28 @@ bool Reformat::Cell::parse_keyformat(const std::string& key,
 
         return true;
     }
+    else if (key == "prefix")
+    {
+        std::string value;
+
+        if (!parse_keyvalue(curr, end, value))
+            value = "";
+
+        m_prefix = value;
+
+        return true;
+    }
+    else if (key == "suffix")
+    {
+        std::string value;
+
+        if (!parse_keyvalue(curr, end, value))
+            value = "";
+
+        m_suffix = value;
+
+        return true;
+    }
     else
     {
         OUT_THROW("Invalid cell-level key: " << key);
@@ -356,6 +378,12 @@ void Reformat::Cell::apply(const Cell& c)
 
     if (c.m_grouping.size())
         m_grouping = c.m_grouping;
+
+    if (c.m_prefix.size())
+        m_prefix = c.m_prefix;
+
+    if (c.m_suffix.size())
+        m_suffix = c.m_suffix;
 }
 
 //! Test if we need to read the row/column data
@@ -728,6 +756,14 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
 
         text = replace_all(text, ",", fmt.m_grouping);
 
+        // *** add prefix and suffix ***
+
+        if (fmt.m_prefix.size())
+            text = fmt.m_prefix + text;
+
+        if (fmt.m_suffix.size())
+            text = text + fmt.m_suffix;
+
         // *** check for row/column minimum or maximum formatting ***
 
         DBG("fmt: " << in_text << " - " << fmt.m_min_text);
@@ -761,11 +797,18 @@ std::string Reformat::format(int row, int col, const std::string& in_text) const
                 fmt.apply(colfmt->second);
         }
 
+        // *** escape special LaTeX characters ***
+
         if (fmt.m_escape)
-        {
-            // escape special LaTeX characters
             text = escape_latex(text);
-        }
+
+        // *** add prefix and suffix ***
+
+        if (fmt.m_prefix.size())
+            text = fmt.m_prefix + text;
+
+        if (fmt.m_suffix.size())
+            text = text + fmt.m_suffix;
     }
 
     return text;

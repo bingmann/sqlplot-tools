@@ -109,6 +109,12 @@ protected:
         //! thousands grouping separator
         std::string m_grouping;
 
+        //! prefix
+        std::string m_prefix;
+
+        //! suffix
+        std::string m_suffix;
+
         //! Initialize with sentinels
         Cell()
             : m_escape(false),
