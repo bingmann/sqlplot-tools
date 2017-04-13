@@ -206,20 +206,14 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     bool title_mark = false;
     bool ptitle_mark = false;
 
-    if (!groupfields.empty() && is_suffix(groupfields.back(), "=title")) {
-        if (groupfields.size() != 1) {
-            OUT_THROW("MULTIPLOT() has =title mark, but contains multiple columns.");
-        }
-        // remove =title from multiplot string
+    if (!groupfields.empty() && is_suffix(groupfields.back(), "|title")) {
+        // remove |title from multiplot string
         groupfields.back().resize(groupfields.back().size() - 6);
         multiplot.resize(multiplot.size() - 6);
         title_mark = true;
     }
-    else if (!groupfields.empty() && is_suffix(groupfields.back(), "=ptitle")) {
-        if (groupfields.size() != 1) {
-            OUT_THROW("MULTIPLOT() has =ptitle mark, but contains multiple columns.");
-        }
-        // remove =title from multiplot string
+    else if (!groupfields.empty() && is_suffix(groupfields.back(), "|ptitle")) {
+        // remove |ptitle from multiplot string
         groupfields.back().resize(groupfields.back().size() - 7);
         multiplot.resize(multiplot.size() - 7);
         ptitle_mark = true;
@@ -242,14 +236,16 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     if (title_mark && !sql->exist_col("title"))
         OUT_THROW("MULTIPLOT failed: title mark set but result contains no 'title' column.");
 
-    if (ptitle_mark && !sql->exist_col("title"))
-        OUT_THROW("MULTIPLOT failed: ptitle mark set but result contains no 'title' column.");
+    if (ptitle_mark && !sql->exist_col("ptitle"))
+        OUT_THROW("MULTIPLOT failed: ptitle mark set but result contains no 'ptitle' column.");
 
     unsigned int col_x = sql->find_col("x"), col_y = sql->find_col("y");
 
     unsigned int col_title = 0;
-    if (title_mark || ptitle_mark)
+    if (title_mark)
         col_title = sql->find_col("title");
+    if (ptitle_mark)
+        col_title = sql->find_col("ptitle");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
@@ -301,22 +297,22 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
                 lastgroup  = rowgroup;
 
-                // store group's legend string
-                std::ostringstream os;
-                for (size_t i = 0; i < groupcols.size(); ++i) {
-                    if (i != 0) os << ',';
-                    if (title_mark) {
-                        os << escape_latex(sql->text(col_title));
-                    }
-                    else if (ptitle_mark) {
-                        os << sql->text(col_title);
-                    }
-                    else {
+                if (title_mark) {
+                    legendlist.push_back(escape_latex(sql->text(col_title)));
+                }
+                else if (ptitle_mark) {
+                    legendlist.push_back(sql->text(col_title));
+                }
+                else {
+                    // store group's legend string
+                    std::ostringstream os;
+                    for (size_t i = 0; i < groupcols.size(); ++i) {
+                        if (i != 0) os << ',';
                         os << escape_latex(groupfields[i]) << '='
                            << escape_latex(rowgroup[i]);
                     }
+                    legendlist.push_back(os.str());
                 }
-                legendlist.push_back(os.str());
             }
 
             // group fields match with last row -> append coordinates.
