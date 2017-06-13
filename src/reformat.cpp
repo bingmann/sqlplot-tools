@@ -361,6 +361,9 @@ bool Reformat::Cell::parse_keyformat(const std::string& key,
 //! Apply formats of other cell-level object
 void Reformat::Cell::apply(const Cell& c)
 {
+    if (c.m_escape)
+        m_escape = c.m_escape;
+
     if (c.m_round != RD_UNDEF)
     {
         m_round = c.m_round;
