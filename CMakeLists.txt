@@ -126,6 +126,10 @@ endif()
 find_package(Boost 1.42.0 REQUIRED COMPONENTS regex)
 include_directories(${Boost_INCLUDE_DIRS})
 
+# Use ICU
+find_package(ICU REQUIRED COMPONENTS i18n uc)
+include_directories(${ICU_INCLUDE_DIRS})
+
 # descend into source
 add_subdirectory(src)
 
