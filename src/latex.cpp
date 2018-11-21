@@ -205,6 +205,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
     bool title_mark = false;
     bool ptitle_mark = false;
+    bool xerr = false, yerr = false;
 
     if (!groupfields.empty() && is_suffix(groupfields.back(), "|title")) {
         // remove |title from multiplot string
@@ -233,13 +234,21 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     if (!sql->exist_col("y"))
         OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
 
+    if (sql->exist_col("xerr"))
+        xerr = true;
+
+    if (sql->exist_col("yerr"))
+        yerr = true;
+
     if (title_mark && !sql->exist_col("title"))
         OUT_THROW("MULTIPLOT failed: title mark set but result contains no 'title' column.");
 
     if (ptitle_mark && !sql->exist_col("ptitle"))
         OUT_THROW("MULTIPLOT failed: ptitle mark set but result contains no 'ptitle' column.");
 
-    unsigned int col_x = sql->find_col("x"), col_y = sql->find_col("y");
+    unsigned int col_x = sql->find_col("x"), col_y = sql->find_col("y"),
+        col_xerr = xerr ? sql->find_col("xerr") : -1,
+        col_yerr = yerr ? sql->find_col("yerr") : -1;
 
     unsigned int col_title = 0;
     if (title_mark)
@@ -319,6 +328,11 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             coord << " (" << str_reduce(sql->text(col_x))
                   <<  ',' << str_reduce(sql->text(col_y))
                   <<  ')';
+            if (xerr || yerr) {
+                coord << " +- (" << (xerr ? str_reduce(sql->text(col_xerr)) : "0")
+                      << ',' << (yerr ? str_reduce(sql->text(col_yerr)) : "0")
+                      << ')';
+            }
         }
 
         // store last coordates group
