@@ -72,14 +72,17 @@ public:
     //! Process # CONNECT commands
     bool connect(size_t ln, size_t indent, const std::string& cmdline);
 
-    //! Struct to rewrite Gnuplot "plot" directives with new datafile/index pairs
+    //! Struct to rewrite Gnuplot "plot" directives with new datafile/index
+    //! pairs
     struct Dataset
     {
         unsigned int index;
         std::string title;
+        std::string type;
     };
 
-    //! Helper to rewrite Gnuplot "plot" directives with new datafile/index pairs
+    //! Helper to rewrite Gnuplot "plot" directives with new datafile/index
+    //! pairs
     void plot_rewrite(size_t ln, size_t indent,
                       const std::vector<Dataset>& datasets,
                       const char* plot_type);
@@ -157,7 +160,7 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
             if (datasets[i].title.size())
                 oss << " title \"" << datasets[i].title << '"';
 
-            oss << " with linespoints";
+            oss << " with " << datasets[i].type;
         }
 
         if (datasets.size())
@@ -217,7 +220,7 @@ void SpGnuplot::plot_rewrite(size_t ln, size_t indent,
         if (datasets[entry].title.size())
             oss << " title \"" << datasets[entry].title << '"';
 
-        oss << " with linespoints";
+        oss << " with " << datasets[entry].type;
 
         ++entry;
     }
@@ -254,6 +257,7 @@ void SpGnuplot::plot(size_t ln, size_t indent, const std::string& cmdline)
     // append plot line to gnuplot
     std::vector<Dataset> datasets(1);
     datasets[0].index = m_dataindex;
+    datasets[0].type = "linespoints";
 
     // finish index in datafile
     df << std::endl << std::endl;
@@ -296,7 +300,15 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     if (!sql->exist_col("y"))
         OUT_THROW("MULTIPLOT failed: result contains no 'y' column.");
 
-    unsigned int colx = sql->find_col("x"), coly = sql->find_col("y");
+    unsigned int col_x = sql->find_col("x"), col_y = sql->find_col("y");
+
+    int col_xmin = !sql->exist_col("xmin") ? -1 : sql->find_col("xmin");
+    int col_xmax = !sql->exist_col("xmax") ? -1 : sql->find_col("xmax");
+    int col_ymin = !sql->exist_col("ymin") ? -1 : sql->find_col("ymin");
+    int col_ymax = !sql->exist_col("ymax") ? -1 : sql->find_col("ymax");
+
+    bool have_xerrorbars = col_xmin >= 0 && col_xmax >= 0;
+    bool have_yerrorbars = col_ymin >= 0 && col_ymax >= 0;
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
@@ -350,13 +362,32 @@ void SpGnuplot::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                 datasets.push_back(Dataset());
                 datasets.back().index = m_dataindex;
                 datasets.back().title = os.str();
+                datasets.back().type = "linespoints";
+
+                if (have_xerrorbars && have_yerrorbars)
+                    datasets.back().type = "xyerrorbars";
+                else if (have_xerrorbars)
+                    datasets.back().type = "xerrorbars";
+                else if (have_yerrorbars)
+                    datasets.back().type = "yerrorbars";
 
                 df << "# index " << m_dataindex << ' ' << os.str() << std::endl;
             }
 
             // group fields match with last row -> append coordinates.
-            df << sql->text(colx) << '\t'
-               << sql->text(coly) << std::endl;
+            df << sql->text(col_x)
+               << '\t' << sql->text(col_y);
+
+            if (have_xerrorbars) {
+                df << '\t' << sql->text(col_xmin)
+                   << '\t' << sql->text(col_xmax);
+            }
+            if (have_yerrorbars) {
+                df << '\t' << sql->text(col_ymin)
+                   << '\t' << sql->text(col_ymax);
+            }
+
+            df << std::endl;
 
             ++rows;
         }

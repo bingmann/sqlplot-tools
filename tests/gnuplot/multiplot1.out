@@ -66,4 +66,30 @@ plot \
     'multiplot1-data.txt' index 53 title "testsize=4294967424" with linespoints, \
     'multiplot1-data.txt' index 54 title "testsize=8589934720" with linespoints, \
     'multiplot1-data.txt' index 55 title "testsize=17179869312" with linespoints
+
+## MULTIPLOT(funcname)
+## SELECT testsize AS x, FLOOR(bandwidth) AS y,
+## FLOOR(bandwidth * 1.1) AS xmax, FLOOR(bandwidth * 0.9) AS xmin, MULTIPLOT
+## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+plot \
+    'multiplot1-data.txt' index 56 title "funcname=ScanRead64PtrUnrollLoop" with xerrorbars, \
+    'multiplot1-data.txt' index 57 title "funcname=ScanWrite64PtrUnrollLoop" with xerrorbars
+
+## MULTIPLOT(funcname)
+## SELECT testsize AS x, FLOOR(bandwidth) AS y,
+## FLOOR(bandwidth * 1.1) AS ymax, FLOOR(bandwidth * 0.9) AS ymin, MULTIPLOT
+## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+plot \
+    'multiplot1-data.txt' index 58 title "funcname=ScanRead64PtrUnrollLoop" with yerrorbars, \
+    'multiplot1-data.txt' index 59 title "funcname=ScanWrite64PtrUnrollLoop" with yerrorbars
+
+## MULTIPLOT(funcname)
+## SELECT testsize AS x, FLOOR(bandwidth) AS y,
+## FLOOR(bandwidth * 1.1) AS xmax, FLOOR(bandwidth * 0.9) AS xmin,
+## FLOOR(bandwidth * 1.1) AS ymax, FLOOR(bandwidth * 0.9) AS ymin, MULTIPLOT
+## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+plot \
+    'multiplot1-data.txt' index 60 title "funcname=ScanRead64PtrUnrollLoop" with xyerrorbars, \
+    'multiplot1-data.txt' index 61 title "funcname=ScanWrite64PtrUnrollLoop" with xyerrorbars
+
 quit

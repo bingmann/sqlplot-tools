@@ -15,4 +15,21 @@ plot \
     'stdin-data.txt' index 3 with points, \
     'stdin-data.txt' index 4 with lines, \
     'stdin-data.txt' index 5 with lines
+
+## MULTIPLOT(funcname)
+## SELECT testsize AS x, FLOOR(bandwidth) AS y,
+## FLOOR(bandwidth * 1.1) AS xmax, FLOOR(bandwidth * 0.9) AS xmin, MULTIPLOT
+## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+
+## MULTIPLOT(funcname)
+## SELECT testsize AS x, FLOOR(bandwidth) AS y,
+## FLOOR(bandwidth * 1.1) AS ymax, FLOOR(bandwidth * 0.9) AS ymin, MULTIPLOT
+## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+
+## MULTIPLOT(funcname)
+## SELECT testsize AS x, FLOOR(bandwidth) AS y,
+## FLOOR(bandwidth * 1.1) AS xmax, FLOOR(bandwidth * 0.9) AS xmin,
+## FLOOR(bandwidth * 1.1) AS ymax, FLOOR(bandwidth * 0.9) AS ymin, MULTIPLOT
+## FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+
 quit
