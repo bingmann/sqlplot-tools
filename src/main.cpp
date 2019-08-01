@@ -25,6 +25,8 @@
 #include <cstring>
 #include <fstream>
 
+#include <unistd.h>
+
 #include "simpleopt.h"
 #include "common.h"
 #include "strtools.h"

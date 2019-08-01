@@ -169,8 +169,7 @@ endif()
 # Did we find anything?
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(PostgreSQL
-                                  REQUIRED_VARS PostgreSQL_LIBRARY
-                                  VERSION_VAR PostgreSQL_VERSION_STRING)
+                                  REQUIRED_VARS PostgreSQL_LIBRARY)
 set(PostgreSQL_FOUND  ${POSTGRESQL_FOUND})
 
 # Now try to get the include and library path.

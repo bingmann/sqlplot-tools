@@ -69,7 +69,7 @@ if(WITH_POSTGRESQL)
 
   set(PostgreSQL_ADDITIONAL_VERSIONS "9.3" "9.2")
 
-  find_package(PostgreSQL)
+  find_package(PostgreSQL REQUIRED)
 
   if(PostgreSQL_FOUND)
     set(SQL_LIBRARIES ${PostgreSQL_LIBRARIES} ${SQL_LIBRARIES})
