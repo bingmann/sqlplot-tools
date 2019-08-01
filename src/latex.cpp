@@ -170,7 +170,7 @@ void SpLatex::plot(size_t ln, size_t indent, const std::string& cmdline)
 
     // check whether line contains an \addplot command
     static const boost::regex
-        re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
+        re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\}[^;]*;.*)");
     boost::smatch rm;
 
     if (ln < m_lines.size() &&
