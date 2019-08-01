@@ -31,7 +31,7 @@ foreach(infile ${tex_files})
   get_filename_component(basename ${infile} NAME)
   # write test case
   add_test(NAME latex_${basename}
-    COMMAND ${CMAKE_BINARY_DIR}/src/sqlplot-tools ${TEST_OPTIONS} ${infile} -o ${outfile}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${CMAKE_BINARY_DIR}/src/sqlplot-tools
+      ${TEST_OPTIONS} ${infile} -o ${outfile} -W  ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endforeach()

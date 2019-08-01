@@ -88,7 +88,8 @@ sp_process_stream(const std::string& filename, std::istream& is)
 
 //! define identifiers for command line arguments
 enum { OPT_HELP, OPT_VERBOSE, OPT_FILETYPE,
-       OPT_OUTPUT, OPT_CHECK_OUTPUT, OPT_DATABASE, OPT_RANGE };
+       OPT_OUTPUT, OPT_CHECK_OUTPUT, OPT_DATABASE, OPT_RANGE,
+       OPT_WORK_DIR };
 
 //! define command line arguments
 static CSimpleOpt::SOption sopt_list[] = {
@@ -100,6 +101,7 @@ static CSimpleOpt::SOption sopt_list[] = {
     { OPT_CHECK_OUTPUT, "-C", SO_NONE },
     { OPT_DATABASE,     "-D", SO_REQ_SEP },
     { OPT_RANGE,        "-R", SO_REQ_SEP },
+    { OPT_WORK_DIR,     "-W", SO_REQ_SEP },
     SO_END_OF_OPTIONS
 };
 
@@ -116,7 +118,8 @@ sp_process_usage(const std::string& progname)
         "  -o <file>  Output all processed files to this stream." << std::endl <<
         "  -C         Verify that -o output file matches processed data (for tests)." << std::endl <<
         "  -D <type>  Select SQL database type and file or database." << std::endl <<
-        "  -R <name>  Process only named RANGE in files." << std::endl);
+        "  -R <name>  Process only named RANGE in files." << std::endl <<
+        "  -W <dir>   Change working directory at start-up." << std::endl);
 
     return EXIT_FAILURE;
 }
@@ -130,6 +133,9 @@ sp_process(int argc, char* argv[])
 
     // database connection to establish
     std::string opt_db_conninfo;
+
+    // working directory
+    std::string opt_work_dir;
 
     //! parse command line parameters using SimpleOpt
     CSimpleOpt args(argc, argv, sopt_list);
@@ -169,7 +175,16 @@ sp_process(int argc, char* argv[])
         case OPT_RANGE:
             gopt_ranges.push_back(args.OptionArg());
             break;
+
+        case OPT_WORK_DIR:
+            opt_work_dir = args.OptionArg();
+            break;
         }
+    }
+
+    if (!opt_work_dir.empty()) {
+        if (chdir(opt_work_dir.c_str()) != 0)
+            OUT_THROW("Error chdir() to work directory: " << strerror(errno));
     }
 
     // make connection to the database
