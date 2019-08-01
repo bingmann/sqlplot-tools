@@ -39,8 +39,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # options to build with various database libraries
-option(WITH_POSTGRESQL "Build SqlPlotTools with PostgreSQL interface" ON)
-option(WITH_MYSQL "Build SqlPlotTools with MySQL interface" ON)
+option(WITH_POSTGRESQL "Build sqlplot-tools with PostgreSQL interface" ON)
+option(WITH_MYSQL "Build sqlplot-tools with MySQL interface" ON)
 
 # option to update all tests with new output
 option(UPDATE_TESTS "Update test output with program output" OFF)
@@ -53,7 +53,7 @@ set(TEST_DATABASE "Sqlite"
   CACHE STRING "Select the database system to run tests on.")
 
 # allow user to specify other binary installation paths
-set(INSTALL_BIN_DIR "bin" CACHE PATH "Installation directory for sqlplottools")
+set(INSTALL_BIN_DIR "bin" CACHE PATH "Installation directory for sqlplot-tools")
 
 # enable warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")

@@ -1,5 +1,5 @@
 /******************************************************************************
- * src/sp-process.cpp
+ * src/sqlplot-tools.cpp
  *
  * Process embedded SQL plot instructions in LaTeX or Gnuplot files.
  *

@@ -1,7 +1,7 @@
 ###############################################################################
 # src/CMakeLists.txt
 #
-# CMake file for sqlplottools utility set.
+# CMake file for sqlplot-tools utility set.
 #
 ###############################################################################
 # Copyright (C) 2013-2015 Timo Bingmann <tb@panthema.net>
@@ -30,7 +30,7 @@ if(MYSQL_FOUND)
   set(SQL_SOURCES ${SQL_SOURCES} mysql.cpp)
 endif()
 
-add_executable(sqlplottools
+add_executable(sqlplot-tools
   main.cpp
   latex.cpp
   gnuplot.cpp
@@ -44,8 +44,8 @@ add_executable(sqlplottools
   reformat.cpp
   )
 
-target_link_libraries(sqlplottools ${SQL_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(sqlplot-tools ${SQL_LIBRARIES} ${Boost_LIBRARIES})
 
-install(TARGETS sqlplottools RUNTIME DESTINATION ${INSTALL_BIN_DIR})
+install(TARGETS sqlplot-tools RUNTIME DESTINATION ${INSTALL_BIN_DIR})
 
 ################################################################################

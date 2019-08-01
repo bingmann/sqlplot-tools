@@ -52,7 +52,7 @@ cmake ..
 make
 ```
 
-The main program is **`sp-process`**, located in `src/`.
+The main program is **`sqlplot-tools`**, located in `src/`.
 
 # Tutorial
 
@@ -86,7 +86,7 @@ To see how SqlPlotTools imports data sets, we suggest you run
 
 ```
 touch test.db
-sp-process import-data -D sqlite:test.db ex1 examples/sorting-speed/stats.txt
+sqlplot-tools import-data -D sqlite:test.db ex1 examples/sorting-speed/stats.txt
 ```
 
 This will import RESULT rows from the included [stats.txt](examples/sorting-speed/stats.txt) file into the table ex1 in an SQLite3 database called `test.db`. The types of the different columns are automatically detected during import, thus there is no need to specify a `CREATE TABLE` directive. Without the `-D sqlite:test.db`, the table would be created in a temporary in-memory database, and thus discarded after the program ends. However, since we saved the database, we can manually select from the data. The imported table looks as follows:
@@ -146,14 +146,14 @@ x           y                algo
 
 The SQL statement already suggests how the data rows are transformed by SqlPlotTools into plot lines. The parenthesised argument "algo" (in general "col1,col2,col3") is used to **group multiple rows** into a plot line. The plot line is automatically labelled using the values of the group columns.
 
-To generate the plot data from the stats and update the Gnuplot file, simply run `sp-process` in the `examples/sorting-speed` directory, followed by `gnuplot`:
+To generate the plot data from the stats and update the Gnuplot file, simply run `sqlplot-tools` in the `examples/sorting-speed` directory, followed by `gnuplot`:
 
 ```
-sp-process speed.plot
+sqlplot-tools speed.plot
 gnuplot speed.plot
 ```
 
-The `sp-process` call will parse [speed.plot](examples/sorting-speed/speed.plot) for SQL directives, execute them, and modified the plot file. The lines after these directives are **replaced** with the corresponding results, and in the case of Gnuplot, and additional [speed-data.txt](examples/sorting-speed/speed-data.txt) file is generated, which contains the actual data points of the plot. Since the current tarball already contains `speed-data.txt` and `speed.pdf`, we suggest deleting these two files and recreating them with the command above.
+The `sqlplot-tools` call will parse [speed.plot](examples/sorting-speed/speed.plot) for SQL directives, execute them, and modified the plot file. The lines after these directives are **replaced** with the corresponding results, and in the case of Gnuplot, and additional [speed-data.txt](examples/sorting-speed/speed-data.txt) file is generated, which contains the actual data points of the plot. Since the current tarball already contains `speed-data.txt` and `speed.pdf`, we suggest deleting these two files and recreating them with the command above.
 
 ## Generating LaTeX Pgfplots and Tabulars using SQL Statements
 
