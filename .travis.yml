@@ -4,6 +4,11 @@ branches:
   only:
     - master
 
+dist: trusty
+
+services:
+  - postgresql
+
 env:
   global:
     - CMAKE_ARGS_ALL="-DBUILD_EXAMPLES=ON -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/share/postgresql/"
@@ -36,7 +41,7 @@ install:
 
 before_script:
   - mkdir build && cd build && cmake -DCMAKE_C_COMPILER=$CMAKE_CC -DCMAKE_CXX_COMPILER=$CMAKE_CXX $CMAKE_ARGS $CMAKE_ARGS_ALL -DTEST_DATABASE=$DB  ..
-  - if [ "$DB" == "postgresql" ]; then psql -c "CREATE DATABASE $USER;" -U postgres; fi
+  - if [ "$DB" == "postgresql" ]; then psql -c "CREATE DATABASE $USER;" -U postgres || true; fi
   - if [ "$DB" == "mysql" ]; then mysql -e "CREATE DATABASE test;"; fi
 
 script:
