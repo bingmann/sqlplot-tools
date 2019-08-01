@@ -29,7 +29,7 @@
 #include <set>
 
 //! Encapsules one sp-importdata processes, which can also be run from other
-//! sp-processors.
+//! sqlplot processors.
 class ImportData
 {
 protected:

@@ -52,6 +52,9 @@ option(BUILD_EXAMPLES "Build example programs (for build testing)" OFF)
 set(TEST_DATABASE "Sqlite"
   CACHE STRING "Select the database system to run tests on.")
 
+# allow user to specify other binary installation paths
+set(INSTALL_BIN_DIR "bin" CACHE PATH "Installation directory for sqlplottools")
+
 # enable warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
 
