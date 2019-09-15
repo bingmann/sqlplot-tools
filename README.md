@@ -39,7 +39,7 @@ SqlPlotTools is written in C++ and requires the Boost.Regex and SQLite3 developm
 On Ubuntu or Debian this can be done using:
 
 ```
-apt-get install libboost-regex1.48-dev libsqlite3-dev libpq-dev libmysqlclient-dev
+apt-get install libboost-regex-dev libsqlite3-dev libpq-dev libmysqlclient-dev
 ```
 
 The compilation process uses CMake, and the following sequence of commands will correctly download and compile SqlPlotTools:
