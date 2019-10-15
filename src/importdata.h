@@ -92,8 +92,15 @@ public:
     //! insert a line into the database table
     bool insert_line(const std::string& line);
 
-    //! process an input stream (file or stdin), cache lines or insert directly.
-    void process_stream(std::istream& is);
+    //! process a line: cache lines or insert directly.
+    bool process_line(const std::string& line);
+
+    //! process an input stream and split into lines
+    void process_stream(FILE* in, const char* fname);
+    void process_stream(std::istream& in, const char* fname);
+
+    //! process a line: cache lines or insert directly.
+    void process_file(const std::string& fname);
 
     //! process cached data lines
     void process_linedata();

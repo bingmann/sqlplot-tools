@@ -245,21 +245,173 @@ bool ImportData::insert_line(const std::string& line)
 }
 
 //! process an input stream (file or stdin), cache lines or insert directly.
-void ImportData::process_stream(std::istream& is)
+void ImportData::process_stream(std::istream& is, const char* fname)
 {
+    m_count = 0;
+
+    std::string line;
+    while (std::getline(is,line))
+    {
+        if (!process_line(line))
+            return;
+    }
+
+    if (mopt_firstline) {
+        OUT("Imported " << m_count << " rows of data from " << fname);
+    }
+    else {
+        OUT("Cached " << m_count << " rows of data from " << fname);
+    }
+}
+
+//! scan string of given size for ch starting at pos and return position or
+//! std::string::npos
+static inline
+size_t string_find(const char* str, size_t size, char ch, size_t pos) {
+    while (pos < size) {
+        if (str[pos] == ch)
+            return pos;
+        ++pos;
+    }
+    return std::string::npos;
+}
+
+//! process an input stream (file or stdin), cache lines or insert directly.
+void ImportData::process_stream(FILE* in, const char* fname)
+{
+    m_count = 0;
+
+    char buffer[64 * 1024u];
     std::string line;
 
-    while ( std::getline(is,line) )
+    while (!feof(in))
     {
-        if (!mopt_all_lines && is_result_line(line) == 0)
-            continue;
+        size_t rb = fread(buffer, 1, sizeof(buffer), in);
 
-        if (mopt_verbose >= 2)
-            OUT("line: " << line);
+        std::string::size_type pos = 0, nl;
+        while ((nl = string_find(buffer, rb, '\n', pos)) != std::string::npos) {
+            line.append(buffer + pos, nl - pos);
+            if (!process_line(line))
+                return;
+            line.clear();
+            pos = nl + 1;
+        }
+        line.append(buffer + pos, rb - pos);
+    }
 
-        std::set<std::string> keyset;
+    if (mopt_firstline) {
+        OUT("Imported " << m_count << " rows of data from " << fname);
+    }
+    else {
+        OUT("Cached " << m_count << " rows of data from " << fname);
+    }
+}
 
-        if (!mopt_firstline)
+//! Checks if the given match string is located at the end of this string.
+static inline
+bool ends_with(const std::string& str, const char* match) {
+    size_t str_size = str.size(), match_size = strlen(match);
+    if (match_size > str_size)
+        return false;
+
+    std::string::const_iterator s = str.end() - match_size;
+    while (*match != 0) {
+        if (*s != *match) return false;
+        ++s, ++match;
+    }
+    return true;
+}
+
+//! process a line: cache lines or insert directly.
+void ImportData::process_file(const std::string& fname)
+{
+    if (ends_with(fname, ".gz")) {
+        FILE* in = popen(("gzip -dc " + fname).c_str(), "r");
+        if (in == NULL) {
+            if (mopt_empty_okay)
+                OUT("Error reading " << fname << ": " << strerror(errno));
+            else
+                OUT_THROW("Error reading " << fname << ": " << strerror(errno));
+        }
+        else {
+            process_stream(in, fname.c_str());
+            pclose(in);
+        }
+    }
+    else if (ends_with(fname, ".bz2")) {
+        FILE* in = popen(("bzip2 -dc " + fname).c_str(), "r");
+        if (in == NULL) {
+            if (mopt_empty_okay)
+                OUT("Error reading " << fname << ": " << strerror(errno));
+            else
+                OUT_THROW("Error reading " << fname << ": " << strerror(errno));
+        }
+        else {
+            process_stream(in, fname.c_str());
+            pclose(in);
+        }
+    }
+    else if (ends_with(fname, ".xz")) {
+        FILE* in = popen(("xz -dc " + fname).c_str(), "r");
+        if (in == NULL) {
+            if (mopt_empty_okay)
+                OUT("Error reading " << fname << ": " << strerror(errno));
+            else
+                OUT_THROW("Error reading " << fname << ": " << strerror(errno));
+        }
+        else {
+            process_stream(in, fname.c_str());
+            pclose(in);
+        }
+    }
+    else {
+        std::ifstream in(fname.c_str());
+        if (!in.good()) {
+            if (mopt_empty_okay)
+                OUT("Error reading " << fname << ": " << strerror(errno));
+            else
+                OUT_THROW("Error reading " << fname << ": " << strerror(errno));
+        }
+        else {
+            process_stream(in, fname.c_str());
+        }
+    }
+}
+
+//! process a line: cache lines or insert directly.
+bool ImportData::process_line(const std::string& line)
+{
+    if (!mopt_all_lines && is_result_line(line) == 0)
+        return true;
+
+    if (mopt_verbose >= 2)
+        OUT("line: " << line);
+
+    std::set<std::string> keyset;
+
+    if (!mopt_firstline)
+    {
+        // split line and detect types of each field
+        slist_type slist = split_result_line(line);
+
+        size_t col = 0;
+        for (slist_type::iterator si = slist.begin();
+             si != slist.end(); ++si, ++col)
+        {
+            if (si->size() == 0) return true;
+            std::string key, value;
+            split_keyvalue(*si, col, key, value);
+            key = dedup_key(key, keyset);
+            m_fieldset.add_field(key, value);
+        }
+
+        // cache line
+        m_linedata.push_back(line);
+        ++m_count, ++m_total_count;
+    }
+    else
+    {
+        if (m_total_count == 0)
         {
             // split line and detect types of each field
             slist_type slist = split_result_line(line);
@@ -268,44 +420,23 @@ void ImportData::process_stream(std::istream& is)
             for (slist_type::iterator si = slist.begin();
                  si != slist.end(); ++si, ++col)
             {
-                if (si->size() == 0) continue;
+                if (si->size() == 0) return true;
                 std::string key, value;
                 split_keyvalue(*si, col, key, value);
                 key = dedup_key(key, keyset);
                 m_fieldset.add_field(key, value);
             }
 
-            // cache line
-            m_linedata.push_back(line);
+            // immediately create table from first row
+            if (!create_table()) return false;
+        }
+
+        if (insert_line(line)) {
             ++m_count, ++m_total_count;
         }
-        else
-        {
-            if (m_total_count == 0)
-            {
-                // split line and detect types of each field
-                slist_type slist = split_result_line(line);
-
-                size_t col = 0;
-                for (slist_type::iterator si = slist.begin();
-                     si != slist.end(); ++si, ++col)
-                {
-                    if (si->size() == 0) continue;
-                    std::string key, value;
-                    split_keyvalue(*si, col, key, value);
-                    key = dedup_key(key, keyset);
-                    m_fieldset.add_field(key, value);
-                }
-
-                // immediately create table from first row
-                if (!create_table()) return;
-            }
-
-            if (insert_line(line)) {
-                ++m_count, ++m_total_count;
-            }
-        }
     }
+
+    return true;
 }
 
 //! process cached data lines
@@ -479,34 +610,13 @@ int ImportData::main(int argc, char* argv[])
         }
 
         for (int fi = 0; fi < glob.FileCount(); ++fi)
-        {
-            const char* fname = glob.File(fi);
-
-            m_count = 0;
-            std::ifstream in(fname);
-            if (!in.good()) {
-                if (mopt_empty_okay)
-                    OUT("Error reading " << fname << ": " << strerror(errno));
-                else
-                    OUT_THROW("Error reading " << fname << ": " << strerror(errno));
-            }
-            else {
-                process_stream(in);
-
-                if (mopt_firstline) {
-                    OUT("Imported " << m_count << " rows of data from " << fname);
-                }
-                else {
-                    OUT("Cached " << m_count << " rows of data from " << fname);
-                }
-            }
-        }
+            process_file(glob.File(fi));
     }
-    else // no file arguments -> process stdin
+    else
     {
+        // no file arguments -> process stdin
         OUT("Reading data from stdin ...");
-
-        process_stream(std::cin);
+        process_stream(stdin, "<stdin>");
     }
 
     // process cached data lines
