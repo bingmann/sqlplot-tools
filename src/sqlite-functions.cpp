@@ -136,6 +136,12 @@ SQLITE_EXTENSION_INIT1
 
 #include <stdlib.h>
 
+#include <cassert>
+/* Include ICU headers */
+#include <unicode/utypes.h>
+#include <unicode/uregex.h>
+#include <unicode/ustring.h>
+
 #ifndef _MAP_H_
 #define _MAP_H_
 
@@ -1813,6 +1819,121 @@ static void differenceFunc(sqlite3_context *context, int argc, sqlite3_value **a
 }
 #endif
 
+/* the following 113 lines are stolen from
+ * https://github.com/gwenn/sqlite-regex-replace-ext/blob/master/icu_replace.c */
+/* stolen from icu standard extension */
+static void xFree(void *p){
+  sqlite3_free(p);
+}
+/* stolen from icu standard extension */
+static void icuFunctionError(
+  sqlite3_context *pCtx,
+  const char *zName,
+  UErrorCode e
+){
+  char zBuf[128];
+  sqlite3_snprintf(128, zBuf, "ICU error: %s(): %s", zName, u_errorName(e));
+  sqlite3_result_error(pCtx, zBuf, -1);
+}
+/* stolen from icu standard extension */
+static void icuRegexpDelete(void *p){
+  URegularExpression *pExpr = (URegularExpression *)p;
+  uregex_close(pExpr);
+}
+
+static void icuReplaceAllFunc(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  UErrorCode status = U_ZERO_ERROR;
+  URegularExpression *pExpr;
+  UChar *zOutput, *zOld;
+  int nInput;
+  int nOutput;
+  int32_t destLength;
+
+  (void)argc;  /* Unused parameter */
+
+  const UChar *zString = (UChar*) sqlite3_value_text16(argv[1]);
+
+  /* If the text is NULL, then the result is also NULL. */
+  if( !zString ){
+    return;
+  }
+
+  const UChar *zReplacement = (UChar*) sqlite3_value_text16(argv[2]);
+  if ( !zReplacement ) {
+    sqlite3_result_error(context, "no replacement string", -1);
+    return;
+  }
+
+  pExpr = (URegularExpression*) sqlite3_get_auxdata(context, 0);
+  if( !pExpr ){
+      const UChar *zPattern = (UChar*)sqlite3_value_text16(argv[0]);
+    if( !zPattern ){
+      return;
+    }
+    pExpr = uregex_open(zPattern, -1, 0, 0, &status);
+
+    if( U_SUCCESS(status) ){
+      sqlite3_set_auxdata(context, 0, pExpr, icuRegexpDelete);
+    }else{
+      assert(!pExpr);
+      icuFunctionError(context, "uregex_open", status);
+      return;
+    }
+  }
+
+  /* Configure the text that the regular expression operates on. */
+  uregex_setText(pExpr, zString, -1, &status);
+  if( !U_SUCCESS(status) ){
+    icuFunctionError(context, "uregex_setText", status);
+    return;
+  }
+/*
+  int32_t   uregex_replaceAll (URegularExpression *regexp, const UChar *replacementText, int32_t replacementLength, UChar *destBuf, int32_t destCapacity, UErrorCode *status)
+*/
+  nInput = sqlite3_value_bytes16(argv[1]);
+  nOutput = nInput * 2 + 2;
+  zOutput = (UChar*) sqlite3_malloc(nOutput);
+  if( !zOutput ){
+    return;
+  }
+
+  /* Attempt the replace */
+  destLength = uregex_replaceAll(pExpr, zReplacement, -1, zOutput, nOutput/2, &status);
+  if( !U_SUCCESS(status) ){
+    if (U_BUFFER_OVERFLOW_ERROR == status) {
+      //sqlite3_log(SQLITE_ERROR, "%d -> %d", nOutput/2, destLength);
+      zOld = zOutput;
+      zOutput = (UChar*)sqlite3_realloc(zOutput, destLength * 2);
+      if ( !zOutput ) {
+        xFree(zOld);
+        icuFunctionError(context, "uregex_replaceAll", status);
+        return;
+      }
+      status = U_ZERO_ERROR;
+      destLength = uregex_replaceAll(pExpr, zReplacement, -1, zOutput, destLength, &status);
+    }
+    if( !U_SUCCESS(status) ){
+      xFree(zOutput);
+      icuFunctionError(context, "uregex_replaceAll", status);
+      return;
+    }
+  }
+
+  /* Set the text that the regular expression operates on to a NULL
+  ** pointer. This is not really necessary, but it is tidier than
+  ** leaving the regular expression object configured with an invalid
+  ** pointer after this function returns.
+  */
+  uregex_setText(pExpr, 0, 0, &status);
+
+  sqlite3_result_text16(context, zOutput, -1, xFree);
+}
+
+
 /*
 ** This function registered all of the above C functions as SQL
 ** functions.  This should be the only routine in this file with
@@ -1885,6 +2006,7 @@ int RegisterExtensionFunctions(sqlite3 *db){
     { "padr",               2, 0, SQLITE_UTF8,    0, padrFunc },
     { "padc",               2, 0, SQLITE_UTF8,    0, padcFunc },
     { "strfilter",          2, 0, SQLITE_UTF8,    0, strfilterFunc },
+    { "regex_replace",      3, 0, SQLITE_ANY,     0, icuReplaceAllFunc },
 
   };
   /* Aggregate functions */
