@@ -203,6 +203,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::vector<std::string> groupfields = split(multiplot, ',');
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
+    bool attr_mark = false;
     bool title_mark = false;
     bool ptitle_mark = false;
     bool xerr = false, yerr = false;
@@ -218,6 +219,13 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         groupfields.back().resize(groupfields.back().size() - 7);
         multiplot.resize(multiplot.size() - 7);
         ptitle_mark = true;
+    }
+
+    if (!groupfields.empty() && is_suffix(groupfields.back(), "|attr")) {
+        // remove |attr from multiplot string
+        groupfields.back().resize(groupfields.back().size() - 5);
+        multiplot.resize(multiplot.size() - 5);
+        attr_mark = true;
     }
 
     // execute query
@@ -246,6 +254,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     if (ptitle_mark && !sql->exist_col("ptitle"))
         OUT_THROW("MULTIPLOT failed: ptitle mark set but result contains no 'ptitle' column.");
 
+    if (attr_mark && !sql->exist_col("attr"))
+        OUT_THROW("MULTIPLOT failed: attr mark set but result contains no 'attr' column.");
+
     unsigned int col_x = sql->find_col("x"), col_y = sql->find_col("y"),
         col_xerr = xerr ? sql->find_col("xerr") : -1,
         col_yerr = yerr ? sql->find_col("yerr") : -1;
@@ -255,6 +266,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         col_title = sql->find_col("title");
     if (ptitle_mark)
         col_title = sql->find_col("ptitle");
+    unsigned int col_attr = 0;
+    if (attr_mark)
+        col_attr = sql->find_col("attr");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
@@ -272,6 +286,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     // collect coordinates {...} clause groups
     std::vector<std::string> coordlist;
     std::vector<std::string> legendlist;
+    std::vector<std::string> attrlist;
 
     {
         std::vector<std::string> lastgroup;
@@ -322,6 +337,10 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                     }
                     legendlist.push_back(os.str());
                 }
+
+                if (attr_mark) {
+                    attrlist.push_back(sql->text(col_attr));
+                }
             }
 
             // group fields match with last row -> append coordinates.
@@ -344,6 +363,8 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
     for (size_t i = 0; i < coordlist.size(); ++i)
     {
+        if (attr_mark)
+            OUTC(gopt_verbose >= 1, "attr {" << attrlist[i] << " }");
         OUTC(gopt_verbose >= 1, "coordinates {" << coordlist[i] << " }");
         OUTC(gopt_verbose >= 1, "legend {" << legendlist[i] << " }");
     }
@@ -367,7 +388,13 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         // copy styles from \addplot line
         if (entry < coordlist.size())
         {
-            out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
+            if (attr_mark) {
+                // can't copy styles when an attribute is being selected
+                out << "\\addplot[" << attrlist[entry] << "] coordinates { "
+                    << coordlist[entry] << " " << rm[2] << std::endl;
+            } else {
+                out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
+            }
 
             // check following \addlegendentry
             if (eln+1 < m_lines.size() &&
@@ -403,8 +430,12 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     // append missing \addplot / \addlegendentry pairs
     while (entry < coordlist.size())
     {
-        out << "\\addplot coordinates {" << coordlist[entry]
-            << " };" << std::endl;
+        if (attr_mark)
+            out << "\\addplot[" << attrlist[entry] << "] coordinates {"
+                << coordlist[entry] << " };" << std::endl;
+        else
+            out << "\\addplot coordinates {" << coordlist[entry]
+                << " };" << std::endl;
 
         out << "\\addlegendentry{" << legendlist[entry]
             << "};" << std::endl;
