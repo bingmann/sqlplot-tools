@@ -208,24 +208,29 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     bool ptitle_mark = false;
     bool xerr = false, yerr = false;
 
-    if (!groupfields.empty() && is_suffix(groupfields.back(), "|title")) {
-        // remove |title from multiplot string
-        groupfields.back().resize(groupfields.back().size() - 6);
-        multiplot.resize(multiplot.size() - 6);
-        title_mark = true;
-    }
-    else if (!groupfields.empty() && is_suffix(groupfields.back(), "|ptitle")) {
-        // remove |ptitle from multiplot string
-        groupfields.back().resize(groupfields.back().size() - 7);
-        multiplot.resize(multiplot.size() - 7);
-        ptitle_mark = true;
-    }
-
-    if (!groupfields.empty() && is_suffix(groupfields.back(), "|attr")) {
-        // remove |attr from multiplot string
-        groupfields.back().resize(groupfields.back().size() - 5);
-        multiplot.resize(multiplot.size() - 5);
-        attr_mark = true;
+    while (!groupfields.empty() && groupfields.back().find('|') != std::string::npos) {
+        std::string& field = groupfields.back();
+        if (!groupfields.empty() && is_suffix(field, "|title")) {
+            // remove |title from multiplot string
+            field.resize(field.size() - 6);
+            multiplot.resize(multiplot.size() - 6);
+            title_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|ptitle")) {
+            // remove |ptitle from multiplot string
+            field.resize(field.size() - 7);
+            multiplot.resize(multiplot.size() - 7);
+            ptitle_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|attr")) {
+            // remove |attr from multiplot string
+            field.resize(field.size() - 5);
+            multiplot.resize(multiplot.size() - 5);
+            attr_mark = true;
+        } else{
+            std::string modifier = field.substr(field.find('|'));
+            OUT_THROW("MULTIPLOT failed: unknown modifier '" + modifier + "'");
+        }
     }
 
     // execute query
