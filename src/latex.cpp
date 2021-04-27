@@ -203,21 +203,50 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::vector<std::string> groupfields = split(multiplot, ',');
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
+    bool attr_mark = false;
+    bool attrplus_mark = false;
     bool title_mark = false;
     bool ptitle_mark = false;
+    bool nolegend_mark = false;
     bool xerr = false, yerr = false;
 
-    if (!groupfields.empty() && is_suffix(groupfields.back(), "|title")) {
-        // remove |title from multiplot string
-        groupfields.back().resize(groupfields.back().size() - 6);
-        multiplot.resize(multiplot.size() - 6);
-        title_mark = true;
-    }
-    else if (!groupfields.empty() && is_suffix(groupfields.back(), "|ptitle")) {
-        // remove |ptitle from multiplot string
-        groupfields.back().resize(groupfields.back().size() - 7);
-        multiplot.resize(multiplot.size() - 7);
-        ptitle_mark = true;
+    while (!groupfields.empty() && groupfields.back().find('|') != std::string::npos) {
+        std::string& field = groupfields.back();
+        if (!groupfields.empty() && is_suffix(field, "|title")) {
+            // remove |title from multiplot string
+            field.resize(field.size() - 6);
+            multiplot.resize(multiplot.size() - 6);
+            title_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|ptitle")) {
+            // remove |ptitle from multiplot string
+            field.resize(field.size() - 7);
+            multiplot.resize(multiplot.size() - 7);
+            ptitle_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|nolegend")) {
+            // remove |nolegend from multiplot string
+            field.resize(field.size() - 9);
+            multiplot.resize(multiplot.size() - 9);
+            nolegend_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|attr")) {
+            // remove |attr from multiplot string
+            field.resize(field.size() - 5);
+            multiplot.resize(multiplot.size() - 5);
+            attr_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|attrplus")) {
+            // remove |attrplus from multiplot string
+            field.resize(field.size() - 9);
+            multiplot.resize(multiplot.size() - 9);
+            attr_mark = true;
+            attrplus_mark = true;
+        }
+        else {
+            std::string modifier = field.substr(field.find('|'));
+            OUT_THROW("MULTIPLOT failed: unknown modifier '" + modifier + "'");
+        }
     }
 
     // execute query
@@ -246,6 +275,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     if (ptitle_mark && !sql->exist_col("ptitle"))
         OUT_THROW("MULTIPLOT failed: ptitle mark set but result contains no 'ptitle' column.");
 
+    if (attr_mark && !sql->exist_col("attr"))
+        OUT_THROW("MULTIPLOT failed: attr mark set but result contains no 'attr' column.");
+
     unsigned int col_x = sql->find_col("x"), col_y = sql->find_col("y"),
         col_xerr = xerr ? sql->find_col("xerr") : -1,
         col_yerr = yerr ? sql->find_col("yerr") : -1;
@@ -255,6 +287,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         col_title = sql->find_col("title");
     if (ptitle_mark)
         col_title = sql->find_col("ptitle");
+    unsigned int col_attr = 0;
+    if (attr_mark)
+        col_attr = sql->find_col("attr");
 
     // check existance of group fields and save ids
     std::vector<int> groupcols;
@@ -272,6 +307,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     // collect coordinates {...} clause groups
     std::vector<std::string> coordlist;
     std::vector<std::string> legendlist;
+    std::vector<std::string> attrlist;
 
     {
         std::vector<std::string> lastgroup;
@@ -322,6 +358,10 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                     }
                     legendlist.push_back(os.str());
                 }
+
+                if (attr_mark) {
+                    attrlist.push_back(sql->text(col_attr));
+                }
             }
 
             // group fields match with last row -> append coordinates.
@@ -344,6 +384,8 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
 
     for (size_t i = 0; i < coordlist.size(); ++i)
     {
+        if (attr_mark)
+            OUTC(gopt_verbose >= 1, "attr {" << attrlist[i] << " }");
         OUTC(gopt_verbose >= 1, "coordinates {" << coordlist[i] << " }");
         OUTC(gopt_verbose >= 1, "legend {" << legendlist[i] << " }");
     }
@@ -356,7 +398,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     static const boost::regex
         re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
     static const boost::regex
-        re_legend("[[:blank:]]*(\\\\addlegendentry\\{).*(\\};.*)");
+        re_legend("[[:blank:]]*((?:%[[:blank:]]*)?\\\\addlegendentry\\{).*(\\};.*)");
 
     boost::smatch rm;
 
@@ -367,7 +409,16 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         // copy styles from \addplot line
         if (entry < coordlist.size())
         {
-            out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
+            if (attr_mark) {
+                // can't copy styles when an attribute is being selected
+                out << "\\addplot";
+                if (attrplus_mark)
+                    out << "+";
+                out << "[" << attrlist[entry] << "] coordinates {"
+                    << coordlist[entry] << " " << rm[2] << std::endl;
+            } else {
+                out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
+            }
 
             // check following \addlegendentry
             if (eln+1 < m_lines.size() &&
@@ -379,6 +430,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
             else
             {
+                // If |nolegend is set, comment out legend entries
+                if (nolegend_mark)
+                    out << "% ";
                 // add missing \addlegendentry
                 out << "\\addlegendentry{" << legendlist[entry]
                     << "};" << std::endl;
@@ -403,9 +457,20 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     // append missing \addplot / \addlegendentry pairs
     while (entry < coordlist.size())
     {
-        out << "\\addplot coordinates {" << coordlist[entry]
-            << " };" << std::endl;
+        if (attr_mark) {
+            out << "\\addplot";
+            if (attrplus_mark)
+                out << "+";
+            out << "[" << attrlist[entry] << "] coordinates {"
+                << coordlist[entry] << " };" << std::endl;
+        } else {
+            out << "\\addplot coordinates {" << coordlist[entry]
+                << " };" << std::endl;
+        }
 
+        // If |nolegend is set, comment out legend entries
+        if (nolegend_mark)
+            out << "% ";
         out << "\\addlegendentry{" << legendlist[entry]
             << "};" << std::endl;
 
