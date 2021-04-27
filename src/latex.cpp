@@ -204,6 +204,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     std::for_each(groupfields.begin(), groupfields.end(), trim_inplace_ws);
 
     bool attr_mark = false;
+    bool attrplus_mark = false;
     bool title_mark = false;
     bool ptitle_mark = false;
     bool xerr = false, yerr = false;
@@ -227,7 +228,15 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             field.resize(field.size() - 5);
             multiplot.resize(multiplot.size() - 5);
             attr_mark = true;
-        } else{
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|attrplus")) {
+            // remove |attrplus from multiplot string
+            field.resize(field.size() - 9);
+            multiplot.resize(multiplot.size() - 9);
+            attr_mark = true;
+            attrplus_mark = true;
+        }
+        else {
             std::string modifier = field.substr(field.find('|'));
             OUT_THROW("MULTIPLOT failed: unknown modifier '" + modifier + "'");
         }
@@ -395,7 +404,10 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         {
             if (attr_mark) {
                 // can't copy styles when an attribute is being selected
-                out << "\\addplot[" << attrlist[entry] << "] coordinates { "
+                out << "\\addplot";
+                if (attrplus_mark)
+                    out << "+";
+                out << "[" << attrlist[entry] << "] coordinates {"
                     << coordlist[entry] << " " << rm[2] << std::endl;
             } else {
                 out << rm[1] << coordlist[entry] << " " << rm[2] << std::endl;
@@ -435,12 +447,16 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     // append missing \addplot / \addlegendentry pairs
     while (entry < coordlist.size())
     {
-        if (attr_mark)
-            out << "\\addplot[" << attrlist[entry] << "] coordinates {"
+        if (attr_mark) {
+            out << "\\addplot";
+            if (attrplus_mark)
+                out << "+";
+            out << "[" << attrlist[entry] << "] coordinates {"
                 << coordlist[entry] << " };" << std::endl;
-        else
+        } else {
             out << "\\addplot coordinates {" << coordlist[entry]
                 << " };" << std::endl;
+        }
 
         out << "\\addlegendentry{" << legendlist[entry]
             << "};" << std::endl;
