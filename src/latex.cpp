@@ -207,6 +207,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     bool attrplus_mark = false;
     bool title_mark = false;
     bool ptitle_mark = false;
+    bool nolegend_mark = false;
     bool xerr = false, yerr = false;
 
     while (!groupfields.empty() && groupfields.back().find('|') != std::string::npos) {
@@ -222,6 +223,12 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             field.resize(field.size() - 7);
             multiplot.resize(multiplot.size() - 7);
             ptitle_mark = true;
+        }
+        else if (!groupfields.empty() && is_suffix(field, "|nolegend")) {
+            // remove |nolegend from multiplot string
+            field.resize(field.size() - 9);
+            multiplot.resize(multiplot.size() - 9);
+            nolegend_mark = true;
         }
         else if (!groupfields.empty() && is_suffix(field, "|attr")) {
             // remove |attr from multiplot string
@@ -391,7 +398,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     static const boost::regex
         re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
     static const boost::regex
-        re_legend("[[:blank:]]*(\\\\addlegendentry\\{).*(\\};.*)");
+        re_legend("[[:blank:]]*((?:%[[:blank:]]*)?\\\\addlegendentry\\{).*(\\};.*)");
 
     boost::smatch rm;
 
@@ -423,6 +430,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
             }
             else
             {
+                // If |nolegend is set, comment out legend entries
+                if (nolegend_mark)
+                    out << "% ";
                 // add missing \addlegendentry
                 out << "\\addlegendentry{" << legendlist[entry]
                     << "};" << std::endl;
@@ -458,6 +468,9 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                 << " };" << std::endl;
         }
 
+        // If |nolegend is set, comment out legend entries
+        if (nolegend_mark)
+            out << "% ";
         out << "\\addlegendentry{" << legendlist[entry]
             << "};" << std::endl;
 
