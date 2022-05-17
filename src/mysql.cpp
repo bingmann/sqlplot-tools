@@ -38,7 +38,11 @@ struct MySqlBind : public MYSQL_BIND
 struct MySqlColumn
 {
     //! NULL value indicator
+    #if defined(LIBMYSQL_VERSION_ID) && LIBMYSQL_VERSION_ID >= 80000
+    bool is_null;
+    #else
     my_bool is_null;
+    #endif
 
     //! output string data, currently extra long strings are truncated.
     char strdata[128];
