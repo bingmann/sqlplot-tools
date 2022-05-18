@@ -58,6 +58,9 @@ set(INSTALL_BIN_DIR "bin" CACHE PATH "Installation directory for sqlplot-tools")
 # enable warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
 
+# enable C++11
+set(CMAKE_CXX_STANDARD 11)
+
 # enable use of "make test"
 enable_testing()
 

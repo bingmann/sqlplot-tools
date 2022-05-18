@@ -1,0 +1,139 @@
+name: Compile and Test
+
+on:
+  push:
+  pull_request:
+  release:
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        # Run Tests on Ubuntu 18.04
+        - name: "Ubuntu 18.04 Debug SQLite"
+          os: ubuntu-18.04
+          build_type: "Debug"
+          test_database: "sqlite"
+
+        - name: "Ubuntu 18.04 Release SQLite"
+          os: ubuntu-18.04
+          build_type: "Release"
+          test_database: "sqlite"
+
+        - name: "Ubuntu 18.04 Debug PostgreSQL"
+          os: ubuntu-18.04
+          build_type: "Debug"
+          test_database: "postgresql"
+
+        - name: "Ubuntu 18.04 Release PostgreSQL"
+          os: ubuntu-18.04
+          build_type: "Release"
+          test_database: "postgresql"
+
+        - name: "Ubuntu 18.04 Debug MySQL"
+          os: ubuntu-18.04
+          build_type: "Debug"
+          test_database: "mysql"
+
+        - name: "Ubuntu 18.04 Release MySQL"
+          os: ubuntu-18.04
+          build_type: "Release"
+          test_database: "mysql"
+
+        # Run Tests on Ubuntu 20.04
+        - name: "Ubuntu 20.04 Release SQLite"
+          os: ubuntu-20.04
+          build_type: "Release"
+          test_database: "sqlite"
+
+        - name: "Ubuntu 20.04 Release PostgreSQL"
+          os: ubuntu-20.04
+          build_type: "Release"
+          test_database: "postgresql"
+
+        - name: "Ubuntu 20.04 Release MySQL"
+          os: ubuntu-20.04
+          build_type: "Release"
+          test_database: "mysql"
+
+        # Run Tests on Ubuntu 20.04 with newer GCC
+        - name: "Ubuntu 20.04 gcc 11 Release SQLite"
+          os: ubuntu-20.04
+          build_type: "Release"
+          gcc_install: "11"
+          test_database: "sqlite"
+
+        # Run Tests on MacOS
+        - name: "macOS Debug SQLite"
+          os: macos-latest
+          build_type: "Debug"
+          test_database: "sqlite"
+
+        - name: "macOS Release SQLite"
+          os: macos-latest
+          build_type: "Release"
+          test_database: "sqlite"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Boost
+        if: ${{startsWith(matrix.config.os, 'ubuntu')}}
+        run: |
+          echo --- Installing Boost.Regex
+          sudo apt-get update
+          sudo apt-get install libboost-regex-dev
+
+      - name: Install Boost
+        if: ${{startsWith(matrix.config.os, 'macos')}}
+        run: |
+          echo --- Installing Boost.Regex
+          brew install boost
+
+      - name: Install gcc version
+        if: ${{matrix.config.gcc_install}}
+        run: |
+          echo --- Install gcc version ${{matrix.config.gcc_install}}
+          echo --- gcc version before
+          gcc --version
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install gcc-${{matrix.config.gcc_install}} g++-${{matrix.config.gcc_install}}
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${{matrix.config.gcc_install}} 90 --slave /usr/bin/g++ g++ /usr/bin/g++-${{matrix.config.gcc_install}}
+          echo --- gcc version after
+          gcc --version
+
+      - name: Configure CMake
+        run: >
+          cmake -B ${{github.workspace}}/build
+          -DCMAKE_BUILD_TYPE=${{matrix.config.build_type}}
+          -DCMAKE_CXX_FLAGS="${{matrix.config.cxx_flags}}"
+          -DTEST_DATABASE="${{matrix.config.test_database}}"
+          -DBUILD_EXAMPLES=ON
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.config.build_type}}
+
+      - name: Set up PostgreSQL
+        if: ${{startsWith(matrix.config.test_database, 'postgresql')}}
+        run: |
+          sudo /etc/init.d/postgresql start
+          sudo -u postgres psql -c "CREATE USER $USER"
+          sudo -u postgres psql -c "CREATE DATABASE $USER OWNER $USER;"
+
+      - name: Set up MySQL
+        if: ${{startsWith(matrix.config.test_database, 'mysql')}}
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -hlocalhost -uroot -proot -e "CREATE USER $USER"
+          mysql -hlocalhost -uroot -proot -e "CREATE DATABASE test"
+          mysql -hlocalhost -uroot -proot -e "GRANT ALL ON test.* TO $USER"
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{matrix.config.build_type}}
