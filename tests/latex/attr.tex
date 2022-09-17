@@ -1,0 +1,9 @@
+line1
+% IMPORT-DATA test test.data
+line2
+%% MULTIPLOT(funcname|attr) SELECT LOG(testsize) / LOG(2) AS x, bandwidth AS y, funcname AS attr, MULTIPLOT
+%% FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+line3
+%% MULTIPLOT(funcname|attrplus) SELECT LOG(testsize) / LOG(2) AS x, bandwidth AS y, funcname AS attr, MULTIPLOT
+%% FROM test WHERE host='earth' ORDER BY MULTIPLOT,x
+this is the end
