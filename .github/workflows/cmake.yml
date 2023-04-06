@@ -14,34 +14,34 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        # Run Tests on Ubuntu 18.04
-        - name: "Ubuntu 18.04 Debug SQLite"
-          os: ubuntu-18.04
+        # Run Tests on Ubuntu 22.04
+        - name: "Ubuntu 22.04 Debug SQLite"
+          os: ubuntu-22.04
           build_type: "Debug"
           test_database: "sqlite"
 
-        - name: "Ubuntu 18.04 Release SQLite"
-          os: ubuntu-18.04
+        - name: "Ubuntu 22.04 Release SQLite"
+          os: ubuntu-22.04
           build_type: "Release"
           test_database: "sqlite"
 
-        - name: "Ubuntu 18.04 Debug PostgreSQL"
-          os: ubuntu-18.04
+        - name: "Ubuntu 22.04 Debug PostgreSQL"
+          os: ubuntu-22.04
           build_type: "Debug"
           test_database: "postgresql"
 
-        - name: "Ubuntu 18.04 Release PostgreSQL"
-          os: ubuntu-18.04
+        - name: "Ubuntu 22.04 Release PostgreSQL"
+          os: ubuntu-22.04
           build_type: "Release"
           test_database: "postgresql"
 
-        - name: "Ubuntu 18.04 Debug MySQL"
-          os: ubuntu-18.04
+        - name: "Ubuntu 22.04 Debug MySQL"
+          os: ubuntu-22.04
           build_type: "Debug"
           test_database: "mysql"
 
-        - name: "Ubuntu 18.04 Release MySQL"
-          os: ubuntu-18.04
+        - name: "Ubuntu 22.04 Release MySQL"
+          os: ubuntu-22.04
           build_type: "Release"
           test_database: "mysql"
 
@@ -73,14 +73,16 @@ jobs:
           os: macos-latest
           build_type: "Debug"
           test_database: "sqlite"
+          cmake_flags: "-DWITH_POSTGRESQL=OFF"
 
         - name: "macOS Release SQLite"
           os: macos-latest
           build_type: "Release"
           test_database: "sqlite"
+          cmake_flags: "-DWITH_POSTGRESQL=OFF"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Boost
         if: ${{startsWith(matrix.config.os, 'ubuntu')}}
@@ -115,6 +117,7 @@ jobs:
           -DCMAKE_CXX_FLAGS="${{matrix.config.cxx_flags}}"
           -DTEST_DATABASE="${{matrix.config.test_database}}"
           -DBUILD_EXAMPLES=ON
+          ${{matrix.config.cmake_flags}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.config.build_type}}
