@@ -398,7 +398,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
     static const boost::regex
         re_addplot("[[:blank:]]*(\\\\addplot.*coordinates \\{)[^}]+(\\};.*)");
     static const boost::regex
-        re_legend("[[:blank:]]*((?:%[[:blank:]]*)?\\\\addlegendentry\\{).*(\\};.*)");
+        re_legend("[[:blank:]]*((?:%[[:blank:]]*)?\\\\addlegendentry\\{).*\\}(.*)");
 
     boost::smatch rm;
 
@@ -425,7 +425,11 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                 boost::regex_match(m_lines[eln+1], rm, re_legend))
             {
                 // copy styles
-                out << rm[1] << legendlist[entry] << rm[2] << std::endl;
+                std::string line_end = rm[2];
+                if (line_end.size() > 0 && line_end[0] == ';') {
+                    line_end = line_end.substr(1);
+                }
+                out << rm[1] << legendlist[entry] << "}" << line_end << std::endl;
                 ++eln;
             }
             else
@@ -435,7 +439,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
                     out << "% ";
                 // add missing \addlegendentry
                 out << "\\addlegendentry{" << legendlist[entry]
-                    << "};" << std::endl;
+                    << "}" << std::endl;
             }
 
             ++entry;
@@ -472,7 +476,7 @@ void SpLatex::multiplot(size_t ln, size_t indent, const std::string& cmdline)
         if (nolegend_mark)
             out << "% ";
         out << "\\addlegendentry{" << legendlist[entry]
-            << "};" << std::endl;
+            << "}" << std::endl;
 
         ++entry;
     }
