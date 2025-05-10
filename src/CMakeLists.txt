@@ -44,7 +44,7 @@ add_executable(sqlplot-tools
   reformat.cpp
   )
 
-target_link_libraries(sqlplot-tools ${SQL_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(sqlplot-tools ${SQL_LIBRARIES} ${Boost_LIBRARIES} ${ICU_LIBRARIES})
 
 install(TARGETS sqlplot-tools RUNTIME DESTINATION ${INSTALL_BIN_DIR})
 
